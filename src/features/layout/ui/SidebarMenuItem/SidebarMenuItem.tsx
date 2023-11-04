@@ -4,13 +4,11 @@ import { NavLink } from "react-router-dom";
 import classNames from "classnames";
 import styles from "./style.module.scss";
 import { observer } from "mobx-react-lite";
-import { IconArrow } from "src/features/sidebar/assets/icons";
 
 interface IProps {
     route: ISidebarRoute;
     collapsed?: boolean;
     onClick?: (event: React.MouseEvent<HTMLElement>) => void;
-    nestedMenuDrawerOpen?: boolean;
 }
 
 export const SidebarMenuItem = observer((props: IProps) => {
@@ -33,13 +31,6 @@ export const SidebarMenuItem = observer((props: IProps) => {
                     {props.route.name}
                     {(sidebarProps?.counterValue ?? 0) > 0 && (
                         <div className={styles.counter}>{sidebarProps?.counterValue}</div>
-                    )}
-                    {props.route.children && (
-                        <IconArrow
-                            className={classNames(styles.arrow, {
-                                [styles.rotated]: props.nestedMenuDrawerOpen,
-                            })}
-                        />
                     )}
                 </>
             )}
