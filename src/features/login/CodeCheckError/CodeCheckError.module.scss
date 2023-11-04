@@ -1,0 +1,77 @@
+.body {
+    background: var(--red-primary-background, #f6e4e4);
+    display: inline-flex;
+    align-items: center;
+    border-radius: 4px;
+
+    width: 360px;
+    height: 56px;
+    margin-bottom: 24px;
+    padding: 0 20px;
+
+    svg path {
+        fill: #ff4545;
+    }
+    svg path[stroke] {
+        stroke: #ff4545;
+    }
+}
+.text {
+    font-size: 14px;
+    font-family: "Manrope";
+    font-weight: 600;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 19px;
+    padding-bottom: 2px;
+    color: var(--red-default-red-100, #ff4545);
+    margin-left: 8px;
+}
+.button {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 13px;
+    &:hover {
+        background-color: #f5f5f5;
+        .buttonClose {
+            svg path {
+                fill: #ff4545;
+            }
+            svg path[stroke] {
+                stroke: #ff4545;
+            }
+        }
+    }
+}
+.buttonClose {
+    width: 16px;
+    height: 16px;
+    svg path {
+        fill: #ffabab;
+    }
+    svg path[stroke] {
+        stroke: #ffabab;
+    }
+}
+.callSupp {
+    display: inline-flex;
+    align-items: center;
+    width: 360px;
+    height: auto;
+    margin-bottom: 24px;
+    justify-content: center;
+    align-items: center;
+    color: var(--black-primary-pale, #808080);
+    font-size: 16px;
+    font-family: Manrope;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    &:hover {
+        color: #474747;
+    }
+}

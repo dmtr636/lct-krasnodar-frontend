@@ -1,0 +1,65 @@
+.checkboxContainer {
+    width: 24px;
+    height: 24px;
+
+    svg path {
+        fill: var(--black-primary-pale);
+    }
+}
+.checkboxContainerActive {
+    width: 24px;
+    height: 24px;
+    svg path {
+        fill: #242424;
+    }
+}
+.checkboxBlock {
+    width: 36px;
+    height: 36px;
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    &:hover {
+        background-color: var(--white-primary-hover);
+    }
+}
+.checkbox {
+    cursor: pointer;
+    display: inline-flex;
+    user-select: none;
+    justify-content: center;
+    align-items: center;
+    gap: 2px;
+    //styleName: Button/ButtonContainedOutlined;
+    font-family: Manrope;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 22px;
+    letter-spacing: 0.01em;
+    text-align: left;
+    color: var(--black-primary-pale);
+    flex-direction: row-reverse;
+    &:hover {
+        color: var(--black-primary-active);
+        .checkboxBlock {
+            background-color: var(--white-primary-hover);
+        }
+        .checkboxContainer {
+            svg path {
+                fill: var(--black-primary-hover);
+            }
+        }
+        .checkboxContainerActive {
+            svg path {
+                fill: var(--black-primary-hover);
+            }
+        }
+    }
+    &.active {
+        color: var(--black-primary-active);
+        &:hover {
+            color: var(--black-primary-hover);
+        }
+    }
+}

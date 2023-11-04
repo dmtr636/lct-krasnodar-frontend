@@ -1,0 +1,30 @@
+.buttonBack {
+    display: block;
+    width: 64px;
+    height: 54px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    &:hover {
+        svg path {
+            fill: var(--black-primary-hover);
+        }
+        background: var(--white-primary-hover);
+    }
+    &:active {
+        svg path {
+            fill: var(--black-primary-press);
+        }
+        background: var(--white-primary-hover);
+    }
+    &:disabled {
+        svg path {
+            fill: var(--black-primary-pale);
+        }
+        background: none;
+    }
+}
+.buttonBackq * {
+    fill: var(--black-primary-pale);
+}

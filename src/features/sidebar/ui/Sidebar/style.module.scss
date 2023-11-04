@@ -1,0 +1,66 @@
+.sidebarContainer {
+    display: flex;
+}
+
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 240px;
+    background: var(--black-primary-active);
+    padding: 28px;
+    transition: width var(--transform-transition);
+    overflow: hidden;
+
+    &.collapsed {
+        width: 80px;
+    }
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    &.collapsed {
+        justify-content: end;
+    }
+}
+
+.logo {
+    width: 96px;
+    height: 24px;
+}
+
+.toggleButton {
+    flex-shrink: 0;
+    padding: 4px 8px;
+    border-radius: 8px;
+    color: var(--black-primary-pale);
+
+    &.collapsed {
+        margin: 0 -8px;
+    }
+
+    &:hover {
+        background: var(--black-primary-hover);
+        color: var(--white-primary-hover);
+    }
+
+    svg path {
+        fill: currentColor;
+    }
+
+    svg path[stroke] {
+        stroke: currentColor;
+    }
+}
+
+.menu {
+    margin-top: 40px;
+    display: grid;
+}
+
+.logoutButton {
+    margin-top: auto;
+}
