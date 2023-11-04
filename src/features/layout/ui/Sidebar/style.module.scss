@@ -35,12 +35,13 @@
 .toggleButton {
     flex-shrink: 0;
     padding: 6px 7px 6px 5px;
-    margin-right: -7px;
+    margin: -6px -7px -6px -5px;
     border-radius: 50%;
     color: white;
 
     &.collapsed {
-        margin-right: -7px;
+        padding: 6px 5px 6px 7px;
+        margin: -6px -5px -6px -7px;
     }
 
     &:hover {
