@@ -1,7 +1,7 @@
 import axios from "axios";
 import { makeAutoObservable } from "mobx";
 import { useNavigate } from "react-router-dom";
-import {LOGOUT_ENDPOINT, ME_ENDPOINT} from "src/shared/api/endpoints";
+import { LOGOUT_ENDPOINT, ME_ENDPOINT } from "src/shared/api/endpoints";
 
 class UserStore {
     constructor() {

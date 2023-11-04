@@ -8,9 +8,9 @@ import classNames from "classnames";
 import { SidebarNestedMenuDrawer } from "src/features/sidebar/ui/SidebarNestedMenuDrawer/SidebarNestedMenuDrawer";
 import Lottie, { LottieRefCurrentProps } from "lottie-react";
 import { collapseAnimation } from "src/features/sidebar/assets/animations";
-import {Button} from "src/shared/ui/Button/Button";
-import {userStore} from "src/features/login/store/userStore";
-import {useNavigate} from "react-router-dom";
+import { Button } from "src/shared/ui/Button/Button";
+import { userStore } from "src/features/login/store/userStore";
+import { useNavigate } from "react-router-dom";
 
 const Sidebar = observer(() => {
     const [collapsed, setCollapsed] = useState(false);
