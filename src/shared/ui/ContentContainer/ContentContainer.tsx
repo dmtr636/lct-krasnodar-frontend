@@ -3,7 +3,6 @@ import styles from "./ContentContainer.module.scss";
 export const ContentContainer = ({ children, text }: { children: ReactNode; text: string }) => {
     return (
         <div className={styles.container}>
-            <div className={styles.logoText}>Название продукта</div>
             <div className={styles.headerText}>{text}</div>
             {children}
         </div>

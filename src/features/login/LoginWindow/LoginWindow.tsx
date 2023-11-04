@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { /* React, */ useState } from "react";
 import styles from "./LoginWindow.module.scss";
 
 import axios from "axios";
@@ -13,7 +13,7 @@ import { Checkbox } from "src/shared/ui/Checkbox/Checkbox";
 import { Button } from "src/shared/ui/Button/Button";
 import { userStore } from "../store/userStore";
 import { ContentContainer } from "src/shared/ui/ContentContainer/ContentContainer";
-import { Alert } from "src/shared/ui/Alert/Alert";
+/* import { Alert } from "src/shared/ui/Alert/Alert"; */
 
 export const LoginWindow = observer(() => {
     const [emailInputValue, setEmailInputValue] = useState("");
@@ -69,7 +69,7 @@ export const LoginWindow = observer(() => {
     console.log(errorCount);
     const navigate = useNavigate();
     return (
-        <ContentContainer text="Вход в кабинет">
+        <ContentContainer text="Личный кабинет">
             <div className={styles.inputBlock}>
                 <EmailInput
                     error={isError}
@@ -92,7 +92,7 @@ export const LoginWindow = observer(() => {
             <div className={styles.footerBlock}>
                 {isError ? (
                     <LoginError
-                        errorCount={errorCount}
+                        errorCount={3}
                         setIsError={setIsError}
                         blockTimeCount={blockTimeCount}
                     />
@@ -109,9 +109,9 @@ export const LoginWindow = observer(() => {
                             Войти
                         </Button>
                     </div>
-                    <div onClick={() => navigate("/recovery")} className={styles.passwordRecovery}>
+                    {/* <div onClick={() => navigate("/recovery")} className={styles.passwordRecovery}>
                         Не могу войти
-                    </div>
+                    </div> */}
                 </div>
             </div>
         </ContentContainer>

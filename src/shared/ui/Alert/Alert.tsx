@@ -1,11 +1,11 @@
-import React, { ReactNode, useRef } from "react";
+import { /* React, */ ReactNode, useRef } from "react";
 import styles from "./Alert.module.scss";
 import Lottie, { LottieRefCurrentProps } from "lottie-react";
 
 import attentionStart from "../../assets/animation/attention_start.json";
 
-import closeStart from "../../assets/animation/close_start.json";
-
+/* import closeStart from "../../assets/animation/close_start.json";
+ */
 export const Alert = ({
     children,
     setIsError,
@@ -13,19 +13,19 @@ export const Alert = ({
     children?: ReactNode;
     setIsError: (arg: boolean) => void;
 }) => {
-    const [errorClose, setErrorClose] = React.useState(false);
-    const lottieRefAttention = useRef<LottieRefCurrentProps | null>(null);
-    const lottieRefClose = useRef<LottieRefCurrentProps | null>(null);
-    const onCloseAlert = () => {
+    /*     const [errorClose, setErrorClose] = React.useState(false);
+     */ const lottieRefAttention = useRef<LottieRefCurrentProps | null>(null);
+    /*     const lottieRefClose = useRef<LottieRefCurrentProps | null>(null);
+     */ /* const onCloseAlert = () => {
         setErrorClose(true);
         lottieRefAttention.current?.setDirection(-1);
         lottieRefClose.current?.setDirection(-1);
         lottieRefAttention.current?.play();
         lottieRefClose.current?.play();
-    };
-    const onAnimationComplete = () => {
+    }; */
+    /*   const onAnimationComplete = () => {
         errorClose && setIsError(false);
-    };
+    }; */
     return (
         <div className={styles.body}>
             <div className={styles.lottie}>
@@ -38,7 +38,7 @@ export const Alert = ({
 
             <div className={styles.text}>{children}</div>
 
-            <button className={styles.button} onClick={() => onCloseAlert()}>
+            {/* <button className={styles.button} onClick={() => onCloseAlert()}>
                 <div className={styles.buttonClose}>
                     <Lottie
                         animationData={closeStart}
@@ -47,7 +47,7 @@ export const Alert = ({
                         onComplete={() => onAnimationComplete()}
                     />
                 </div>
-            </button>
+            </button> */}
         </div>
     );
 };

@@ -3,27 +3,31 @@
     justify-content: center;
 
     width: 100%;
-    background: var(--brand-color-ch-primary-active);
-    box-shadow: 0px 0px 12px rgba(38, 38, 38, 0.12);
+    background: #14214d;
+    /*  box-shadow: 0px 0px 12px rgba(38, 38, 38, 0.12); */
     border-radius: 8px;
     padding-top: 17px;
     padding-bottom: 17px;
+    color: var(--text-button, #fff);
+
+    /* Desktop/Button/Button-primary */
+    font-family: Manrope;
     font-size: 16px;
-    font-family: "Manrope";
+    font-style: normal;
     font-weight: 600;
+    line-height: normal;
     letter-spacing: 0.16px;
-    color: var(--black-primary-active);
     &:hover {
-        background: var(--brand-color-ch-primary-hover);
-        color: var(--black-primary-hover);
+        background: color-mix(in oklab, #14214d, white 33%);
+        color: white;
     }
     &:active {
-        background-color: var(--brand-color-ch-primary-press);
-        color: var(--black-primary-press);
+        background: color-mix(in oklab, #14214d, #000000 26%);
+        color: white;
     }
     &:disabled {
-        background: var(--brand-color-ch-primary-pale);
-        color: var(--black-primary-pale);
+        background: color-mix(in oklab, #14214d, white 72%);
+        color: white;
     }
 }
 .animation {

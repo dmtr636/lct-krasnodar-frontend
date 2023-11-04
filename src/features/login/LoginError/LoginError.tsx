@@ -1,5 +1,5 @@
-import React from "react";
-import styles from "./LoginError.module.scss";
+/* import React from "react";
+ */ import styles from "./LoginError.module.scss";
 
 import { Alert } from "src/shared/ui/Alert/Alert";
 
@@ -34,10 +34,12 @@ export const LoginError = ({
             ) : (
                 <>
                     Неправильная почта или пароль
-                    {errorCount <= 3 &&
-                        (errorCount == 1
-                            ? `\nОсталась ${errorCount} попытка`
-                            : `\nОсталось ${errorCount} попытки`)}
+                    <div className={styles.errorText}>
+                        {errorCount <= 3 &&
+                            (errorCount == 1
+                                ? `\nОсталась ${errorCount} попытка`
+                                : `\nОсталось ${errorCount} попытки`)}
+                    </div>
                 </>
             )}
         </Alert>

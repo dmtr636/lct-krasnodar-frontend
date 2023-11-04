@@ -1,31 +1,32 @@
 .body {
-    background: var(--red-primary-background, #f6e4e4);
+    border-radius: var(--s, 8px);
+    background: var(--background-error, #ffdad9);
     display: flex;
     align-items: center;
     /* justify-content: space-between; */
-    border-radius: 4px;
+    border-radius: 8px;
     width: 360px;
-    height: 56px;
+    height: auto;
     margin-bottom: 24px;
     padding: 0 20px;
 
     svg path {
-        fill: #ff4545;
+        fill: #980e08;
     }
     svg path[stroke] {
-        stroke: #ff4545;
+        stroke: #980e08;
     }
 }
 .text {
     font-size: 14px;
     font-family: "Manrope";
     font-weight: 600;
-    font-size: 14px;
-    font-weight: 600;
     line-height: 19px;
     padding-bottom: 2px;
-    color: var(--red-default-red-100, #ff4545);
+    color: #980e08;
     padding-left: 8px;
+    margin-top: 16px;
+    margin-bottom: 16px;
 }
 .button {
     margin-left: auto;
