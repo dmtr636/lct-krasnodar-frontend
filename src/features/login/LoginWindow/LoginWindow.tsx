@@ -58,11 +58,11 @@ export const LoginWindow = observer(() => {
             .catch((error) => {
                 setIsLoading(false);
                 setIsError(true);
-                setErrorCount(error.response.data.error.data.attempts_left);
-                console.log(error.response.data.error.data.attempts_left);
-                if (error.response.data.error.data?.ban_duration_seconds) {
-                    setBlockTimeCount(error.response.data.error.data?.ban_duration_seconds);
-                    blockButton(error.response.data.error.data?.ban_duration_seconds);
+                setErrorCount(error.response.data.error.data.remainingAttempts);
+                console.log(error.response.data.error.data.remainingAttempts);
+                if (error.response.data.error.data?.retryDelaySeconds) {
+                    setBlockTimeCount(error.response.data.error.data?.retryDelaySeconds);
+                    blockButton(error.response.data.error.data?.retryDelaySeconds);
                 }
             });
     };
@@ -92,7 +92,7 @@ export const LoginWindow = observer(() => {
             <div className={styles.footerBlock}>
                 {isError ? (
                     <LoginError
-                        errorCount={3}
+                        errorCount={errorCount}
                         setIsError={setIsError}
                         blockTimeCount={blockTimeCount}
                     />

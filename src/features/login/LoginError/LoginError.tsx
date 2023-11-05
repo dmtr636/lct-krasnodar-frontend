@@ -28,8 +28,8 @@ export const LoginError = ({
         <Alert setIsError={setIsError}>
             {blockTimeCount !== 0 ? (
                 <>
-                    Попробуйте повторить позже <br /> Блокировка: {Math.trunc(blockTimeCount / 60)}{" "}
-                    {getMinutesWord(Math.trunc(blockTimeCount / 60))}
+                    Попробуйте повторить позже <br /> Блокировка: {Math.ceil(blockTimeCount / 60)}{" "}
+                    {getMinutesWord(Math.ceil(blockTimeCount / 60))}
                 </>
             ) : (
                 <>
