@@ -2,7 +2,7 @@ import styles from "./style.module.scss";
 import { sidebarRoutes, supportRoute } from "src/app/routes/sidebarRoutes";
 import { SidebarMenuItem } from "../SidebarMenuItem/SidebarMenuItem";
 import { observer } from "mobx-react-lite";
-import { IconSupport, sidebarLogo } from "../../assets/icons";
+import { sidebarLogo } from "../../assets/icons";
 import { useRef, useState } from "react";
 import classNames from "classnames";
 import Lottie, { LottieRefCurrentProps } from "lottie-react";
