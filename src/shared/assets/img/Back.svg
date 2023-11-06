@@ -1,4 +1,10 @@
-<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path fill-rule="evenodd" clip-rule="evenodd" d="M13.4043 4.29092L5.67425 12.0109L13.4043 19.7509L11.9891 21.1642L2.84583 12.0091L11.991 2.87579L13.4043 4.29092Z" fill="#808080"/>
-<path fill-rule="evenodd" clip-rule="evenodd" d="M19.74 13.01H4.26004V11.01H19.74V13.01Z" fill="#808080"/>
+<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Back">
+<g id="Vector">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M11.1702 3.57576L4.72851 10.0091L11.1702 16.4591L9.99091 17.6368L2.37149 10.0076L9.99243 2.39648L11.1702 3.57576Z" fill="#14214D"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M11.1702 3.57576L4.72851 10.0091L11.1702 16.4591L9.99091 17.6368L2.37149 10.0076L9.99243 2.39648L11.1702 3.57576Z" fill="white" fill-opacity="0.33"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16.45 10.8417H3.55V9.175H16.45V10.8417Z" fill="#14214D"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16.45 10.8417H3.55V9.175H16.45V10.8417Z" fill="white" fill-opacity="0.33"/>
+</g>
+</g>
 </svg>

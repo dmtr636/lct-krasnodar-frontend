@@ -1,20 +1,15 @@
-.buttonBack {
-    border-radius: 8px;
+.button {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
     padding: 8px 12px;
-    margin: 0 -12px;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    border-radius: 4px;
+    border: 2px solid currentColor;
 
     font-size: 14px;
     font-weight: 600;
     letter-spacing: 0.14px;
-    color: var(--color-primary);
-
-    svg path {
-        fill: currentColor;
-    }
 
     &:hover {
         color: var(--color-primary-hover);

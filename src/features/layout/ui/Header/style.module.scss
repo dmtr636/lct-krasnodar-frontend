@@ -1,10 +1,40 @@
 .header {
-    height: 80px;
     background: white;
     box-shadow: 0 4px 16px 0 rgba(26, 61, 107, 0.04);
-    padding: 0 28px;
+}
+
+.row {
+    padding: 0 28px 0 40px;
     display: flex;
-    justify-content: end;
+    justify-content: start;
+    align-items: center;
+    gap: 28px;
+
+    &.first {
+        height: 80px;
+    }
+
+    &.second {
+        height: 68px;
+    }
+
+    &:not(:last-child) {
+        border-bottom: 1px solid #d8e4f3;
+    }
+}
+
+.title {
+    color: var(--color-primary);
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 33px;
+    letter-spacing: 0.56px;
+}
+
+.actions {
+    margin-left: auto;
+    display: flex;
+    justify-content: space-between;
     align-items: center;
     gap: 16px;
 }
@@ -22,6 +52,6 @@
     border-radius: 50%;
 
     &:hover {
-        background: var(--color-white-hover);
+        background: var(--color-white-bg-hover);
     }
 }

@@ -8,7 +8,7 @@ import classNames from "classnames";
 import Lottie, { LottieRefCurrentProps } from "lottie-react";
 import { collapseAnimation } from "../../assets/animations";
 
-const Sidebar = observer(() => {
+export const Sidebar = observer(() => {
     const [collapsed, setCollapsed] = useState(false);
     const collapseIconRef = useRef<LottieRefCurrentProps>(null);
 
@@ -58,5 +58,3 @@ const Sidebar = observer(() => {
         </div>
     );
 });
-
-export default Sidebar;

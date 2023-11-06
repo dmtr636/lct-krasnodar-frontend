@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { observer } from "mobx-react-lite";
 import styles from "./styles.module.scss";
 import { SearchInput } from "src/shared/ui/Inputs/SearchInput/SearchIntup";
@@ -8,6 +8,10 @@ import classNames from "classnames";
 import { EmployeeArray } from "src/features/staff/staff/EmployeeArray/EmployeeArray";
 import close from "src/shared/assets/img/Close.svg";
 import { Checkbox } from "src/shared/ui/Checkbox/Checkbox";
+import { ContentWithHeaderLayout } from "src/features/layout/ui/ContentWithHeaderLayout/ContentWithHeaderLayout";
+import { HeaderActionButton } from "src/features/layout/ui/Header/HeaderActionButton/HeaderActionButton";
+import { IconAdd } from "src/shared/assets/img";
+import { useNavigate } from "react-router-dom";
 
 interface SortingOption {
     id: string;
@@ -21,6 +25,7 @@ export const UsersPage = observer(() => {
     const [showFilter, setShowFilter] = useState(false);
     const [selectedDeportament, setSelectedDeportament] = useState<string[]>(["D1"]);
     const [selectedTasks, setSelectedTasks] = useState<string[]>(["T1"]);
+    const navigate = useNavigate();
 
     const optionsDeportament: SortingOption[] = [
         { id: "D1", label: "Выбрать все" },
@@ -78,72 +83,85 @@ export const UsersPage = observer(() => {
         .filter((option) => selectedTasks.includes(option.id))
         .map((option) => option.label);
     return (
-        <div className={styles.container}>
-            <div className={styles.headBlock}>
-                <div className={styles.input}>
-                    <SearchInput onChange={setInputValue} inputValue={inputValue} />
-                </div>
-                <div className={styles.sortedBlock}>
-                    <div onClick={() => setShowSort(!showSort)} className={styles.sort}>
-                        <img src={sort} alt="" />
-                        Сортировка
+        <ContentWithHeaderLayout
+            title={"Сотрудники"}
+            onBack={() => navigate("/")}
+            actions={[
+                <HeaderActionButton icon={<IconAdd />} onClick={() => {}}>
+                    Добавить сотрудника
+                </HeaderActionButton>,
+            ]}
+        >
+            <div className={styles.container}>
+                <div className={styles.headBlock}>
+                    <div className={styles.input}>
+                        <SearchInput onChange={setInputValue} inputValue={inputValue} />
                     </div>
+                    <div className={styles.sortedBlock}>
+                        <div onClick={() => setShowSort(!showSort)} className={styles.sort}>
+                            <img src={sort} alt="" />
+                            Сортировка
+                        </div>
 
-                    {showSort && (
-                        <div className={styles.sortedBy}>
-                            <div
-                                onClick={() => {
-                                    setSortedBy("abc");
-                                    setShowSort(!showSort);
-                                }}
-                                className={classNames(styles.sortedItem, {
-                                    [styles.active]: sortedBy === "abc",
-                                })}
-                            >
-                                По алфавиту
+                        {showSort && (
+                            <div className={styles.sortedBy}>
+                                <div
+                                    onClick={() => {
+                                        setSortedBy("abc");
+                                        setShowSort(!showSort);
+                                    }}
+                                    className={classNames(styles.sortedItem, {
+                                        [styles.active]: sortedBy === "abc",
+                                    })}
+                                >
+                                    По алфавиту
+                                </div>
+                                <div
+                                    onClick={() => {
+                                        setSortedBy("date");
+                                        setShowSort(!showSort);
+                                    }}
+                                    className={classNames(styles.sortedItem, {
+                                        [styles.active]: sortedBy === "date",
+                                    })}
+                                >
+                                    По дате добавления
+                                </div>
                             </div>
-                            <div
-                                onClick={() => {
-                                    setSortedBy("date");
-                                    setShowSort(!showSort);
-                                }}
-                                className={classNames(styles.sortedItem, {
-                                    [styles.active]: sortedBy === "date",
-                                })}
-                            >
-                                По дате добавления
-                            </div>
+                        )}
+                    </div>
+                    <div className={styles.sortedBlock}>
+                        <div onClick={() => setShowFilter(!showFilter)} className={styles.sort}>
+                            <img src={filter} alt="" />
+                            Фильтры
                         </div>
-                    )}
-                </div>
-                <div className={styles.sortedBlock}>
-                    <div onClick={() => setShowFilter(!showFilter)} className={styles.sort}>
-                        <img src={filter} alt="" />
-                        Фильтры
                     </div>
                 </div>
+                <EmployeeArray />
+                {showFilter && (
+                    <div className={styles.filterContainer}>
+                        <div className={styles.filterHeader}>
+                            <div className={styles.filterH1}>Фильтры</div>
+                            <div
+                                onClick={() => setShowFilter(false)}
+                                className={styles.filterClose}
+                            >
+                                <img className={styles.filterCloseImg} src={close} alt="" />
+                            </div>
+                        </div>
+                        <div className={styles.filterType}>
+                            <div className={styles.filterDeportament}>
+                                <div className={styles.filterText}>Отдел</div>
+                                <div>{deportamentArray}</div>
+                            </div>
+                            <div className={styles.filterTasks}>
+                                <div className={styles.filterText}>Статус задач</div>
+                                <div>{optionsArray}</div>
+                            </div>
+                        </div>
+                    </div>
+                )}
             </div>
-            <EmployeeArray />
-            {showFilter && (
-                <div className={styles.filterContainer}>
-                    <div className={styles.filterHeader}>
-                        <div className={styles.filterH1}>Фильтры</div>
-                        <div onClick={() => setShowFilter(false)} className={styles.filterClose}>
-                            <img className={styles.filterCloseImg} src={close} alt="" />
-                        </div>
-                    </div>
-                    <div className={styles.filterType}>
-                        <div className={styles.filterDeportament}>
-                            <div className={styles.filterText}>Отдел</div>
-                            <div>{deportamentArray}</div>
-                        </div>
-                        <div className={styles.filterTasks}>
-                            <div className={styles.filterText}>Статус задач</div>
-                            <div>{optionsArray}</div>
-                        </div>
-                    </div>
-                </div>
-            )}
-        </div>
+        </ContentWithHeaderLayout>
     );
 });

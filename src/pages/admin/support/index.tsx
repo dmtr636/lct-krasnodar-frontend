@@ -1,5 +1,10 @@
 import { observer } from "mobx-react-lite";
+import { ContentWithHeaderLayout } from "src/features/layout/ui/ContentWithHeaderLayout/ContentWithHeaderLayout";
 
 export const SupportPage = observer(() => {
-    return <h1>Поддержка</h1>;
+    return (
+        <ContentWithHeaderLayout title={"Поддержка"}>
+            <div></div>
+        </ContentWithHeaderLayout>
+    );
 });

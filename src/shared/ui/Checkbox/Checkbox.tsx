@@ -40,6 +40,7 @@ export const Checkbox = ({
                             autoplay={false}
                             loop={false}
                             animationData={animationChecked}
+                            reversed={true}
                         />
                     </div>
                 </div>

@@ -45,7 +45,7 @@
     }
 
     &:hover {
-        background: var(--color-primary-hover);
+        background: var(--color-primary-bg-hover);
     }
 
     svg path {
@@ -60,6 +60,7 @@
 .menu {
     margin-top: 36px;
     display: grid;
+    gap: 12px;
 }
 
 .footer {

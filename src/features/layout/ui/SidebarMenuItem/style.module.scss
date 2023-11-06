@@ -10,19 +10,17 @@
     font-size: 16px;
     font-weight: 600;
 
-    transition: all var(--hover-transition);
-
     &.active {
-        background: var(--color-primary-hover);
+        background: var(--color-primary-bg-hover);
     }
 
     &.collapsed {
-        margin: 0 -8px;
-        padding: 6px 8px;
+        margin: 0 -12px;
+        padding: 6px 12px;
     }
 
     &:hover {
-        background: var(--color-primary-hover);
+        background: var(--color-primary-bg-hover);
     }
 }
 
