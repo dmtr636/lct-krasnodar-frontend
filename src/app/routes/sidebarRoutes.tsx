@@ -1,18 +1,9 @@
 import { HomePage } from "src/pages/admin/home";
-import { OrdersPage } from "src/pages/admin/orders";
-import { IngredientsPage } from "src/pages/admin/ingredients";
-import { AdditivesPage } from "src/pages/admin/additives";
-import { MenuPage } from "src/pages/admin/menu";
-import { PromotionsPage } from "src/pages/admin/promotions";
-import { SettingsPage } from "src/pages/admin/settings";
+import { UsersPage } from "src/pages/admin/users";
 import { RouteObject } from "react-router-dom";
 import { ReactNode } from "react";
-import { IconAttention, IconHome, IconOrders } from "../../features/sidebar/assets/icons";
-import { SettingsAppearancePage } from "src/pages/admin/settings/appearance";
-import { SettingsAboutPage } from "src/pages/admin/settings/about";
-import { SettingsPaymentPage } from "../../pages/admin/settings/payment";
-import { SettingsDeliveryPage } from "../../pages/admin/settings/delivery";
-import { SettingsDocumentsPage } from "../../pages/admin/settings/documents";
+import { IconHome, IconSupport, IconUsers } from "../../features/layout/assets/icons";
+import { SupportPage } from "src/pages/admin/support";
 
 export type ISidebarRoute = RouteObject & {
     path: string;
@@ -34,79 +25,21 @@ export const sidebarRoutes: ISidebarRoute[] = [
         },
     },
     {
-        path: "/orders",
-        element: <OrdersPage />,
-        name: "Заказы",
+        path: "/users",
+        element: <UsersPage />,
+        name: "Сотрудники",
         sidebarProps: {
-            icon: <IconOrders />,
-            counterValue: 21,
+            icon: <IconUsers />,
+            counterValue: 15,
         },
-    },
-    {
-        path: "/ingredients",
-        element: <IngredientsPage />,
-        name: "Ингредиенты",
-        sidebarProps: {
-            icon: <IconAttention />,
-        },
-    },
-    {
-        path: "/additives",
-        element: <AdditivesPage />,
-        name: "Добавки",
-        sidebarProps: {
-            icon: <IconAttention />,
-        },
-    },
-    {
-        path: "/menu",
-        element: <MenuPage />,
-        name: "Меню",
-        sidebarProps: {
-            icon: <IconAttention />,
-        },
-    },
-    {
-        path: "/promotions",
-        element: <PromotionsPage />,
-        name: "Акции",
-        sidebarProps: {
-            icon: <IconAttention />,
-        },
-    },
-    {
-        path: "/settings",
-        element: <SettingsPage />,
-        name: "Настройки",
-        sidebarProps: {
-            icon: <IconAttention />,
-        },
-        children: [
-            {
-                path: "/settings/appearance",
-                element: <SettingsAppearancePage />,
-                name: "Внешний вид",
-            },
-            {
-                path: "/settings/about",
-                element: <SettingsAboutPage />,
-                name: "О кафе",
-            },
-            {
-                path: "/settings/payment",
-                element: <SettingsPaymentPage />,
-                name: "Способы оплаты",
-            },
-            {
-                path: "/settings/delivery",
-                element: <SettingsDeliveryPage />,
-                name: "Доставка",
-            },
-            {
-                path: "/settings/documents",
-                element: <SettingsDocumentsPage />,
-                name: "Документы",
-            },
-        ] as ISidebarRoute[],
     },
 ];
+
+export const supportRoute: ISidebarRoute = {
+    path: "/support",
+    element: <SupportPage />,
+    name: "Поддержка",
+    sidebarProps: {
+        icon: <IconSupport />,
+    },
+};

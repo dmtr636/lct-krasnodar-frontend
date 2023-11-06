@@ -1,0 +1,44 @@
+.menuItem {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    margin: 0 -12px;
+    border-radius: 4px;
+    color: white;
+
+    font-size: 16px;
+    font-weight: 600;
+
+    transition: all var(--hover-transition);
+
+    &.active {
+        background: var(--color-primary-hover);
+    }
+
+    &.collapsed {
+        margin: 0 -8px;
+        padding: 6px 8px;
+    }
+
+    &:hover {
+        background: var(--color-primary-hover);
+    }
+}
+
+.counter {
+    border-radius: 7px;
+    padding: 2px 5px;
+    margin: -5px 0 -5px auto;
+    background: white;
+    color: var(--color-primary);
+}
+
+.arrow {
+    margin-left: auto;
+    transition: transform var(--transform-transition);
+
+    &.rotated {
+        transform: rotate(-180deg);
+    }
+}

@@ -1,5 +1,5 @@
 import { RouteObject } from "react-router-dom";
-import { sidebarRoutes } from "./sidebarRoutes";
+import { sidebarRoutes, supportRoute } from "./sidebarRoutes";
 
 import { AppContainer } from "src/app/containers/AppContainer";
 import AdminPageLayout from "src/features/layout/ui/AdminPageLayout/AdminPageLayout";
@@ -14,7 +14,7 @@ export const routes: RouteObject[] = [
             {
                 path: "/",
                 element: <AdminPageLayout />,
-                children: [...sidebarRoutes],
+                children: [...sidebarRoutes, supportRoute],
             },
             {
                 path: "/login",

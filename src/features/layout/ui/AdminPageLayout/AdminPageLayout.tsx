@@ -1,12 +1,16 @@
 import { Outlet } from "react-router-dom";
-import Sidebar from "src/features/sidebar/ui/Sidebar/Sidebar";
+import Sidebar from "src/features/layout/ui/Sidebar/Sidebar";
 import styles from "./style.module.scss";
+import Header from "src/features/layout/ui/Header/Header";
 
 const AdminPageLayout = () => {
     return (
         <div className={styles.layout}>
             <Sidebar />
-            <Outlet />
+            <div>
+                <Header />
+                <Outlet />
+            </div>
         </div>
     );
 };
