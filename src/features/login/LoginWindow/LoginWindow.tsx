@@ -13,9 +13,6 @@ import { Checkbox } from "src/shared/ui/Checkbox/Checkbox";
 import { Button } from "src/shared/ui/Button/Button";
 import { userStore } from "../store/userStore";
 import { ContentContainer } from "src/shared/ui/ContentContainer/ContentContainer";
-import { SearchInput } from "src/shared/ui/Inputs/SearchInput/SearchIntup";
-import { EmployeeCard } from "src/features/staff/staff/EmployeeCard/EmployeeCard";
-/* import { Alert } from "src/shared/ui/Alert/Alert"; */
 
 export const LoginWindow = observer(() => {
     const [emailInputValue, setEmailInputValue] = useState("");
@@ -111,9 +108,6 @@ export const LoginWindow = observer(() => {
                             Войти
                         </Button>
                     </div>
-                    {/* <div onClick={() => navigate("/recovery")} className={styles.passwordRecovery}>
-                        Не могу войти
-                    </div> */}
                 </div>
             </div>
         </ContentContainer>
