@@ -1,5 +1,5 @@
 import { HomePage } from "src/pages/admin/home";
-import { UsersPage } from "src/pages/admin/users";
+import { UsersPage } from "src/pages/admin/users/UsersPage";
 import { RouteObject } from "react-router-dom";
 import { ReactNode } from "react";
 import { IconHome, IconSupport, IconUsers } from "../../features/layout/assets/icons";
