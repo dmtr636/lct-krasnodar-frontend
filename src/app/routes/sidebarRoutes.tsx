@@ -1,9 +1,9 @@
 import { HomePage } from "src/pages/admin/home";
-import { UsersPage } from "src/pages/admin/users/UsersPage";
 import { RouteObject } from "react-router-dom";
 import { ReactNode } from "react";
 import { IconHome, IconSupport, IconUsers } from "../../features/layout/assets/icons";
 import { SupportPage } from "src/pages/admin/support";
+import { UsersPage } from "src/pages/admin/users";
 
 export type ISidebarRoute = RouteObject & {
     path: string;

@@ -10,7 +10,7 @@
     width: 24px;
     height: 24px;
     svg path {
-        fill: #242424;
+        fill: #14214d;
     }
 }
 .checkboxBlock {
@@ -48,19 +48,19 @@
         }
         .checkboxContainer {
             svg path {
-                fill: var(--black-primary-hover);
+                fill: color-mix(in oklab, #14214d, white 33%);
             }
         }
         .checkboxContainerActive {
             svg path {
-                fill: var(--black-primary-hover);
+                fill: color-mix(in oklab, #14214d, white 33%);
             }
         }
     }
     &.active {
-        color: var(--black-primary-active);
+        color: #14214d;
         &:hover {
-            color: var(--black-primary-hover);
+            color: color-mix(in oklab, #14214d, white 33%);
         }
     }
 }
