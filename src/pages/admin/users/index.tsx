@@ -73,7 +73,7 @@ export const UsersPage = observer(() => {
         <ContentWithHeaderLayout
             title={"Сотрудники"}
             onBack={() => navigate("/")}
-            actions={[
+            startActions={[
                 <HeaderActionButton icon={<IconAdd />} onClick={() => {}}>
                     Добавить сотрудника
                 </HeaderActionButton>,

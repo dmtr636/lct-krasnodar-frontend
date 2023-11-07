@@ -21,5 +21,6 @@ export interface IUser {
     fullName: string;
     photoFileUrl: string | null;
     createDate: string;
+    responsibleUserId: number | null;
     tasks: string | null;
 }

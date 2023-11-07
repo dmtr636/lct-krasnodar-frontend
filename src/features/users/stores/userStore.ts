@@ -4,7 +4,9 @@ import axios from "axios";
 import { USERS_ENDPOINT } from "src/shared/api/endpoints";
 import { IUserDepartmentFilterOption } from "src/features/users/constants/userFilters";
 import { departmentsStore } from "./departamentStore";
+import { departmentsStore } from "./deportamentStore";
 import { tasksStore } from "./tasksStore";
+import { IUserDepartmentFilterOption } from "../constants/userDepartments";
 
 export class UserStore {
     allUsers: IUser[] = [];

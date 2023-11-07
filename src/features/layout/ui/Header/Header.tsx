@@ -12,7 +12,8 @@ import { HeaderActionButton } from "src/features/layout/ui/Header/HeaderActionBu
 export interface IHeaderProps {
     title: string;
     onBack?: () => void;
-    actions?: ReactNode[];
+    startActions?: ReactNode[];
+    endActions?: ReactNode[];
 }
 
 export const Header = observer((props: IHeaderProps) => {
@@ -34,7 +35,8 @@ export const Header = observer((props: IHeaderProps) => {
         navigate("/login");
     };
 
-    const showSecondRow = !!props.onBack || !!props.actions?.length;
+    const showSecondRow =
+        !!props.onBack || !!props.startActions?.length || !!props.endActions?.length;
 
     return (
         <div className={styles.header}>
@@ -58,7 +60,8 @@ export const Header = observer((props: IHeaderProps) => {
             {showSecondRow && (
                 <div className={classNames(styles.row, styles.second)}>
                     {props.onBack && <ButtonBack onClick={props.onBack}>Назад</ButtonBack>}
-                    {props.actions}
+                    {props.startActions}
+                    <div className={styles.endActions}>{props.endActions}</div>
                 </div>
             )}
         </div>

@@ -1,6 +1,3 @@
-.layout {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    height: 100vh;
-    background: var(--color-backgroud);
+.content {
+    overflow: auto;
 }

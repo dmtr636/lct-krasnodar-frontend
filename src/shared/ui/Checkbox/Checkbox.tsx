@@ -1,4 +1,4 @@
-import React, { ReactNode, useRef } from "react";
+import React, { ReactNode, useEffect, useRef } from "react";
 import Lottie, { LottieRefCurrentProps } from "lottie-react";
 import styles from "./Checkbox.module.scss";
 import animationChecked from "../../assets/animation/checkbox_fill.json";
@@ -15,6 +15,16 @@ export const Checkbox = ({
     children: ReactNode;
 }) => {
     const lottieRef = useRef<LottieRefCurrentProps | null>(null);
+
+    useEffect(() => {
+        if (isChecked && lottieRef.current) {
+            const duration = lottieRef.current.getDuration(true);
+            if (duration) {
+                lottieRef.current.goToAndPlay(duration, true);
+            }
+        }
+    }, []);
+
     return (
         <div>
             <label className={classNames(styles.checkbox, { [styles.active]: isChecked })}>
@@ -40,7 +50,6 @@ export const Checkbox = ({
                             autoplay={false}
                             loop={false}
                             animationData={animationChecked}
-                            reversed={true}
                         />
                     </div>
                 </div>

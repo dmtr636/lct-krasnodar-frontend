@@ -16,6 +16,14 @@
 
     &.second {
         height: 68px;
+
+        .endActions {
+            margin-left: auto;
+            display: flex;
+            justify-content: start;
+            align-items: center;
+            gap: 28px;
+        }
     }
 
     &:not(:last-child) {
