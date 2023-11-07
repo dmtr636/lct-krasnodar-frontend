@@ -1,0 +1,201 @@
+.content {
+    padding: 28px 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+}
+
+.card {
+    border-radius: 0px 8px 8px 8px;
+    width: 972px;
+    background: white;
+    border: 1px solid #d8e4f3;
+}
+
+.tabs {
+    overflow: hidden;
+    display: flex;
+    border-radius: 4px 4px 0 0;
+    border-top: 1px solid #d8e4f3;
+    border-left: 1px solid #d8e4f3;
+    border-right: 1px solid #d8e4f3;
+}
+
+.tab {
+    padding: 8px 12px;
+    background: white;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.14px;
+
+    &:not(:last-child) {
+        border-right: 1px solid #d8e4f3;
+    }
+
+    &.active {
+        color: white;
+        background: var(--color-primary);
+    }
+
+    &:hover:not(.active) {
+        background: var(--color-hover-on-white-bg);
+    }
+}
+
+.userInfo {
+    composes: card;
+    .row {
+        padding: 24px 40px;
+        &:not(:last-child) {
+            border-bottom: 1px solid #d8e4f3;
+        }
+
+        .header {
+            color: #14214d;
+            font-size: 20px;
+            font-weight: 600;
+            line-height: 28px;
+            letter-spacing: 0.4px;
+            margin-bottom: 20px;
+        }
+    }
+
+    .row1 {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+
+            .avatar {
+                width: 80px;
+                height: 80px;
+                border-radius: 80px;
+                object-fit: cover;
+            }
+
+            .department {
+                color: rgba(29, 29, 27, 0.6);
+                font-size: 12px;
+                font-weight: 600;
+                letter-spacing: 0.12px;
+                margin-bottom: 6px;
+            }
+
+            .name {
+                color: #14214d;
+                font-size: 18px;
+                font-weight: 600;
+                letter-spacing: 0.18px;
+            }
+        }
+
+        .tg {
+            &:hover {
+                opacity: 0.7;
+            }
+        }
+    }
+
+    .row2 {
+        .contacts {
+            display: flex;
+            gap: 60px;
+
+            .name {
+                color: #14214d;
+                font-size: 15px;
+                font-weight: 600;
+                line-height: 20px;
+            }
+
+            .value {
+                color: #14214d;
+                font-size: 16px;
+                font-weight: 400;
+                line-height: 23px;
+                letter-spacing: 0.32px;
+            }
+        }
+    }
+
+    .row3 {
+        .skills {
+            display: flex;
+            gap: 16px;
+        }
+
+        .skill {
+            padding: 10px 16px;
+            border-radius: 20px;
+            border: 1px solid #14214d;
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 0.14px;
+        }
+    }
+
+    .row4 {
+        .responsiblePerson {
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 23px;
+            letter-spacing: 0.32px;
+        }
+    }
+}
+
+.tasks {
+    composes: card;
+    .row {
+        padding: 24px 40px;
+        &:not(:last-child) {
+            border-bottom: 1px solid #d8e4f3;
+        }
+
+        .header {
+            color: #14214d;
+            font-size: 20px;
+            font-weight: 600;
+            line-height: 28px;
+            letter-spacing: 0.4px;
+            margin-bottom: 20px;
+        }
+
+        .item {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            margin-bottom: 16px;
+            font-size: 16px;
+            font-weight: 500;
+            line-height: 28px;
+            letter-spacing: 0.32px;
+
+            svg path {
+                fill: currentColor;
+            }
+
+            .remainingDays {
+                margin-left: 6px;
+                color: rgba(29, 29, 27, 0.6);
+                font-size: 14px;
+                font-weight: 400;
+                line-height: 23px;
+                letter-spacing: 0.28px;
+            }
+
+            &.finished {
+                color: rgba(29, 29, 27, 0.6);
+            }
+
+            .score {
+                color: var(--color-primary);
+                margin-left: 8px;
+            }
+        }
+    }
+}

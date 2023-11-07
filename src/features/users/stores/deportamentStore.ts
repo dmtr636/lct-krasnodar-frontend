@@ -2,7 +2,7 @@ import { makeAutoObservable } from "mobx";
 import {
     IUserDepartmentFilterOption,
     USER_DEPARTMENT_FILTER_OPTIONS,
-} from "../constants/userFilters";
+} from "src/features/users/constants/userDepartments";
 
 export class DepartmentsStore {
     allDepartments: IUserDepartmentFilterOption[] = USER_DEPARTMENT_FILTER_OPTIONS;
