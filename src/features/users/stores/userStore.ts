@@ -2,7 +2,7 @@ import { makeAutoObservable } from "mobx";
 import { IUser, IUserDepartment } from "src/features/users/interfaces/user";
 import axios from "axios";
 import { USERS_ENDPOINT } from "src/shared/api/endpoints";
-import { departmentsStore } from "./deportamentStore";
+import { departmentsStore } from "./departamentStore";
 import { tasksStore } from "./tasksStore";
 import { IUserDepartmentFilterOption } from "../constants/userDepartments";
 
