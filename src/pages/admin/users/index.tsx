@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { observer } from "mobx-react-lite";
 import styles from "./styles.module.scss";
 import { SearchInput } from "src/shared/ui/Inputs/SearchInput/SearchIntup";
@@ -12,76 +12,63 @@ import { ContentWithHeaderLayout } from "src/features/layout/ui/ContentWithHeade
 import { HeaderActionButton } from "src/features/layout/ui/Header/HeaderActionButton/HeaderActionButton";
 import { IconAdd } from "src/shared/assets/img";
 import { useNavigate } from "react-router-dom";
-
-interface SortingOption {
-    id: string;
-    label: string;
-}
+import { departmentsStore } from "src/features/users/stores/deportamentStore";
+import { tasksStore } from "src/features/users/stores/tasksStore";
+import { userStore } from "src/features/users/stores/userStore";
 
 export const UsersPage = observer(() => {
     const [inputValue, setInputValue] = useState("");
     const [showSort, setShowSort] = useState(false);
     const [sortedBy, setSortedBy] = useState("abc");
     const [showFilter, setShowFilter] = useState(false);
-    const [selectedDeportament, setSelectedDeportament] = useState<string[]>(["D1"]);
-    const [selectedTasks, setSelectedTasks] = useState<string[]>(["T1"]);
+
     const navigate = useNavigate();
 
-    const optionsDeportament: SortingOption[] = [
-        { id: "D1", label: "Выбрать все" },
-        { id: "D2", label: "HR" },
-        { id: "D3", label: "Руководители" },
-        { id: "D4", label: "Клиентский сервис" },
-        { id: "D5", label: "Дизайнеры" },
-        { id: "D6", label: "Разработчики" },
-        { id: "D7", label: "Проект-менеджеры" },
-    ];
-    const optionsTasks: SortingOption[] = [
-        { id: "T1", label: "Выбрать все" },
-        { id: "T2", label: "Есть невыполненные задачи" },
-        { id: "T3", label: "Есть просроченные задачи" },
-        { id: "T4", label: "Задач нет" },
-    ];
-
-    const handleOptionChange = (
-        optionId: string,
-        setSelected: (values: string[]) => void,
-        selected: string[],
-    ) => {
-        if (selected.includes(optionId)) {
-            setSelected(selected.filter((id) => id !== optionId));
-        } else {
-            setSelected([...selected, optionId]);
-        }
-    };
-
-    const deportamentArray = optionsDeportament.map((option) => (
+    const deportamentArray = departmentsStore.allDepartments.map((option) => (
         <Checkbox
-            key={option.id}
-            isChecked={selectedDeportament.includes(option.id)}
-            checkboxChange={() =>
-                handleOptionChange(option.id, setSelectedDeportament, selectedDeportament)
-            }
+            key={option.department}
+            isChecked={departmentsStore.selectedDepartments.includes(option)}
+            checkboxChange={() => departmentsStore.toggleDepartment(option)}
         >
-            {option.label}
+            {option.name}
         </Checkbox>
     ));
-    const optionsArray = optionsTasks.map((option) => (
-        <Checkbox
-            key={option.id}
-            isChecked={selectedTasks.includes(option.id)}
-            checkboxChange={() => handleOptionChange(option.id, setSelectedTasks, selectedTasks)}
-        >
-            {option.label}
-        </Checkbox>
+    const optionsArray = tasksStore.allTasks.map((option) => (
+        <>
+            <Checkbox
+                key={option.task}
+                isChecked={tasksStore.selectedTasks.includes(option)}
+                checkboxChange={() => tasksStore.toggleTask(option)}
+            >
+                {option.name}
+            </Checkbox>
+        </>
     ));
-    console.log(selectedTasks);
-    const selectedDeportamentLabels = optionsDeportament
-        .filter((option) => selectedDeportament.includes(option.id))
-        .map((option) => option.label);
-    const selectedTasksLabels = optionsTasks
-        .filter((option) => selectedTasks.includes(option.id))
-        .map((option) => option.label);
+    const cloudArrayTask = tasksStore.selectedTasks.map((option) => (
+        <div key={option.name} className={styles.cloudContainer}>
+            <div className={styles.cloud}>{option.name}</div>
+            <div onClick={() => tasksStore.toggleTask(option)} className={styles.cloudClose}>
+                <img className={styles.cloudCloseImg} src={close} alt="" />
+            </div>
+        </div>
+    ));
+    const cloudArrayDep = departmentsStore.selectedDepartments.map((option) => (
+        <div key={option.name} className={styles.cloudContainer}>
+            <div className={styles.cloud}>{option.name}</div>
+            <div
+                onClick={() => departmentsStore.toggleDepartment(option)}
+                className={styles.cloudClose}
+            >
+                <img className={styles.cloudCloseImg} src={close} alt="" />
+            </div>
+        </div>
+    ));
+    console.log(tasksStore.selectedTasks);
+    useEffect(() => {
+        userStore.fetchAllUsers();
+        console.log(userStore.allUsers + "загрузка");
+    }, []);
+    userStore.searchInput = inputValue;
     return (
         <ContentWithHeaderLayout
             title={"Сотрудники"}
@@ -137,6 +124,11 @@ export const UsersPage = observer(() => {
                         </div>
                     </div>
                 </div>
+                <div className={styles.cloudArray}>
+                    {cloudArrayDep}
+                    {cloudArrayTask}
+                </div>
+
                 <EmployeeArray />
                 {showFilter && (
                     <div className={styles.filterContainer}>
@@ -149,6 +141,7 @@ export const UsersPage = observer(() => {
                                 <img className={styles.filterCloseImg} src={close} alt="" />
                             </div>
                         </div>
+
                         <div className={styles.filterType}>
                             <div className={styles.filterDeportament}>
                                 <div className={styles.filterText}>Отдел</div>

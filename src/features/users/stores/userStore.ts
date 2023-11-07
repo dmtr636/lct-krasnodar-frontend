@@ -3,6 +3,8 @@ import { IUser, IUserDepartment } from "src/features/users/interfaces/user";
 import axios from "axios";
 import { USERS_ENDPOINT } from "src/shared/api/endpoints";
 import { IUserDepartmentFilterOption } from "src/features/users/constants/userFilters";
+import { departmentsStore } from "./deportamentStore";
+import { tasksStore } from "./tasksStore";
 
 export class UserStore {
     allUsers: IUser[] = [];
@@ -24,16 +26,33 @@ export class UserStore {
 
     get users() {
         let users = this.allUsers;
+
         if (this.searchInput.length) {
             users = users.filter((u) =>
                 u.fullName.toLowerCase().includes(this.searchInput.toLowerCase()),
             );
         }
+
         if (this.selectedDepartments.size) {
             users = users.filter((u) =>
                 [...this.selectedDepartments].some((d) => d === u.department),
             );
         }
+
+        if (departmentsStore.selectedDepartments.length) {
+            users = users.filter((user) =>
+                departmentsStore.selectedDepartments.some(
+                    (department) => department.department === user.department,
+                ),
+            );
+        }
+
+        if (tasksStore.selectedTasks.length) {
+            users = users.filter((user) =>
+                tasksStore.selectedTasks.some((task) => user.tasks?.includes(task.task)),
+            );
+        }
+
         return users;
     }
 }

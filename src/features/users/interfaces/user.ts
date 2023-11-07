@@ -21,4 +21,5 @@ export interface IUser {
     fullName: string;
     photoFileUrl: string | null;
     createDate: string;
+    tasks: string | null;
 }

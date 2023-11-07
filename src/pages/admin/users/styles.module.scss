@@ -73,6 +73,7 @@
     background-color: #fff;
     border-top: 1px solid #d8e4f3;
     z-index: 3;
+    padding-bottom: 40px;
 }
 .filterHeader {
     display: flex;
@@ -121,4 +122,51 @@
     line-height: 28px; /* 140% */
     letter-spacing: 0.4px;
     margin-bottom: 16px;
+}
+.cloud {
+    font-family: Manrope;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: 0.14px;
+}
+.cloudContainer {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 0;
+    padding-left: 16px;
+    padding-right: 14px;
+    border-radius: 20px;
+    color: color-mix(in oklab, #14214d, white 33%);
+    border: 1px solid color-mix(in oklab, #14214d, white 33%);
+    cursor: pointer;
+    &:hover {
+        color: #14214d;
+        border: 1px solid #14214d;
+    }
+}
+.cloudArray {
+    display: flex;
+    max-width: 972px;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-left: 40px;
+    margin-top: 24px;
+}
+.cloudClose {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 12px;
+    &:hover {
+        background-color: #d8e4f3;
+    }
+}
+.cloudCloseImg {
+    width: 20px;
+    height: 20px;
 }

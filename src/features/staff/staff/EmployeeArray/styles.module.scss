@@ -1,11 +1,23 @@
-.container {
+.array {
     background-color: #fff;
-    margin-left: 40px;
-    margin-right: 28px;
-    margin-top: 28px;
+    margin-top: 24px;
     overflow: hidden;
     border: 1px solid #d8e4f3;
     border-bottom: none;
     border-radius: 8px;
     width: 972px;
+}
+.text {
+    color: #14214d;
+    font-family: Manrope;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 28px; /* 140% */
+    letter-spacing: 0.4px;
+}
+.container {
+    margin-left: 40px;
+    margin-right: 28px;
+    margin-top: 28px;
 }
