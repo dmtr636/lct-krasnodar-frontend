@@ -3,7 +3,7 @@ import { IUser, IUserDepartment } from "src/features/users/interfaces/user";
 import axios from "axios";
 import { USERS_ENDPOINT } from "src/shared/api/endpoints";
 import { IUserDepartmentFilterOption } from "src/features/users/constants/userFilters";
-import { departmentsStore } from "./deportamentStore";
+import { departmentsStore } from "./departamentStore";
 import { tasksStore } from "./tasksStore";
 
 export class UserStore {

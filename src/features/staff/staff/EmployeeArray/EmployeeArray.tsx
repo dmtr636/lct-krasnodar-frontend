@@ -27,6 +27,7 @@ export const EmployeeArray = observer(() => {
             role={employee.department}
             name={employee.fullName}
             link={`/users/${employee.id}`}
+            tg={employee.telegram}
         />
     ));
     function declOfNum(number: number, titles: string[]) {

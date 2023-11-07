@@ -22,12 +22,9 @@ export class SortedStore {
         }
     }
 
-    // Функция для установки метода сортировки
     setSortedBy(method: SortedBy) {
         this.sortedBy = method;
     }
-
-    // ... остальные методы и действия ...
 }
 
 export const sortedStore = new SortedStore();

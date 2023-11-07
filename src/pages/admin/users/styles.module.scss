@@ -10,8 +10,39 @@
 }
 .sortedBlock {
     margin-left: 32px;
+    display: flex;
+    align-items: center;
     margin-top: 8px;
     position: relative;
+    &.active::after {
+        content: ""; /* Добавляем содержимое для псевдоэлемента */
+        position: absolute;
+        left: 0; /* Выравнивание от левого края родительского блока */
+        right: 0; /* Выравнивание от правого края родительского блока */
+        bottom: 0; /* Расположение подчеркивания относительно нижнего края родителя */
+        height: 1px; /* Толщина подчеркивания */
+        background-color: #14214d; /* Цвет подчеркивания */
+        left: 10px; /* Центрирование подчеркивания */
+        width: 129px;
+        /* Задаем ширину подчеркивания */
+        /* transform: translateX(-50%); /* Точное центрирование */
+    }
+}
+.fiterCount {
+    margin-left: 8px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+    background-color: #14214d;
+    color: #fff;
+    font-family: Manrope;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
 }
 .sort {
     display: flex;
@@ -106,6 +137,9 @@
     font-weight: 700;
     line-height: 28px; /* 116.667% */
     letter-spacing: 0.48px;
+    display: flex;
+    align-items: center;
+    gap: 32px;
 }
 .filterType {
     display: flex;

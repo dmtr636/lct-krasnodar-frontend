@@ -12,7 +12,7 @@ import { ContentWithHeaderLayout } from "src/features/layout/ui/ContentWithHeade
 import { HeaderActionButton } from "src/features/layout/ui/Header/HeaderActionButton/HeaderActionButton";
 import { IconAdd } from "src/shared/assets/img";
 import { useNavigate } from "react-router-dom";
-import { departmentsStore } from "src/features/users/stores/deportamentStore";
+import { departmentsStore } from "src/features/users/stores/departamentStore";
 import { tasksStore } from "src/features/users/stores/tasksStore";
 import { userStore } from "src/features/users/stores/userStore";
 import { sortedStore } from "src/features/users/stores/sortedStore";
@@ -20,7 +20,6 @@ import { sortedStore } from "src/features/users/stores/sortedStore";
 export const UsersPage = observer(() => {
     const [inputValue, setInputValue] = useState("");
     const [showSort, setShowSort] = useState(false);
-    const [sortedBy, setSortedBy] = useState("abc");
     const [showFilter, setShowFilter] = useState(false);
 
     const navigate = useNavigate();
@@ -85,7 +84,7 @@ export const UsersPage = observer(() => {
                     <div className={styles.input}>
                         <SearchInput onChange={setInputValue} inputValue={inputValue} />
                     </div>
-                    <div className={styles.sortedBlock}>
+                    <div className={classNames(styles.sortedBlock, { [styles.active]: showSort })}>
                         <div onClick={() => setShowSort(!showSort)} className={styles.sort}>
                             <img src={sort} alt="" />
                             Сортировка
@@ -126,6 +125,11 @@ export const UsersPage = observer(() => {
                             <img src={filter} alt="" />
                             Фильтры
                         </div>
+                        {cloudArrayTask.length + cloudArrayDep.length > 0 && (
+                            <div className={styles.fiterCount}>
+                                {cloudArrayTask.length + cloudArrayDep.length}
+                            </div>
+                        )}
                     </div>
                 </div>
                 <div className={styles.cloudArray}>
@@ -137,7 +141,22 @@ export const UsersPage = observer(() => {
                 {showFilter && (
                     <div className={styles.filterContainer}>
                         <div className={styles.filterHeader}>
-                            <div className={styles.filterH1}>Фильтры</div>
+                            <div className={styles.filterH1}>
+                                Фильтры
+                                <div
+                                    className=""
+                                    onClick={() => {
+                                        tasksStore.clearSelection();
+                                        console.log("нажал");
+                                        departmentsStore.clearSelection();
+                                    }}
+                                >
+                                    <HeaderActionButton onClick={() => {}}>
+                                        Очистить выбор
+                                    </HeaderActionButton>
+                                </div>
+                            </div>
+
                             <div
                                 onClick={() => setShowFilter(false)}
                                 className={styles.filterClose}
