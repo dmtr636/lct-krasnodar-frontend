@@ -1,11 +1,25 @@
-import React from "react";
 import styles from "./styles.module.scss";
 import { EmployeeCard } from "../EmployeeCard/EmployeeCard";
 import { observer } from "mobx-react-lite";
 import { userStore } from "src/features/users/stores/userStore";
+import { sortedStore } from "src/features/users/stores/sortedStore";
 
 export const EmployeeArray = observer(() => {
-    const employeeData = userStore.users;
+    let employeeData = userStore.users;
+    const sortedBy = sortedStore.sortedBy;
+    switch (sortedBy) {
+        case "name":
+            employeeData = employeeData
+                .slice()
+                .sort((a, b) => a.fullName.localeCompare(b.fullName));
+            break;
+        case "date":
+            employeeData = employeeData
+                .slice()
+                .sort((a, b) => new Date(a.createTimestamp) - new Date(b.createTimestamp));
+            break;
+        // Добавьте другие кейсы сортировки здесь по необходимости
+    }
     const EmployeeArray = employeeData.map((employee) => (
         <EmployeeCard
             key={employee.id}

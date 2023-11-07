@@ -15,6 +15,7 @@ import { useNavigate } from "react-router-dom";
 import { departmentsStore } from "src/features/users/stores/deportamentStore";
 import { tasksStore } from "src/features/users/stores/tasksStore";
 import { userStore } from "src/features/users/stores/userStore";
+import { sortedStore } from "src/features/users/stores/sortedStore";
 
 export const UsersPage = observer(() => {
     const [inputValue, setInputValue] = useState("");
@@ -94,22 +95,25 @@ export const UsersPage = observer(() => {
                             <div className={styles.sortedBy}>
                                 <div
                                     onClick={() => {
-                                        setSortedBy("abc");
+                                        sortedStore.setSortedBy("name");
+                                        sortedStore.sortedEmployees;
+                                        console.log(JSON.stringify(sortedStore.sortedBy));
                                         setShowSort(!showSort);
                                     }}
                                     className={classNames(styles.sortedItem, {
-                                        [styles.active]: sortedBy === "abc",
+                                        [styles.active]: sortedStore.sortedBy === "name",
                                     })}
                                 >
                                     По алфавиту
                                 </div>
                                 <div
                                     onClick={() => {
-                                        setSortedBy("date");
+                                        sortedStore.setSortedBy("date");
+                                        sortedStore.sortedEmployees;
                                         setShowSort(!showSort);
                                     }}
                                     className={classNames(styles.sortedItem, {
-                                        [styles.active]: sortedBy === "date",
+                                        [styles.active]: sortedStore.sortedBy === "date",
                                     })}
                                 >
                                     По дате добавления
