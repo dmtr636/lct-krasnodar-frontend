@@ -9,6 +9,7 @@ export const Input = ({
     /*     setEmailIsValidated,
      */ inputValue,
     labelName,
+    type,
 } /*     error,
  */ : {
     onChange: (value: string) => void;
@@ -16,6 +17,7 @@ export const Input = ({
     /*     setEmailIsValidated: (arg: boolean) => void;
     error: boolean; */
     inputValue: string;
+    type?: string;
 }) => {
     const [isInputFocused, setIsInputFocused] = useState(false);
 
@@ -61,7 +63,7 @@ export const Input = ({
                     })}
                 />
                 <input
-                    type="text"
+                    type={type || "text"}
                     value={inputValue}
                     className={styles.input}
                     onChange={handleInputChange}

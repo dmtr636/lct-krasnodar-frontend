@@ -22,7 +22,7 @@ export const UsersPage = observer(() => {
     const [inputValue, setInputValue] = useState("");
     const [showSort, setShowSort] = useState(false);
     const [showFilter, setShowFilter] = useState(false);
-    const [showAdduser, setShowAddUser] = useState(0);
+    const [showAdduser, setShowAddUser] = useState(false);
     const navigate = useNavigate();
 
     const deportamentArray = departmentsStore.allDepartments.map((option) => (

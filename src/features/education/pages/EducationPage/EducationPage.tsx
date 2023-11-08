@@ -191,7 +191,7 @@ export const EducationPage = observer(() => {
                         <Input
                             onChange={(value) => (educationStore.nameInput = value)}
                             inputValue={educationStore.nameInput}
-                            placeholder={"Название программы обучения"}
+                            labelName={"Название программы обучения"}
                         />
                     </div>
                     <div className={styles.section}>
@@ -326,7 +326,7 @@ export const EducationPage = observer(() => {
                         <Input
                             onChange={(value) => (educationStore.nameInput = value)}
                             inputValue={educationStore.nameInput}
-                            placeholder={"Название программы обучения"}
+                            labelName={"Название программы обучения"}
                         />
                     </div>
                     <div className={styles.section}>
@@ -461,7 +461,7 @@ export const EducationPage = observer(() => {
                         <Input
                             onChange={(value) => (educationStore.nameInput = value)}
                             inputValue={educationStore.nameInput}
-                            placeholder={"Название курса"}
+                            labelName={"Название курса"}
                         />
                     </div>
                     <div className={styles.section}>
@@ -565,7 +565,7 @@ export const EducationPage = observer(() => {
                             <Input
                                 onChange={(value) => (educationStore.durationInput = value)}
                                 inputValue={educationStore.durationInput}
-                                placeholder={"Сколько дней потребуется для прохождения?"}
+                                labelName={"Сколько дней потребуется для прохождения?"}
                                 type={"number"}
                             />
                         </div>
@@ -599,7 +599,7 @@ export const EducationPage = observer(() => {
                         <Input
                             onChange={(value) => (educationStore.nameInput = value)}
                             inputValue={educationStore.nameInput}
-                            placeholder={"Название курса"}
+                            labelName={"Название курса"}
                         />
                     </div>
                     <div className={styles.section}>
@@ -711,7 +711,7 @@ export const EducationPage = observer(() => {
                             <Input
                                 onChange={(value) => (educationStore.durationInput = value)}
                                 inputValue={educationStore.durationInput}
-                                placeholder={"Сколько дней потребуется для прохождения?"}
+                                labelName={"Сколько дней потребуется для прохождения?"}
                                 type={"number"}
                             />
                         </div>
@@ -750,7 +750,7 @@ export const EducationPage = observer(() => {
                         <Input
                             onChange={(value) => (educationStore.nameInput = value)}
                             inputValue={educationStore.nameInput}
-                            placeholder={"Название курса"}
+                            labelName={"Название курса"}
                         />
                     </div>
                     <div className={styles.section}>
@@ -862,7 +862,7 @@ export const EducationPage = observer(() => {
                             <Input
                                 onChange={(value) => (educationStore.durationInput = value)}
                                 inputValue={educationStore.durationInput}
-                                placeholder={"Сколько дней потребуется для прохождения?"}
+                                labelName={"Сколько дней потребуется для прохождения?"}
                                 type={"number"}
                             />
                         </div>
