@@ -17,6 +17,7 @@ import { tasksStore } from "src/features/users/stores/tasksStore";
 import { userStore } from "src/features/users/stores/userStore";
 import { sortedStore } from "src/features/users/stores/sortedStore";
 import { AddUser } from "src/features/staff/staff/AddUser/AddUser";
+import { Drawer } from "@mui/material";
 
 export const UsersPage = observer(() => {
     const [inputValue, setInputValue] = useState("");
@@ -191,7 +192,10 @@ export const UsersPage = observer(() => {
                         </div>
                     </div>
                 )}
-                {showAdduser && <AddUser />}
+                <Drawer open={showAdduser} onClose={() => setShowAddUser(false)} anchor={"right"}>
+                    <AddUser setShowAddUser={setShowAddUser} />
+                </Drawer>
+                {/*  {showAdduser && <AddUser setShowAddUser={setShowAddUser}/>} */}
             </div>
         </ContentWithHeaderLayout>
     );

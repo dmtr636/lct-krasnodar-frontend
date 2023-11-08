@@ -18,7 +18,7 @@ import { USER_DEPARTMENT_FILTER_OPTIONS } from "src/features/users/constants/use
 import { IUserDepartment } from "src/features/users/interfaces/user";
 import { userStore } from "src/features/users/stores/userStore";
 
-export const AddUser = () => {
+export const AddUser = ({ setShowAddUser }: { setShowAddUser: (arg: boolean) => void }) => {
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [patronymic, setPatronymic] = useState("");
@@ -112,11 +112,11 @@ export const AddUser = () => {
         </div>
     ));
     return (
-        <div className={styles.container}>
-            <div className={styles.content}>
+        <div className={styles.container} onClick={() => setShowAddUser(false)}>
+            <div className={styles.content} onClick={(e) => e.stopPropagation()}>
                 <div className={styles.header}>
                     <div className={styles.headerText}>Добавление сотрудника</div>
-                    <div className={styles.headerIcon}>
+                    <div onClick={() => setShowAddUser(false)} className={styles.headerIcon}>
                         {" "}
                         <img src={close} alt="" />
                     </div>
