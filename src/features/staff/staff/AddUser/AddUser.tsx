@@ -69,11 +69,8 @@ export const AddUser = ({ setShowAddUser }: { setShowAddUser: (arg: boolean) => 
             .post(USERS_ENDPOINT, data)
             .then((response) => {
                 console.log(response);
-                /* setIsLoading(false);
-                setStep(4); */
             })
             .catch((error) => {
-                /* setIsLoading(false); */
                 console.log("ошибка" + error);
             });
     };
