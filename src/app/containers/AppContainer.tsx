@@ -32,6 +32,7 @@ export const AppContainer = observer(() => {
     const fetchData = () => {
         educationStore.fetchAllPrograms();
         educationStore.fetchAllCourses();
+        educationStore.fetchAllTests();
     };
 
     return <Outlet />;

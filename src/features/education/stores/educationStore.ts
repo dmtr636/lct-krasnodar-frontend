@@ -1,10 +1,11 @@
 import { makeAutoObservable } from "mobx";
 import { IProgram } from "src/features/education/interfaces/IProgram";
 import axios from "axios";
-import { COURSES_ENDPOINT, PROGRAMS_ENDPOINT } from "src/shared/api/endpoints";
+import { COURSES_ENDPOINT, PROGRAMS_ENDPOINT, TESTS_ENDPOINT } from "src/shared/api/endpoints";
 import { IUserDepartment } from "src/features/users/interfaces/user";
 import { ICourse } from "src/features/education/interfaces/ICourse";
 import { fileStore } from "src/features/education/stores/fileStore";
+import { ITest } from "src/features/education/interfaces/ITest";
 
 export class EducationStore {
     programs: IProgram[] = [];
@@ -14,6 +15,9 @@ export class EducationStore {
     selectedCourses: ICourse[] = [];
     selectedProgram: IProgram | null = null;
     durationInput = "";
+    creatingTests: ITest[] = [];
+    createdTests: ITest[] = [];
+    tests: ITest[] = [];
 
     constructor() {
         makeAutoObservable(this);
@@ -27,6 +31,23 @@ export class EducationStore {
     async fetchAllCourses() {
         const response = await axios.get(COURSES_ENDPOINT);
         this.courses = response.data;
+    }
+
+    async fetchAllTests() {
+        const response = await axios.get(TESTS_ENDPOINT);
+        this.tests = response.data;
+    }
+
+    async addTests(course: ICourse) {
+        this.createdTests.forEach(async (t) => {
+            const response = await axios.post(TESTS_ENDPOINT, {
+                question: t.question,
+                answers: t.answers,
+                correctAnswerIndex: t.correctAnswerIndex,
+                courseId: course.id,
+            });
+            this.tests.push(response.data);
+        });
     }
 
     async addProgram() {
@@ -51,9 +72,14 @@ export class EducationStore {
             fileId: fileStore.uploadedFile?.id,
         });
         this.courses.unshift(response.data);
+        this.addTests(response.data);
     }
 
     async updateCourse(course: ICourse) {
+        for (const test of this.getTestsForCourse(course.id)) {
+            test.id && (await this.deleteTest(test.id));
+        }
+        await this.addTests(course);
         if (fileStore.selectedFile) {
             await fileStore.uploadFile();
         }
@@ -100,12 +126,21 @@ export class EducationStore {
         this.courses = this.courses.filter((c) => c.id !== id);
     }
 
+    async deleteTest(id: number) {
+        await axios.delete(TESTS_ENDPOINT + "/" + id);
+        this.tests = this.tests.filter((t) => t.id !== id);
+    }
+
     get coursesWithoutProgram() {
         return this.courses.filter((c) => !c.programId);
     }
 
     getCoursesForProgram(programId: number) {
         return this.courses.filter((c) => c.programId === programId);
+    }
+
+    getTestsForCourse(courseId: number) {
+        return this.tests.filter((t) => t.courseId === courseId);
     }
 
     getCoursesTotalDurationForProgram(programId: number) {

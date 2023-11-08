@@ -12,7 +12,7 @@ export const Checkbox = ({
 }: {
     checkboxChange: (arg: boolean) => void;
     isChecked: boolean;
-    children: ReactNode;
+    children?: ReactNode;
 }) => {
     const lottieRef = useRef<LottieRefCurrentProps | null>(null);
 
