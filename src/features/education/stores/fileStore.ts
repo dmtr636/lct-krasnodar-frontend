@@ -7,6 +7,7 @@ export class FileStore {
     uploadedFile: {
         id: string;
         url: string;
+        name: string;
     } | null = null;
 
     constructor() {

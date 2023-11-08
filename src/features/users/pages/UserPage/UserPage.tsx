@@ -16,7 +16,7 @@ import { IUser } from "src/features/users/interfaces/user";
 import { CircularProgress } from "@mui/material";
 import generatePDF from "react-to-pdf";
 
-function declOfNum(number: any, titles: { [x: string]: any }) {
+export function declOfNum(number: any, titles: { [x: string]: any }) {
     const cases = [2, 0, 1, 1, 1, 2];
     return titles[
         number % 100 > 4 && number % 100 < 20 ? 2 : cases[number % 10 < 5 ? number % 10 : 5]
@@ -41,7 +41,7 @@ export const UserPage = observer(() => {
 
     const componentRef = useRef<HTMLDivElement>(null);
     const handleDownloadImage = async () => {
-        generatePDF(componentRef, { filename: `Анлитика: ${user?.fullName}.pdf` });
+        generatePDF(componentRef, { filename: `Аналитика: ${user?.fullName}.pdf` });
     };
 
     const renderUserInfo = () => {
@@ -144,9 +144,7 @@ export const UserPage = observer(() => {
                             <EducationIcon />
                             <div>
                                 {c.course.name}
-                                <span className={styles.score}>
-                                    ({c.testScore} / {c.course.testMaxScore})
-                                </span>
+                                <span className={styles.score}>({c.testScore} / 10)</span>
                             </div>
                         </div>
                     ))}

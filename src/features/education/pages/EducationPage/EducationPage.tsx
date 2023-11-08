@@ -4,23 +4,31 @@ import { ContentWithHeaderLayout } from "src/features/layout/ui/ContentWithHeade
 import { useNavigate } from "react-router-dom";
 import { HeaderActionButton } from "src/features/layout/ui/Header/HeaderActionButton/HeaderActionButton";
 import { IconAdd, IconClose, IconDelete } from "src/shared/assets/img";
-import { programStore } from "src/features/education/stores/programStore";
-import React, { useState } from "react";
+import { educationStore } from "src/features/education/stores/educationStore";
+import { useEffect, useState } from "react";
 import { Drawer, Menu, MenuItem } from "@mui/material";
 import { Input } from "src/shared/ui/Inputs/Input/Input";
 import { Button } from "src/shared/ui/Button/Button";
-import { IconCheckmark } from "src/features/education/assets";
+import { IconCalendar, IconCheckmark, IconEducation } from "src/features/education/assets";
 import { Checkbox } from "src/shared/ui/Checkbox/Checkbox";
 import { USER_DEPARTMENT_FILTER_OPTIONS } from "src/features/users/constants/userDepartments";
 import { IconButton } from "src/shared/ui/Button/IconButton/IconButton";
 import { LinkButton } from "src/shared/ui/Button/LinkButton/LinkButton";
 import { fileStore } from "src/features/education/stores/fileStore";
+import { declOfNum } from "src/features/users/pages/UserPage/UserPage";
+import { ICourse } from "src/features/education/interfaces/ICourse";
+import { IProgram } from "src/features/education/interfaces/IProgram";
+import classNames from "classnames";
 
 export const EducationPage = observer(() => {
     const navigate = useNavigate();
     const [showAddProgram, setShowAddProgram] = useState(false);
     const [showAddCourse, setShowAddCourse] = useState(false);
+    const [showAddTest, setShowAddTest] = useState(false);
+    const [editingCourse, setEditingCourse] = useState<ICourse | null>(null);
     const [selectProgramAnchorEl, setSelectProgramAnchorEl] = useState<any>(null);
+    const [selectCourseAnchorEl, setSelectCourseAnchorEl] = useState<any>(null);
+    const [selectCourseProgram, setSelectCourseProgram] = useState<IProgram | null>(null);
 
     const getStartActions = () => {
         return [
@@ -33,6 +41,33 @@ export const EducationPage = observer(() => {
         ];
     };
 
+    useEffect(() => {
+        if (showAddCourse) {
+            educationStore.nameInput = "";
+            educationStore.selectedProgram = null;
+            educationStore.durationInput = "";
+            fileStore.selectedFile = null;
+        }
+    }, [showAddCourse]);
+
+    useEffect(() => {
+        if (showAddProgram) {
+            educationStore.nameInput = "";
+            educationStore.selectedDepartments = [];
+        }
+    }, [showAddProgram]);
+
+    useEffect(() => {
+        if (editingCourse) {
+            educationStore.nameInput = editingCourse.name;
+            educationStore.selectedProgram = educationStore.programs.find(
+                (p) => p.id === editingCourse.programId,
+            )!;
+            educationStore.durationInput = editingCourse.duration.toString();
+            fileStore.uploadedFile = editingCourse.file;
+        }
+    }, [editingCourse]);
+
     return (
         <ContentWithHeaderLayout
             title={"Обучение"}
@@ -42,21 +77,119 @@ export const EducationPage = observer(() => {
             <div className={styles.content}>
                 <div className={styles.card}>
                     <div className={styles.header}>Курсы</div>
-                    {programStore.programs.map((program) => (
+                    {!!educationStore.coursesWithoutProgram.length && (
                         <div className={styles.programBlock}>
                             <div className={styles.programBlockHeader}>
-                                <button className={styles.addButton}>
+                                Не состоят в программах обучения
+                            </div>
+                            <div className={styles.courses}>
+                                {educationStore.coursesWithoutProgram.map((c) => (
+                                    <button
+                                        className={styles.course}
+                                        onClick={() => setEditingCourse(c)}
+                                    >
+                                        <IconEducation />
+                                        {c.name}
+                                        <IconButton
+                                            onClick={() => {
+                                                educationStore.deleteCourse(c.id);
+                                            }}
+                                            className={styles.deleteButton}
+                                        >
+                                            <IconDelete />
+                                        </IconButton>
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+                    {educationStore.programs.map((program) => (
+                        <div className={styles.programBlock}>
+                            <div className={styles.programBlockHeader}>
+                                <button
+                                    className={classNames(styles.addButton, {
+                                        [styles.withBottomBorder]:
+                                            selectCourseProgram === program && selectCourseAnchorEl,
+                                    })}
+                                    onClick={(e) => {
+                                        setSelectCourseAnchorEl(e.currentTarget);
+                                        setSelectCourseProgram(program);
+                                    }}
+                                >
                                     <div className={styles.icon}>
                                         <IconAdd />
                                     </div>
                                     {program.name}
                                 </button>
-                                <IconButton onClick={() => programStore.deleteProgram(program.id)}>
-                                    <IconDelete />
-                                </IconButton>
+                                {!!educationStore.getCoursesForProgram(program.id).length ? (
+                                    <div className={styles.duration}>
+                                        <IconCalendar />
+                                        {educationStore.getCoursesTotalDurationForProgram(
+                                            program.id,
+                                        )}
+                                        &nbsp;
+                                        {declOfNum(
+                                            educationStore.getCoursesTotalDurationForProgram(
+                                                program.id,
+                                            ),
+                                            ["день", "дня", "дней"],
+                                        )}
+                                    </div>
+                                ) : (
+                                    <IconButton
+                                        className={styles.deleteButton}
+                                        onClick={() => educationStore.deleteProgram(program.id)}
+                                    >
+                                        <IconDelete />
+                                    </IconButton>
+                                )}
                             </div>
+                            {!!educationStore.getCoursesForProgram(program.id).length && (
+                                <div className={styles.courses}>
+                                    {educationStore.getCoursesForProgram(program.id).map((c) => (
+                                        <button
+                                            className={styles.course}
+                                            onClick={() => setEditingCourse(c)}
+                                        >
+                                            <IconEducation />
+                                            {c.name}
+                                            <IconButton
+                                                onClick={() => educationStore.deleteCourse(c.id)}
+                                                className={styles.deleteButton}
+                                            >
+                                                <IconDelete />
+                                            </IconButton>
+                                        </button>
+                                    ))}
+                                </div>
+                            )}
                         </div>
                     ))}
+                    <Menu
+                        open={!!selectCourseAnchorEl}
+                        onClose={() => setSelectCourseAnchorEl(null)}
+                        anchorEl={selectCourseAnchorEl}
+                        classes={{
+                            paper: styles.selectProgramMenu,
+                        }}
+                    >
+                        {educationStore.coursesWithoutProgram.map((c) => (
+                            <MenuItem
+                                className={styles.menuItem}
+                                onClick={async () => {
+                                    await educationStore.updateCourseProgram(
+                                        c,
+                                        selectCourseProgram!,
+                                    );
+                                    if (!educationStore.coursesWithoutProgram.length) {
+                                        setSelectCourseAnchorEl(null);
+                                    }
+                                }}
+                            >
+                                {c.name}
+                            </MenuItem>
+                        ))}
+                    </Menu>
                 </div>
             </div>
 
@@ -71,8 +204,8 @@ export const EducationPage = observer(() => {
                     <div className={styles.section}>
                         <div className={styles.sectionHeader}>Название программы обучения</div>
                         <Input
-                            onChange={(value) => (programStore.nameInput = value)}
-                            inputValue={programStore.nameInput}
+                            onChange={(value) => (educationStore.nameInput = value)}
+                            inputValue={educationStore.nameInput}
                             placeholder={"Название программы обучения"}
                         />
                     </div>
@@ -81,28 +214,27 @@ export const EducationPage = observer(() => {
                         <div className={styles.checkboxGrid}>
                             <Checkbox
                                 checkboxChange={(value) => {
-                                    programStore.selectedDepartments = [];
+                                    educationStore.selectedDepartments = [];
                                 }}
-                                isChecked={!programStore.selectedDepartments.length}
+                                isChecked={!educationStore.selectedDepartments.length}
                             >
                                 Выбрать все
                             </Checkbox>
                             {USER_DEPARTMENT_FILTER_OPTIONS.map((option) => (
                                 <Checkbox
                                     checkboxChange={(value) => {
-                                        console.log(value);
                                         if (value) {
-                                            programStore.selectedDepartments.push(
+                                            educationStore.selectedDepartments.push(
                                                 option.department,
                                             );
                                         } else {
-                                            programStore.selectedDepartments =
-                                                programStore.selectedDepartments.filter(
+                                            educationStore.selectedDepartments =
+                                                educationStore.selectedDepartments.filter(
                                                     (d) => d !== option.department,
                                                 );
                                         }
                                     }}
-                                    isChecked={programStore.selectedDepartments.includes(
+                                    isChecked={educationStore.selectedDepartments.includes(
                                         option.department,
                                     )}
                                 >
@@ -114,7 +246,7 @@ export const EducationPage = observer(() => {
                     <div className={styles.actionButton}>
                         <Button
                             onClick={() => {
-                                programStore.addProgram();
+                                educationStore.addProgram();
                                 setShowAddProgram(false);
                             }}
                             isLoading={false}
@@ -138,8 +270,8 @@ export const EducationPage = observer(() => {
                     <div className={styles.section}>
                         <div className={styles.sectionHeader}>Основная информация</div>
                         <Input
-                            onChange={(value) => (programStore.nameInput = value)}
-                            inputValue={programStore.nameInput}
+                            onChange={(value) => (educationStore.nameInput = value)}
+                            inputValue={educationStore.nameInput}
                             placeholder={"Название курса"}
                         />
                     </div>
@@ -168,7 +300,9 @@ export const EducationPage = observer(() => {
                                     <div className={styles.extensions}>
                                         {fileStore.selectedFile ? (
                                             <div className={styles.selectedFile}>
-                                                {fileStore.selectedFile.name}
+                                                <div className={styles.fileName}>
+                                                    {fileStore.selectedFile.name}
+                                                </div>
                                                 <IconButton
                                                     onClick={() => (fileStore.selectedFile = null)}
                                                 >
@@ -188,9 +322,20 @@ export const EducationPage = observer(() => {
                                         onClick={(event) =>
                                             setSelectProgramAnchorEl(event.currentTarget)
                                         }
-                                        icon={<IconAdd />}
+                                        icon={
+                                            educationStore.selectedProgram ? (
+                                                <IconCheckmark className={styles.checkmarkIcon} />
+                                            ) : (
+                                                <IconAdd />
+                                            )
+                                        }
+                                        className={classNames(styles.linkButton, {
+                                            [styles.withBottomBorder]: !!selectProgramAnchorEl,
+                                        })}
                                     >
-                                        Выбрать
+                                        {educationStore.selectedProgram
+                                            ? educationStore.selectedProgram.name
+                                            : "Выбрать"}
                                     </LinkButton>
                                 </div>
                                 <Menu
@@ -201,11 +346,11 @@ export const EducationPage = observer(() => {
                                         paper: styles.selectProgramMenu,
                                     }}
                                 >
-                                    {programStore.programs.map((p) => (
+                                    {educationStore.programs.map((p) => (
                                         <MenuItem
                                             className={styles.menuItem}
                                             onClick={() => {
-                                                programStore.selectedProgram = p;
+                                                educationStore.selectedProgram = p;
                                                 setSelectProgramAnchorEl(null);
                                             }}
                                         >
@@ -226,8 +371,8 @@ export const EducationPage = observer(() => {
                         <div className={styles.sectionHeader}>Срок прохождения</div>
                         <div style={{ width: "440px" }}>
                             <Input
-                                onChange={(value) => (programStore.nameInput = value)}
-                                inputValue={programStore.nameInput}
+                                onChange={(value) => (educationStore.durationInput = value)}
+                                inputValue={educationStore.durationInput}
                                 placeholder={"Сколько дней потребуется для прохождения?"}
                                 type={"number"}
                             />
@@ -236,14 +381,306 @@ export const EducationPage = observer(() => {
                     <div className={styles.actionButton}>
                         <Button
                             onClick={async () => {
-                                await fileStore.uploadFile();
-                                // setShowAddCourse(false);
+                                await educationStore.addCourse();
+                                setShowAddCourse(false);
                             }}
                             isLoading={false}
                             disabled={false}
                             icon={<IconCheckmark />}
                         >
                             Добавить курс
+                        </Button>
+                    </div>
+                </div>
+            </Drawer>
+
+            <Drawer open={!!editingCourse} onClose={() => setEditingCourse(null)} anchor={"right"}>
+                <div className={styles.drawer}>
+                    <div className={styles.header}>
+                        Редактировать курс
+                        <button className={styles.close} onClick={() => setEditingCourse(null)}>
+                            <IconClose />
+                        </button>
+                    </div>
+                    <div className={styles.section}>
+                        <div className={styles.sectionHeader}>Основная информация</div>
+                        <Input
+                            onChange={(value) => (educationStore.nameInput = value)}
+                            inputValue={educationStore.nameInput}
+                            placeholder={"Название курса"}
+                        />
+                    </div>
+                    <div className={styles.section}>
+                        <div className={styles.row}>
+                            <div>
+                                <div className={styles.sectionHeader}>Загрузить материалы</div>
+                                <div className={styles.fileRow}>
+                                    <HeaderActionButton
+                                        onClick={() => {
+                                            const input = document.createElement("input");
+                                            input.type = "file";
+
+                                            input.onchange = (e: any) => {
+                                                const file = e.target.files[0];
+                                                if (file) {
+                                                    fileStore.selectedFile = file;
+                                                }
+                                            };
+
+                                            input.click();
+                                        }}
+                                    >
+                                        Загрузить файл
+                                    </HeaderActionButton>
+                                    <div className={styles.extensions}>
+                                        {fileStore.selectedFile ? (
+                                            <div className={styles.selectedFile}>
+                                                <div className={styles.fileName}>
+                                                    {fileStore.selectedFile.name}
+                                                </div>
+                                                <IconButton
+                                                    onClick={() => (fileStore.selectedFile = null)}
+                                                >
+                                                    <IconClose />
+                                                </IconButton>
+                                            </div>
+                                        ) : fileStore.uploadedFile ? (
+                                            <div className={styles.selectedFile}>
+                                                <div className={styles.fileName}>
+                                                    {fileStore.uploadedFile.name}
+                                                </div>
+                                                <IconButton
+                                                    onClick={() => (fileStore.uploadedFile = null)}
+                                                >
+                                                    <IconClose />
+                                                </IconButton>
+                                            </div>
+                                        ) : (
+                                            <>DOCX, PDF</>
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <div className={styles.sectionHeader}>Программа обучения</div>
+                                <div>
+                                    <LinkButton
+                                        onClick={(event) =>
+                                            setSelectProgramAnchorEl(event.currentTarget)
+                                        }
+                                        icon={
+                                            educationStore.selectedProgram ? (
+                                                <IconCheckmark className={styles.checkmarkIcon} />
+                                            ) : (
+                                                <IconAdd />
+                                            )
+                                        }
+                                    >
+                                        {educationStore.selectedProgram
+                                            ? educationStore.selectedProgram.name
+                                            : "Выбрать"}
+                                    </LinkButton>
+                                </div>
+                                <Menu
+                                    open={!!selectProgramAnchorEl}
+                                    onClose={() => setSelectProgramAnchorEl(null)}
+                                    anchorEl={selectProgramAnchorEl}
+                                    classes={{
+                                        paper: styles.selectProgramMenu,
+                                    }}
+                                >
+                                    {educationStore.programs.map((p) => (
+                                        <MenuItem
+                                            className={styles.menuItem}
+                                            onClick={() => {
+                                                educationStore.selectedProgram = p;
+                                                setSelectProgramAnchorEl(null);
+                                            }}
+                                        >
+                                            {p.name}
+                                        </MenuItem>
+                                    ))}
+                                </Menu>
+                            </div>
+                        </div>
+                    </div>
+                    <div className={styles.section}>
+                        <div className={styles.sectionHeader}>Тестирование после изучения</div>
+                        <HeaderActionButton
+                            onClick={() => setShowAddTest(true)}
+                            variant={"contained"}
+                        >
+                            Создать тестирование
+                        </HeaderActionButton>
+                    </div>
+                    <div className={styles.section}>
+                        <div className={styles.sectionHeader}>Срок прохождения</div>
+                        <div style={{ width: "440px" }}>
+                            <Input
+                                onChange={(value) => (educationStore.durationInput = value)}
+                                inputValue={educationStore.durationInput}
+                                placeholder={"Сколько дней потребуется для прохождения?"}
+                                type={"number"}
+                            />
+                        </div>
+                    </div>
+                    <div className={styles.actionButton}>
+                        <Button
+                            onClick={async () => {
+                                await educationStore.updateCourse(editingCourse!);
+                                setEditingCourse(null);
+                            }}
+                            isLoading={false}
+                            disabled={false}
+                            icon={<IconCheckmark />}
+                        >
+                            Сохранить изменения
+                        </Button>
+                    </div>
+                </div>
+            </Drawer>
+
+            <Drawer open={showAddTest} onClose={() => setShowAddTest(false)} anchor={"right"}>
+                <div className={styles.drawer}>
+                    <div className={styles.header}>
+                        Создать тестирование
+                        <button className={styles.close} onClick={() => setShowAddTest(false)}>
+                            <IconClose />
+                        </button>
+                    </div>
+                    <div className={styles.section}>
+                        <div className={styles.sectionHeader}>Основная информация</div>
+                        <Input
+                            onChange={(value) => (educationStore.nameInput = value)}
+                            inputValue={educationStore.nameInput}
+                            placeholder={"Название курса"}
+                        />
+                    </div>
+                    <div className={styles.section}>
+                        <div className={styles.row}>
+                            <div>
+                                <div className={styles.sectionHeader}>Загрузить материалы</div>
+                                <div className={styles.fileRow}>
+                                    <HeaderActionButton
+                                        onClick={() => {
+                                            const input = document.createElement("input");
+                                            input.type = "file";
+
+                                            input.onchange = (e: any) => {
+                                                const file = e.target.files[0];
+                                                if (file) {
+                                                    fileStore.selectedFile = file;
+                                                }
+                                            };
+
+                                            input.click();
+                                        }}
+                                    >
+                                        Загрузить файл
+                                    </HeaderActionButton>
+                                    <div className={styles.extensions}>
+                                        {fileStore.selectedFile ? (
+                                            <div className={styles.selectedFile}>
+                                                <div className={styles.fileName}>
+                                                    {fileStore.selectedFile.name}
+                                                </div>
+                                                <IconButton
+                                                    onClick={() => (fileStore.selectedFile = null)}
+                                                >
+                                                    <IconClose />
+                                                </IconButton>
+                                            </div>
+                                        ) : fileStore.uploadedFile ? (
+                                            <div className={styles.selectedFile}>
+                                                <div className={styles.fileName}>
+                                                    {fileStore.uploadedFile.name}
+                                                </div>
+                                                <IconButton
+                                                    onClick={() => (fileStore.uploadedFile = null)}
+                                                >
+                                                    <IconClose />
+                                                </IconButton>
+                                            </div>
+                                        ) : (
+                                            <>DOCX, PDF</>
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <div className={styles.sectionHeader}>Программа обучения</div>
+                                <div>
+                                    <LinkButton
+                                        onClick={(event) =>
+                                            setSelectProgramAnchorEl(event.currentTarget)
+                                        }
+                                        icon={
+                                            educationStore.selectedProgram ? (
+                                                <IconCheckmark className={styles.checkmarkIcon} />
+                                            ) : (
+                                                <IconAdd />
+                                            )
+                                        }
+                                    >
+                                        {educationStore.selectedProgram
+                                            ? educationStore.selectedProgram.name
+                                            : "Выбрать"}
+                                    </LinkButton>
+                                </div>
+                                <Menu
+                                    open={!!selectProgramAnchorEl}
+                                    onClose={() => setSelectProgramAnchorEl(null)}
+                                    anchorEl={selectProgramAnchorEl}
+                                    classes={{
+                                        paper: styles.selectProgramMenu,
+                                    }}
+                                >
+                                    {educationStore.programs.map((p) => (
+                                        <MenuItem
+                                            className={styles.menuItem}
+                                            onClick={() => {
+                                                educationStore.selectedProgram = p;
+                                                setSelectProgramAnchorEl(null);
+                                            }}
+                                        >
+                                            {p.name}
+                                        </MenuItem>
+                                    ))}
+                                </Menu>
+                            </div>
+                        </div>
+                    </div>
+                    <div className={styles.section}>
+                        <div className={styles.sectionHeader}>Тестирование после изучения</div>
+                        <HeaderActionButton
+                            onClick={() => setShowAddTest(true)}
+                            variant={"contained"}
+                        >
+                            Создать тестирование
+                        </HeaderActionButton>
+                    </div>
+                    <div className={styles.section}>
+                        <div className={styles.sectionHeader}>Срок прохождения</div>
+                        <div style={{ width: "440px" }}>
+                            <Input
+                                onChange={(value) => (educationStore.durationInput = value)}
+                                inputValue={educationStore.durationInput}
+                                placeholder={"Сколько дней потребуется для прохождения?"}
+                                type={"number"}
+                            />
+                        </div>
+                    </div>
+                    <div className={styles.actionButton}>
+                        <Button
+                            onClick={async () => {
+                                await educationStore.updateCourse(editingCourse!);
+                                setEditingCourse(null);
+                            }}
+                            isLoading={false}
+                            disabled={false}
+                            icon={<IconCheckmark />}
+                        >
+                            Сохранить изменения
                         </Button>
                     </div>
                 </div>

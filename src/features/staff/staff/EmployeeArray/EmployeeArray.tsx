@@ -16,7 +16,11 @@ export const EmployeeArray = observer(() => {
         case "date":
             employeeData = employeeData
                 .slice()
-                .sort((a, b) => new Date(a.createTimestamp) - new Date(b.createTimestamp));
+                .sort(
+                    (a, b) =>
+                        new Date(a.createTimestamp).getTime() -
+                        new Date(b.createTimestamp).getTime(),
+                );
             break;
         // Добавьте другие кейсы сортировки здесь по необходимости
     }

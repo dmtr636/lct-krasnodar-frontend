@@ -15,7 +15,9 @@ export class SortedStore {
                 return [...this.allEmployees].sort((a, b) => a.fullName.localeCompare(b.fullName));
             case "date":
                 return [...this.allEmployees].sort(
-                    (a, b) => new Date(a.createDate) - new Date(b.createDate),
+                    (a, b) =>
+                        new Date(a.createTimestamp).getTime() -
+                        new Date(b.createTimestamp).getTime(),
                 );
             default:
                 return this.allEmployees;

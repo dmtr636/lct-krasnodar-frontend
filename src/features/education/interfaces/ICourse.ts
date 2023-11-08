@@ -1,6 +1,9 @@
+import { IFile } from "src/features/education/interfaces/IFile";
+
 export interface ICourse {
     id: number;
     name: string;
-    durationDays: number;
-    testMaxScore: number;
+    file: IFile | null;
+    programId: number | null;
+    duration: number;
 }

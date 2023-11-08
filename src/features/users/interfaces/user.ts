@@ -20,7 +20,7 @@ export interface IUser {
     phone: string;
     fullName: string;
     photoFileUrl: string | null;
-    createDate: string;
+    createTimestamp: string;
     responsibleUserId: number | null;
     tasks: string | null;
 }

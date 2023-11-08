@@ -1,13 +1,14 @@
 import { makeAutoObservable } from "mobx";
 import { IUser, IUserDepartment } from "src/features/users/interfaces/user";
 import axios from "axios";
-import { USERS_ENDPOINT } from "src/shared/api/endpoints";
+import { LOGOUT_ENDPOINT, ME_ENDPOINT, USERS_ENDPOINT } from "src/shared/api/endpoints";
 import { departmentsStore } from "./departamentStore";
 import { tasksStore } from "./tasksStore";
 import { IUserDepartmentFilterOption } from "../constants/userDepartments";
 
 export class UserStore {
     allUsers: IUser[] = [];
+    currentUser: IUser | null = null;
     searchInput = "";
     selectedDepartments = new Set<IUserDepartment>();
 
@@ -27,6 +28,21 @@ export class UserStore {
     async deleteUser(user: IUser) {
         const response = await axios.delete(USERS_ENDPOINT + "/" + user.id);
         this.allUsers = this.allUsers.filter((u) => u.id !== user.id);
+    }
+
+    async authenticate() {
+        try {
+            const response = await axios.get(ME_ENDPOINT);
+            this.currentUser = response.data;
+            return true;
+        } catch (e) {
+            return false;
+        }
+    }
+
+    async logout() {
+        this.currentUser = null;
+        await axios.post(LOGOUT_ENDPOINT);
     }
 
     get users() {

@@ -1,9 +1,14 @@
 import styles from "./style.module.scss";
 import { ReactNode } from "react";
+import classNames from "classnames";
 
-export const IconButton = (props: { children: ReactNode; onClick: () => void }) => {
+export const IconButton = (props: {
+    children: ReactNode;
+    onClick: () => void;
+    className?: string;
+}) => {
     return (
-        <button className={styles.button} onClick={props.onClick}>
+        <button className={classNames(styles.button, props.className)} onClick={props.onClick}>
             {props.children}
         </button>
     );
