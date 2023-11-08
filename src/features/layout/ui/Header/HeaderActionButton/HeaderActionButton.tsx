@@ -7,12 +7,15 @@ export const HeaderActionButton = (props: {
     onClick: () => void;
     icon?: ReactNode;
     color?: "primary" | "delete";
+    variant?: "outlined" | "contained";
 }) => {
     return (
         <button
             className={classNames(styles.button, {
                 [styles.delete]: props.color === "delete",
+                [styles.contained]: props.variant === "contained",
             })}
+            onClick={props.onClick}
         >
             {props.icon}
             {props.children}

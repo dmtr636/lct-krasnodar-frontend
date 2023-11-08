@@ -1,13 +1,14 @@
 .button {
     display: flex;
     justify-content: center;
+    align-items: center;
+    gap: 8px;
 
     width: 100%;
+    height: 48px;
     background: #14214d;
     /*  box-shadow: 0px 0px 12px rgba(38, 38, 38, 0.12); */
     border-radius: 8px;
-    padding-top: 17px;
-    padding-bottom: 17px;
     color: var(--text-button, #fff);
 
     /* Desktop/Button/Button-primary */
@@ -29,10 +30,23 @@
         background: color-mix(in oklab, #14214d, white 72%);
         color: white;
     }
+
+    svg path {
+        fill: none;
+    }
 }
 .animation {
     display: flex;
     justify-content: center;
     width: 22px;
     height: 22px;
+
+    svg path {
+        stroke: currentColor;
+        fill: currentColor;
+    }
+
+    svg path[stroke] {
+        stroke: currentColor;
+    }
 }

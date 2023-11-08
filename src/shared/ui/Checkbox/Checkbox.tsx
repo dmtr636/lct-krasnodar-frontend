@@ -16,14 +16,19 @@ export const Checkbox = ({
 }) => {
     const lottieRef = useRef<LottieRefCurrentProps | null>(null);
 
+    // useEffect(() => {
+    //     if (isChecked && lottieRef.current) {
+    //         const duration = lottieRef.current.getDuration(true);
+    //         if (duration) {
+    //             lottieRef.current.goToAndPlay(duration, true);
+    //         }
+    //     }
+    // }, []);
+
     useEffect(() => {
-        if (isChecked && lottieRef.current) {
-            const duration = lottieRef.current.getDuration(true);
-            if (duration) {
-                lottieRef.current.goToAndPlay(duration, true);
-            }
-        }
-    }, []);
+        lottieRef.current?.setDirection(!isChecked ? -1 : 1);
+        lottieRef.current?.play();
+    }, [isChecked]);
 
     return (
         <div>
@@ -33,8 +38,6 @@ export const Checkbox = ({
                     checked={isChecked}
                     onChange={() => {
                         checkboxChange(!isChecked);
-                        lottieRef.current?.setDirection(isChecked ? -1 : 1);
-                        lottieRef.current?.play();
                     }}
                     style={{ display: "none" }}
                 />

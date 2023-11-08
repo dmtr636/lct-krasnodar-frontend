@@ -1,5 +1,5 @@
-import { ICourse } from "src/features/cources/interfaces/ICourse";
-import { IUserCourse } from "src/features/cources/interfaces/IUserCourse";
+import { ICourse } from "src/features/education/interfaces/ICourse";
+import { IUserCourse } from "src/features/education/interfaces/IUserCourse";
 
 export const MOCKED_COURSES: ICourse[] = [
     {

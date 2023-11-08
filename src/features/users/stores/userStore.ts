@@ -24,6 +24,11 @@ export class UserStore {
         this.allUsers = response.data;
     }
 
+    async deleteUser(user: IUser) {
+        const response = await axios.delete(USERS_ENDPOINT + "/" + user.id);
+        this.allUsers = this.allUsers.filter((u) => u.id !== user.id);
+    }
+
     get users() {
         let users = this.allUsers;
 

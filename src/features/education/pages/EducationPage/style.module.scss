@@ -1,0 +1,181 @@
+.content {
+    padding: 28px 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+
+    .card {
+        border-radius: 0px 8px 8px 8px;
+        width: 972px;
+        background: white;
+        border: 1px solid #d8e4f3;
+
+        .header {
+            padding: 24px 40px;
+            border-bottom: 1px solid #d8e4f3;
+            font-size: 20px;
+            font-weight: 600;
+            line-height: 28px;
+            letter-spacing: 0.4px;
+        }
+
+        .programBlock {
+            padding: 24px 40px;
+
+            &:not(:last-child) {
+                border-bottom: 1px solid #d8e4f3;
+            }
+
+            .programBlockHeader {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+
+                .addButton {
+                    display: flex;
+                    align-items: center;
+                    gap: 16px;
+                    font-size: 16px;
+                    font-weight: 600;
+                    line-height: 28px;
+                    letter-spacing: 0.32px;
+
+                    .icon {
+                        padding: 6px;
+                        margin: -6px;
+                        border-radius: 50%;
+                    }
+
+                    &:hover {
+                        color: var(--color-primary-hover);
+
+                        .icon {
+                            background: var(--color-hover-on-white-bg);
+                        }
+                    }
+                }
+
+                .deleteButton {
+                    color: var(--color-primary);
+                    padding: 8px;
+                    border-radius: 50%;
+
+                    &:hover {
+                        color: var(--color-primary-hover);
+                        background: var(--color-hover-on-white-bg);
+                    }
+                }
+            }
+            .courses {
+                margin-top: 20px;
+                display: grid;
+                gap: 16px;
+            }
+        }
+    }
+}
+
+.drawer {
+    background: white;
+    padding: 24px 40px;
+    width: 640px;
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 24px;
+        font-weight: 700;
+        line-height: 28px;
+        letter-spacing: 0.48px;
+        padding-bottom: 24px;
+        border-bottom: 1px solid #d8e4f3;
+
+        .close {
+            padding: 6px;
+            margin: -6px;
+            border-radius: 50%;
+
+            &:hover {
+                color: var(--color-primary-hover);
+                background: var(--color-hover-on-white-bg);
+            }
+        }
+    }
+
+    .section {
+        padding: 24px 0;
+        border-bottom: 1px solid #d8e4f3;
+
+        .sectionHeader {
+            font-size: 20px;
+            font-weight: 600;
+            line-height: 28px;
+            letter-spacing: 0.4px;
+            margin-bottom: 20px;
+        }
+
+        .row {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .checkboxGrid {
+            display: grid;
+            grid-template-columns: 220px auto;
+        }
+
+        .fileRow {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+
+            .extensions {
+                color: #1d1d1b;
+                font-size: 14px;
+                font-weight: 400;
+                line-height: 23px;
+                letter-spacing: 0.28px;
+            }
+
+            .selectedFile {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+            }
+        }
+    }
+
+    .actionButton {
+        margin-top: auto;
+    }
+}
+
+.selectProgramMenu {
+    padding: 4px 8px !important;
+    border-radius: 8px !important;
+    box-shadow: 0px 0px 14px 0px rgba(20, 33, 77, 0.07) !important;
+
+    .menuItem {
+        border-radius: 4px !important;
+        padding: 4px 12px !important;
+        color: rgba(20, 33, 77, 0.7) !important;
+        font-family: Manrope !important;
+        font-size: 16px !important;
+        font-style: normal !important;
+        font-weight: 600 !important;
+        line-height: normal !important;
+        letter-spacing: 0.16px !important;
+
+        &:hover {
+            background: #d8e4f3 !important;
+        }
+
+        &:not(:last-child) {
+            margin-bottom: 9px;
+        }
+    }
+}
