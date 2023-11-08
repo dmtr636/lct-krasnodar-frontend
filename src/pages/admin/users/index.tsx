@@ -16,12 +16,13 @@ import { departmentsStore } from "src/features/users/stores/departamentStore";
 import { tasksStore } from "src/features/users/stores/tasksStore";
 import { userStore } from "src/features/users/stores/userStore";
 import { sortedStore } from "src/features/users/stores/sortedStore";
+import { AddUser } from "src/features/staff/staff/AddUser/AddUser";
 
 export const UsersPage = observer(() => {
     const [inputValue, setInputValue] = useState("");
     const [showSort, setShowSort] = useState(false);
     const [showFilter, setShowFilter] = useState(false);
-
+    const [showAdduser, setShowAddUser] = useState(0);
     const navigate = useNavigate();
 
     const deportamentArray = departmentsStore.allDepartments.map((option) => (
@@ -74,7 +75,12 @@ export const UsersPage = observer(() => {
             title={"Сотрудники"}
             onBack={() => navigate("/")}
             startActions={[
-                <HeaderActionButton icon={<IconAdd />} onClick={() => {}}>
+                <HeaderActionButton
+                    icon={<IconAdd />}
+                    onClick={() => {
+                        setShowAddUser(true);
+                    }}
+                >
                     Добавить сотрудника
                 </HeaderActionButton>,
             ]}
@@ -126,7 +132,10 @@ export const UsersPage = observer(() => {
                             Фильтры
                         </div>
                         {cloudArrayTask.length + cloudArrayDep.length > 0 && (
-                            <div className={styles.fiterCount}>
+                            <div
+                                onClick={() => setShowFilter(!showFilter)}
+                                className={styles.fiterCount}
+                            >
                                 {cloudArrayTask.length + cloudArrayDep.length}
                             </div>
                         )}
@@ -139,44 +148,50 @@ export const UsersPage = observer(() => {
 
                 <EmployeeArray />
                 {showFilter && (
-                    <div className={styles.filterContainer}>
-                        <div className={styles.filterHeader}>
-                            <div className={styles.filterH1}>
-                                Фильтры
+                    <div
+                        className={styles.filterContainer}
+                        onClick={() => setShowFilter(!showFilter)}
+                    >
+                        <div className={styles.filterContent} onClick={(e) => e.stopPropagation()}>
+                            <div className={styles.filterHeader}>
+                                <div className={styles.filterH1}>
+                                    Фильтры
+                                    <div
+                                        className=""
+                                        onClick={() => {
+                                            tasksStore.clearSelection();
+                                            console.log("нажал");
+                                            departmentsStore.clearSelection();
+                                        }}
+                                    >
+                                        <HeaderActionButton onClick={() => {}}>
+                                            Очистить выбор
+                                        </HeaderActionButton>
+                                    </div>
+                                </div>
+
                                 <div
-                                    className=""
-                                    onClick={() => {
-                                        tasksStore.clearSelection();
-                                        console.log("нажал");
-                                        departmentsStore.clearSelection();
-                                    }}
+                                    onClick={() => setShowFilter(false)}
+                                    className={styles.filterClose}
                                 >
-                                    <HeaderActionButton onClick={() => {}}>
-                                        Очистить выбор
-                                    </HeaderActionButton>
+                                    <img className={styles.filterCloseImg} src={close} alt="" />
                                 </div>
                             </div>
 
-                            <div
-                                onClick={() => setShowFilter(false)}
-                                className={styles.filterClose}
-                            >
-                                <img className={styles.filterCloseImg} src={close} alt="" />
-                            </div>
-                        </div>
-
-                        <div className={styles.filterType}>
-                            <div className={styles.filterDeportament}>
-                                <div className={styles.filterText}>Отдел</div>
-                                <div>{deportamentArray}</div>
-                            </div>
-                            <div className={styles.filterTasks}>
-                                <div className={styles.filterText}>Статус задач</div>
-                                <div>{optionsArray}</div>
+                            <div className={styles.filterType}>
+                                <div className={styles.filterDeportament}>
+                                    <div className={styles.filterText}>Отдел</div>
+                                    <div>{deportamentArray}</div>
+                                </div>
+                                <div className={styles.filterTasks}>
+                                    <div className={styles.filterText}>Статус задач</div>
+                                    <div>{optionsArray}</div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 )}
+                {showAdduser && <AddUser />}
             </div>
         </ContentWithHeaderLayout>
     );

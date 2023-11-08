@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect, useRef } from "react";
+import { ReactNode, useEffect, useRef } from "react";
 import Lottie, { LottieRefCurrentProps } from "lottie-react";
 import styles from "./Checkbox.module.scss";
 import animationChecked from "../../assets/animation/checkbox_fill.json";

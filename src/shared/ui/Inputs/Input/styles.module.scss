@@ -1,0 +1,107 @@
+.inputContainer {
+    position: relative;
+    width: 100%;
+    height: 56px;
+
+    &:hover {
+        .inputLabel {
+            color: var(--black-primary-hover, #474747);
+        }
+
+        .inputBorder:not(.active, .error) {
+            border: 1px solid var(--black-secondary-hover, #757575);
+        }
+    }
+}
+
+.inputBorder {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    border: 1px solid color-mix(in oklab, #1d1d1d, white 65%);
+    border-radius: 8px;
+    transition: border-color 0.3s ease;
+
+    &.active {
+        border: 1px solid color-mix(in oklab, #1d1d1d, #000000 48%);
+    }
+
+    &.error {
+        border: 1px solid #980e08;
+    }
+}
+
+.inputLabel {
+    position: absolute;
+    top: 16px;
+    left: 20px;
+    font-family: "Manrope";
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: normal;
+    transition:
+        top 0.1s,
+        font-size 0.1s;
+    pointer-events: none;
+    color: var(--black-secondary-pale);
+
+    &.active {
+        top: 7px;
+        font-size: 12px;
+    }
+}
+
+.input {
+    width: 100%;
+    height: 100%;
+    padding: 16px 20px 0 20px;
+    border-radius: 8px;
+    font-family: "Manrope";
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: normal;
+    color: var(--black-primary-active);
+}
+
+.wrongEmail {
+    /* Desktop/Little */
+    font-family: Manrope;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: 0.12px;
+    color: var(--red-primary-active);
+    color: #980e08;
+    margin-top: 8px;
+    margin-bottom: -8px;
+}
+
+.passShow {
+    width: 24px;
+    height: 24px;
+}
+
+.passShowBlock {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+    width: 36px;
+    height: 36px;
+    border-radius: 18px;
+
+    svg path {
+        fill: var(--red-primary-active);
+    }
+
+    svg path[stroke] {
+        stroke: var(--red-primary-active);
+    }
+}
