@@ -1,30 +1,34 @@
-import { ICourse } from "src/features/cources/interfaces/ICourse";
-import { IUserCourse } from "src/features/cources/interfaces/IUserCourse";
+import { ICourse } from "src/features/education/interfaces/ICourse";
+import { IUserCourse } from "src/features/education/interfaces/IUserCourse";
 
 export const MOCKED_COURSES: ICourse[] = [
     {
         id: 1,
         name: "Курс 1",
-        durationDays: 5,
-        testMaxScore: 10,
+        duration: 5,
+        file: null,
+        programId: null,
     },
     {
         id: 2,
         name: "Подружиться с Asana, узнать как это работает",
-        durationDays: 10,
-        testMaxScore: 10,
+        duration: 10,
+        file: null,
+        programId: null,
     },
     {
         id: 3,
         name: "Познакомиться с Google Chat",
-        durationDays: 5,
-        testMaxScore: 10,
+        duration: 5,
+        file: null,
+        programId: null,
     },
     {
         id: 4,
         name: "Прочитай статью про обезьян (нет, мы не превращаемся в Animal Planet)",
-        durationDays: 10,
-        testMaxScore: 10,
+        duration: 10,
+        file: null,
+        programId: null,
     },
 ];
 

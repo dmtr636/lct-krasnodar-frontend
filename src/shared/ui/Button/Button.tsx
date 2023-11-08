@@ -8,11 +8,13 @@ export const Button = ({
     children,
     isLoading,
     disabled,
+    icon,
 }: {
     onClick: () => void;
     children: ReactNode;
     isLoading: boolean;
     disabled: boolean;
+    icon?: ReactNode;
 }) => {
     return (
         <button className={styles.button} disabled={disabled} onClick={onClick}>
@@ -21,7 +23,10 @@ export const Button = ({
                     <Lottie animationData={loadAnimatinon} loop={true} />
                 </div>
             ) : (
-                children
+                <>
+                    {icon}
+                    {children}
+                </>
             )}
         </button>
     );

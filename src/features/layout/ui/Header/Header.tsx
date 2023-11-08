@@ -2,12 +2,12 @@ import styles from "./style.module.scss";
 import { IconArrow } from "src/features/layout/assets/icons";
 import { ReactNode, useState } from "react";
 import { Menu, MenuItem } from "@mui/material";
-import { userStore } from "src/features/login/store/userStore";
 import { useNavigate } from "react-router-dom";
 import { observer } from "mobx-react-lite";
 import classNames from "classnames";
 import { ButtonBack } from "src/shared/ui/Button/ButtonBack/ButtonBack";
 import { HeaderActionButton } from "src/features/layout/ui/Header/HeaderActionButton/HeaderActionButton";
+import { userStore } from "src/features/users/stores/userStore";
 
 export interface IHeaderProps {
     title: string;

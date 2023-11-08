@@ -2,17 +2,21 @@ import styles from "./style.module.scss";
 import { observer } from "mobx-react-lite";
 import { ContentWithHeaderLayout } from "src/features/layout/ui/ContentWithHeaderLayout/ContentWithHeaderLayout";
 import { useNavigate, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import classNames from "classnames";
 import { userStore } from "src/features/users/stores/userStore";
 import { url } from "src/shared/helpers/url";
 import { USER_DEPARTMENTS } from "src/features/users/constants/userFilters";
-import { CalendarIcon, EducationIcon, TelegramIcon } from "src/features/users/assets";
+import { CalendarIcon, EducationIcon, SuccessIcon, TelegramIcon } from "src/features/users/assets";
 import { HeaderActionButton } from "src/features/layout/ui/Header/HeaderActionButton/HeaderActionButton";
 import { IconDelete, IconEdit } from "src/shared/assets/img";
-import { MOCKED_USER_COURSES } from "src/features/cources/constants/mockCources";
+import { MOCKED_USER_COURSES } from "src/features/education/constants/mockCources";
+import { Dialog } from "src/features/users/ui/Dialog/Dialog";
+import { IUser } from "src/features/users/interfaces/user";
+import { CircularProgress } from "@mui/material";
+import generatePDF from "react-to-pdf";
 
-function declOfNum(number: any, titles: { [x: string]: any }) {
+export function declOfNum(number: any, titles: { [x: string]: any }) {
     const cases = [2, 0, 1, 1, 1, 2];
     return titles[
         number % 100 > 4 && number % 100 < 20 ? 2 : cases[number % 10 < 5 ? number % 10 : 5]
@@ -25,11 +29,20 @@ export const UserPage = observer(() => {
     const navigate = useNavigate();
     const [selectedTab, setSelectedTab] = useState(tabs[0]);
     const params = useParams<{ id: string }>();
-    const user = userStore.allUsers.find((u) => u.id.toString() === params.id);
+    const [showDelete, setShowDelete] = useState(false);
+    const [showSuccess, setShowSuccess] = useState(false);
+    const [deletedUser, setDeletedUser] = useState<IUser | null>(null);
+
+    const user = userStore.allUsers.find((u) => u.id.toString() === params.id) ?? deletedUser;
 
     useEffect(() => {
         userStore.fetchAllUsers();
     }, []);
+
+    const componentRef = useRef<HTMLDivElement>(null);
+    const handleDownloadImage = async () => {
+        generatePDF(componentRef, { filename: `Аналитика: ${user?.fullName}.pdf` });
+    };
 
     const renderUserInfo = () => {
         if (!user) {
@@ -82,7 +95,7 @@ export const UserPage = observer(() => {
                     </div>
                 </div>
                 <div className={classNames(styles.row, styles.row4)}>
-                    <div className={styles.header}>Ответсвенное лицо</div>
+                    <div className={styles.header}>Ответственное лицо</div>
                     <div className={styles.responsiblePerson}>
                         {userStore.allUsers.find((u) => u.id === user.responsibleUserId)?.fullName}
                     </div>
@@ -131,12 +144,117 @@ export const UserPage = observer(() => {
                             <EducationIcon />
                             <div>
                                 {c.course.name}
-                                <span className={styles.score}>
-                                    ({c.testScore} / {c.course.testMaxScore})
-                                </span>
+                                <span className={styles.score}>({c.testScore} / 10)</span>
                             </div>
                         </div>
                     ))}
+                </div>
+            </div>
+        );
+    };
+
+    const renderAnalytics = () => {
+        return (
+            <div className={styles.analytics} ref={componentRef}>
+                <div className={styles.row}>
+                    <div className={styles.header}>Текущее обучение</div>
+                    <div className={styles.stats}>
+                        <div className={styles.item}>
+                            <div className={styles.progress}>
+                                <CircularProgress
+                                    variant="determinate"
+                                    value={100}
+                                    className={styles.circularBg}
+                                    thickness={3}
+                                />
+                                <CircularProgress
+                                    variant="determinate"
+                                    value={45}
+                                    className={styles.circular}
+                                    thickness={3}
+                                />
+                                <div className={styles.value}>45%</div>
+                            </div>
+                            <div className={classNames(styles.label, styles.label1)}>
+                                Прохождение текущего плана обучения
+                            </div>
+                        </div>
+                        <div className={styles.item}>
+                            <div className={styles.progress}>
+                                <CircularProgress
+                                    variant="determinate"
+                                    value={100}
+                                    className={styles.circularBg}
+                                    thickness={3}
+                                />
+                                <CircularProgress
+                                    variant="determinate"
+                                    value={100}
+                                    className={styles.circular}
+                                    thickness={3}
+                                />
+                                <div className={styles.value}>100%</div>
+                            </div>
+                            <div className={classNames(styles.label, styles.label2)}>
+                                Количество правильных ответов за пройденные тесты
+                            </div>
+                        </div>
+                        <div className={styles.item}>
+                            <div className={styles.progress}>
+                                <CircularProgress
+                                    variant="determinate"
+                                    value={100}
+                                    className={styles.circularBg}
+                                    thickness={3}
+                                />
+                                <CircularProgress
+                                    variant="determinate"
+                                    value={83}
+                                    className={styles.circular}
+                                    thickness={3}
+                                />
+                                <div className={styles.value}>83%</div>
+                            </div>
+                            <div className={classNames(styles.label, styles.label3)}>
+                                Курсов пройденных в срок
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className={styles.row}>
+                    <div className={styles.header}>Завершённые курсы</div>
+                    <div className={styles.table}>
+                        <div className={styles.tableRow}>
+                            <div className={styles.colHeader}>Название курса</div>
+                            <div className={styles.colHeader}>Назначен</div>
+                            <div className={styles.colHeader}>Дата сдачи</div>
+                            <div className={styles.colHeader}>Ответы</div>
+                        </div>
+                        <div className={styles.tableRow}>
+                            <div className={styles.name}>
+                                <SuccessIcon /> Как устроена компания
+                            </div>
+                            <div className={styles.date}>23.03</div>
+                            <div className={styles.date}>
+                                <span className={styles.success}>23.03</span>
+                            </div>
+                            <div className={styles.date}>
+                                <span className={styles.success}>4</span>&nbsp;/ 5
+                            </div>
+                        </div>
+                        <div className={styles.tableRow}>
+                            <div className={styles.name}>
+                                <SuccessIcon /> Как устроена компания
+                            </div>
+                            <div className={styles.date}>23.03</div>
+                            <div className={styles.date}>
+                                <span className={styles.success}>23.03</span>
+                            </div>
+                            <div className={styles.date}>
+                                <span className={styles.error}>2</span>&nbsp;/ 5
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         );
@@ -157,6 +275,13 @@ export const UserPage = observer(() => {
                 </HeaderActionButton>,
             ];
         }
+        if (selectedTab === tabs[2]) {
+            return [
+                <HeaderActionButton onClick={handleDownloadImage}>
+                    Скачать в PDF
+                </HeaderActionButton>,
+            ];
+        }
     };
 
     return (
@@ -165,7 +290,11 @@ export const UserPage = observer(() => {
             onBack={() => navigate("/users")}
             startActions={getStartActions()}
             endActions={[
-                <HeaderActionButton onClick={() => {}} icon={<IconDelete />} color={"delete"}>
+                <HeaderActionButton
+                    onClick={() => setShowDelete(true)}
+                    icon={<IconDelete />}
+                    color={"delete"}
+                >
                     Удалить сотрудника
                 </HeaderActionButton>,
             ]}
@@ -185,7 +314,36 @@ export const UserPage = observer(() => {
                 </div>
                 {selectedTab === tabs[0] && renderUserInfo()}
                 {selectedTab === tabs[1] && renderTasks()}
+                {selectedTab === tabs[2] && renderAnalytics()}
             </div>
+
+            <Dialog
+                open={showDelete}
+                title={"Подтверждение удаления"}
+                onClose={() => setShowDelete(false)}
+                onCancel={() => setShowDelete(false)}
+                description={"Будет удалён доступ: " + user?.email}
+                onDelete={() => {
+                    if (user) {
+                        setDeletedUser({ ...user });
+                        userStore.deleteUser(user);
+                        setShowDelete(false);
+                        setShowSuccess(true);
+                    }
+                }}
+            />
+            <Dialog
+                open={showSuccess}
+                title={"Сотрудник успешно удалён"}
+                titleIcon={<SuccessIcon />}
+                onClose={() => setShowSuccess(false)}
+                onCancel={() => {
+                    setShowSuccess(false);
+                    navigate("/users");
+                }}
+                description={"Был утрачен доступ: " + deletedUser?.email}
+                cancelButtonText={"Закрыть"}
+            />
         </ContentWithHeaderLayout>
     );
 });

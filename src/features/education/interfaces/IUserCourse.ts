@@ -1,4 +1,4 @@
-import { ICourse } from "src/features/cources/interfaces/ICourse";
+import { ICourse } from "src/features/education/interfaces/ICourse";
 
 export interface IUserCourse {
     id: number;

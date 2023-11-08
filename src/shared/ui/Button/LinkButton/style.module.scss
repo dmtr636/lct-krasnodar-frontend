@@ -1,0 +1,23 @@
+.button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 28px;
+    letter-spacing: 0.32px;
+
+    .icon {
+        padding: 6px;
+        margin: -6px;
+        border-radius: 50%;
+    }
+
+    &:hover {
+        color: var(--color-primary-hover);
+
+        .icon {
+            background: var(--color-hover-on-white-bg);
+        }
+    }
+}

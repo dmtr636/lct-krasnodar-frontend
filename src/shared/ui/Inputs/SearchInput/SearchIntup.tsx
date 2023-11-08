@@ -6,9 +6,11 @@ import close from "src/shared/assets/img/Close.svg";
 export const SearchInput = ({
     onChange,
     inputValue,
+    placeholder,
 }: {
     onChange: (value: string) => void;
     inputValue: string;
+    placeholder?: string;
 }) => {
     const [isInputFocused, setIsInputFocused] = useState(false);
 
@@ -43,7 +45,7 @@ export const SearchInput = ({
                 onChange={handleInputChange}
                 onFocus={handleInputFocus}
                 onBlur={handleInputBlur}
-                placeholder="ФИО сотрудника"
+                placeholder={placeholder ?? "ФИО сотрудника"}
             />
             <label
                 className={classNames(styles.inputLabel, {

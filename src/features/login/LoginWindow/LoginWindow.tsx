@@ -11,8 +11,8 @@ import { EmailInput } from "src/shared/ui/Inputs/EmailInput/EmailInput";
 import { PasswordInput } from "src/shared/ui/Inputs/PasswordInput/PasswordInput";
 import { Checkbox } from "src/shared/ui/Checkbox/Checkbox";
 import { Button } from "src/shared/ui/Button/Button";
-import { userStore } from "../store/userStore";
 import { ContentContainer } from "src/shared/ui/ContentContainer/ContentContainer";
+import { userStore } from "src/features/users/stores/userStore";
 
 export const LoginWindow = observer(() => {
     const [emailInputValue, setEmailInputValue] = useState("");
@@ -49,7 +49,7 @@ export const LoginWindow = observer(() => {
             .post(LOGIN_ENDPOINT, data)
             .then((response) => {
                 setIsError(false);
-                userStore.setUser(response.data);
+                userStore.currentUser = response.data;
                 navigate("/");
                 setIsLoading(false);
                 setErrorCount(6);

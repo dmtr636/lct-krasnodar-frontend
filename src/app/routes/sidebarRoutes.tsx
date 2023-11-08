@@ -4,6 +4,8 @@ import { ReactNode } from "react";
 import { IconHome, IconSupport, IconUsers } from "../../features/layout/assets/icons";
 import { SupportPage } from "src/pages/admin/support";
 import { UsersPage } from "src/pages/admin/users";
+import { EducationPage } from "src/features/education/pages/EducationPage/EducationPage";
+import { EducationIcon } from "src/features/users/assets";
 
 export type ISidebarRoute = RouteObject & {
     path: string;
@@ -31,6 +33,14 @@ export const sidebarRoutes: ISidebarRoute[] = [
         sidebarProps: {
             icon: <IconUsers />,
             counterValue: 15,
+        },
+    },
+    {
+        path: "/education",
+        element: <EducationPage />,
+        name: "Обучение",
+        sidebarProps: {
+            icon: <EducationIcon />,
         },
     },
 ];

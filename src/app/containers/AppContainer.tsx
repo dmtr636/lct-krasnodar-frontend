@@ -1,29 +1,38 @@
-import axios from "axios";
 import { observer } from "mobx-react-lite";
-import React from "react";
+import { useEffect } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import { userStore } from "src/features/login/store/userStore";
-import { ME_ENDPOINT } from "src/shared/api/endpoints";
+import { educationStore } from "src/features/education/stores/educationStore";
+import { userStore } from "src/features/users/stores/userStore";
 
 export const AppContainer = observer(() => {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const authenticate = async () => {
-        axios
-            .get(ME_ENDPOINT)
-            .then((res) => {
-                userStore.setUser(res.data);
-                if (location.pathname === "/login") {
-                    navigate("/");
-                }
-            })
-            .catch((error) => {
-                navigate("/login");
-            });
-    };
-    React.useEffect(() => {
+    useEffect(() => {
         authenticate();
     }, []);
+
+    useEffect(() => {
+        if (userStore.currentUser) {
+            fetchData();
+        }
+    }, [userStore.currentUser]);
+
+    const authenticate = async () => {
+        const isAuthenticated = await userStore.authenticate();
+        if (isAuthenticated) {
+            if (location.pathname === "/login") {
+                navigate("/");
+            }
+        } else {
+            navigate("/login");
+        }
+    };
+
+    const fetchData = () => {
+        educationStore.fetchAllPrograms();
+        educationStore.fetchAllCourses();
+    };
+
     return <Outlet />;
 });

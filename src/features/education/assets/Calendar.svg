@@ -1,0 +1,10 @@
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Calendar">
+<g id="Vector">
+<path d="M18.68 5.65C19.69 5.65 20.51 6.55 20.51 7.65V18.96C20.51 20.06 19.69 20.96 18.68 20.96H5.32C4.31 20.96 3.49 20.06 3.49 18.96V7.65C3.49 6.55 4.31 5.65 5.32 5.65H18.69M18.69 3.65H5.32C3.2 3.65 1.49 5.44 1.49 7.65V18.96C1.49 21.17 3.21 22.96 5.32 22.96H18.69C20.81 22.96 22.52 21.17 22.52 18.96V7.65C22.52 5.44 20.8 3.65 18.69 3.65Z" fill="#14214D"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M22.52 12.54H1.48001V10.54H22.52V12.54Z" fill="#14214D"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M7.74001 1.06V3.65H5.74001V1.06H7.74001Z" fill="#14214D"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M18.26 1.06V3.65H16.26V1.06H18.26Z" fill="#14214D"/>
+</g>
+</g>
+</svg>
