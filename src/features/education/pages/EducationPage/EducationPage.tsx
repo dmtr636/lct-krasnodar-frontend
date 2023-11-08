@@ -3,13 +3,18 @@ import { observer } from "mobx-react-lite";
 import { ContentWithHeaderLayout } from "src/features/layout/ui/ContentWithHeaderLayout/ContentWithHeaderLayout";
 import { useNavigate } from "react-router-dom";
 import { HeaderActionButton } from "src/features/layout/ui/Header/HeaderActionButton/HeaderActionButton";
-import { IconAdd, IconClose, IconDelete } from "src/shared/assets/img";
+import { IconAdd, IconClose, IconDelete, IconEdit } from "src/shared/assets/img";
 import { educationStore } from "src/features/education/stores/educationStore";
 import { useEffect, useState } from "react";
 import { Drawer, Menu, MenuItem } from "@mui/material";
 import { Input } from "src/shared/ui/Inputs/Input/Input";
 import { Button } from "src/shared/ui/Button/Button";
-import { IconCalendar, IconCheckmark, IconEducation } from "src/features/education/assets";
+import {
+    IconCalendar,
+    IconCheckmark,
+    IconEducation,
+    IconMinus,
+} from "src/features/education/assets";
 import { Checkbox } from "src/shared/ui/Checkbox/Checkbox";
 import { USER_DEPARTMENT_FILTER_OPTIONS } from "src/features/users/constants/userDepartments";
 import { IconButton } from "src/shared/ui/Button/IconButton/IconButton";
@@ -26,9 +31,8 @@ export const EducationPage = observer(() => {
     const [showAddCourse, setShowAddCourse] = useState(false);
     const [showAddTest, setShowAddTest] = useState(false);
     const [editingCourse, setEditingCourse] = useState<ICourse | null>(null);
+    const [editingProgram, setEditingProgram] = useState<IProgram | null>(null);
     const [selectProgramAnchorEl, setSelectProgramAnchorEl] = useState<any>(null);
-    const [selectCourseAnchorEl, setSelectCourseAnchorEl] = useState<any>(null);
-    const [selectCourseProgram, setSelectCourseProgram] = useState<IProgram | null>(null);
 
     const getStartActions = () => {
         return [
@@ -67,6 +71,16 @@ export const EducationPage = observer(() => {
             fileStore.uploadedFile = editingCourse.file;
         }
     }, [editingCourse]);
+
+    useEffect(() => {
+        if (editingProgram) {
+            educationStore.nameInput = editingProgram.name;
+            educationStore.selectedDepartments = editingProgram.departments;
+            educationStore.selectedCourses = educationStore.courses.filter(
+                (c) => c.programId === editingProgram.id,
+            );
+        }
+    }, [editingProgram]);
 
     return (
         <ContentWithHeaderLayout
@@ -107,17 +121,13 @@ export const EducationPage = observer(() => {
                         <div className={styles.programBlock}>
                             <div className={styles.programBlockHeader}>
                                 <button
-                                    className={classNames(styles.addButton, {
-                                        [styles.withBottomBorder]:
-                                            selectCourseProgram === program && selectCourseAnchorEl,
-                                    })}
+                                    className={classNames(styles.addButton)}
                                     onClick={(e) => {
-                                        setSelectCourseAnchorEl(e.currentTarget);
-                                        setSelectCourseProgram(program);
+                                        setEditingProgram(program);
                                     }}
                                 >
                                     <div className={styles.icon}>
-                                        <IconAdd />
+                                        <IconEdit />
                                     </div>
                                     {program.name}
                                 </button>
@@ -165,31 +175,6 @@ export const EducationPage = observer(() => {
                             )}
                         </div>
                     ))}
-                    <Menu
-                        open={!!selectCourseAnchorEl}
-                        onClose={() => setSelectCourseAnchorEl(null)}
-                        anchorEl={selectCourseAnchorEl}
-                        classes={{
-                            paper: styles.selectProgramMenu,
-                        }}
-                    >
-                        {educationStore.coursesWithoutProgram.map((c) => (
-                            <MenuItem
-                                className={styles.menuItem}
-                                onClick={async () => {
-                                    await educationStore.updateCourseProgram(
-                                        c,
-                                        selectCourseProgram!,
-                                    );
-                                    if (!educationStore.coursesWithoutProgram.length) {
-                                        setSelectCourseAnchorEl(null);
-                                    }
-                                }}
-                            >
-                                {c.name}
-                            </MenuItem>
-                        ))}
-                    </Menu>
                 </div>
             </div>
 
@@ -243,6 +228,71 @@ export const EducationPage = observer(() => {
                             ))}
                         </div>
                     </div>
+
+                    {!educationStore.unselectedCourses.length &&
+                    !educationStore.selectedCourses.length ? (
+                        <div className={classNames(styles.section, styles.withoutBottomBorder)}>
+                            <div className={styles.sectionHeader}>Курсы не найдены</div>
+                            <HeaderActionButton
+                                onClick={() => {
+                                    setShowAddCourse(true);
+                                }}
+                                className={styles.addCourseButton}
+                                icon={<IconAdd />}
+                            >
+                                Создать курс
+                            </HeaderActionButton>
+                        </div>
+                    ) : (
+                        <div className={styles.section}>
+                            <div className={styles.sectionHeader}>Входящие курсы</div>
+                            {!!educationStore.selectedCourses.length ? (
+                                <div className={styles.courses}>
+                                    {educationStore.selectedCourses.map((c) => (
+                                        <div className={styles.course}>
+                                            <IconEducation />
+                                            {c.name}
+                                            <IconButton
+                                                className={styles.deleteButton}
+                                                onClick={() => {
+                                                    educationStore.selectedCourses =
+                                                        educationStore.selectedCourses.filter(
+                                                            (_c) => _c !== c,
+                                                        );
+                                                }}
+                                            >
+                                                <IconMinus />
+                                            </IconButton>
+                                        </div>
+                                    ))}
+                                </div>
+                            ) : (
+                                <div>Курсы не добавлены</div>
+                            )}
+                        </div>
+                    )}
+
+                    {!!educationStore.unselectedCourses.length && (
+                        <div className={styles.section}>
+                            <div className={styles.sectionHeader}>Не входят в план обучения</div>
+                            <div className={styles.courses}>
+                                {educationStore.unselectedCourses.map((c) => (
+                                    <div className={styles.course}>
+                                        <IconEducation />
+                                        {c.name}
+                                        <IconButton
+                                            className={styles.deleteButton}
+                                            onClick={() => {
+                                                educationStore.selectedCourses.unshift(c);
+                                            }}
+                                        >
+                                            <IconAdd />
+                                        </IconButton>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    )}
                     <div className={styles.actionButton}>
                         <Button
                             onClick={() => {
@@ -250,7 +300,7 @@ export const EducationPage = observer(() => {
                                 setShowAddProgram(false);
                             }}
                             isLoading={false}
-                            disabled={false}
+                            disabled={!educationStore.isAddProgramValid}
                             icon={<IconCheckmark />}
                         >
                             Создать план обучения
@@ -259,7 +309,146 @@ export const EducationPage = observer(() => {
                 </div>
             </Drawer>
 
-            <Drawer open={showAddCourse} onClose={() => setShowAddCourse(false)} anchor={"right"}>
+            <Drawer
+                open={!!editingProgram}
+                onClose={() => setEditingProgram(null)}
+                anchor={"right"}
+            >
+                <div className={styles.drawer}>
+                    <div className={styles.header}>
+                        Редактировать программу обучения
+                        <button className={styles.close} onClick={() => setEditingProgram(null)}>
+                            <IconClose />
+                        </button>
+                    </div>
+                    <div className={styles.section}>
+                        <div className={styles.sectionHeader}>Название программы обучения</div>
+                        <Input
+                            onChange={(value) => (educationStore.nameInput = value)}
+                            inputValue={educationStore.nameInput}
+                            placeholder={"Название программы обучения"}
+                        />
+                    </div>
+                    <div className={styles.section}>
+                        <div className={styles.sectionHeader}>Для кого предназначена программа</div>
+                        <div className={styles.checkboxGrid}>
+                            <Checkbox
+                                checkboxChange={(value) => {
+                                    educationStore.selectedDepartments = [];
+                                }}
+                                isChecked={!educationStore.selectedDepartments.length}
+                            >
+                                Выбрать все
+                            </Checkbox>
+                            {USER_DEPARTMENT_FILTER_OPTIONS.map((option) => (
+                                <Checkbox
+                                    checkboxChange={(value) => {
+                                        if (value) {
+                                            educationStore.selectedDepartments.push(
+                                                option.department,
+                                            );
+                                        } else {
+                                            educationStore.selectedDepartments =
+                                                educationStore.selectedDepartments.filter(
+                                                    (d) => d !== option.department,
+                                                );
+                                        }
+                                    }}
+                                    isChecked={educationStore.selectedDepartments.includes(
+                                        option.department,
+                                    )}
+                                >
+                                    {option.name}
+                                </Checkbox>
+                            ))}
+                        </div>
+                    </div>
+
+                    {!educationStore.unselectedCourses.length &&
+                    !educationStore.selectedCourses.length ? (
+                        <div className={classNames(styles.section, styles.withoutBottomBorder)}>
+                            <div className={styles.sectionHeader}>Курсы не найдены</div>
+                            <HeaderActionButton
+                                onClick={() => {
+                                    setShowAddCourse(true);
+                                }}
+                                className={styles.addCourseButton}
+                                icon={<IconAdd />}
+                            >
+                                Создать курс
+                            </HeaderActionButton>
+                        </div>
+                    ) : (
+                        <div className={styles.section}>
+                            <div className={styles.sectionHeader}>Входящие курсы</div>
+                            {!!educationStore.selectedCourses.length ? (
+                                <div className={styles.courses}>
+                                    {educationStore.selectedCourses.map((c) => (
+                                        <div className={styles.course}>
+                                            <IconEducation />
+                                            {c.name}
+                                            <IconButton
+                                                className={styles.deleteButton}
+                                                onClick={() => {
+                                                    educationStore.selectedCourses =
+                                                        educationStore.selectedCourses.filter(
+                                                            (_c) => _c !== c,
+                                                        );
+                                                }}
+                                            >
+                                                <IconMinus />
+                                            </IconButton>
+                                        </div>
+                                    ))}
+                                </div>
+                            ) : (
+                                <div>Курсы не добавлены</div>
+                            )}
+                        </div>
+                    )}
+                    {!!educationStore.unselectedCourses.length && (
+                        <div className={styles.section}>
+                            <div className={styles.sectionHeader}>Не входят в план обучения</div>
+                            <div className={styles.courses}>
+                                {educationStore.unselectedCourses.map((c) => (
+                                    <div className={styles.course}>
+                                        <IconEducation />
+                                        {c.name}
+                                        <IconButton
+                                            className={styles.deleteButton}
+                                            onClick={() => {
+                                                educationStore.selectedCourses.unshift(c);
+                                            }}
+                                        >
+                                            <IconAdd />
+                                        </IconButton>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+                    <div className={styles.actionButton}>
+                        <Button
+                            onClick={async () => {
+                                await educationStore.updateProgram(editingProgram!);
+                                setEditingProgram(null);
+                            }}
+                            isLoading={false}
+                            disabled={!educationStore.isAddProgramValid}
+                            icon={<IconCheckmark />}
+                        >
+                            Сохранить изменения
+                        </Button>
+                    </div>
+                </div>
+            </Drawer>
+
+            <Drawer
+                hideBackdrop={showAddCourse && showAddProgram}
+                open={showAddCourse}
+                onClose={() => setShowAddCourse(false)}
+                anchor={"right"}
+            >
                 <div className={styles.drawer}>
                     <div className={styles.header}>
                         Добавить курс
@@ -363,7 +552,10 @@ export const EducationPage = observer(() => {
                     </div>
                     <div className={styles.section}>
                         <div className={styles.sectionHeader}>Тестирование после изучения</div>
-                        <HeaderActionButton onClick={() => {}} variant={"contained"}>
+                        <HeaderActionButton
+                            onClick={() => setShowAddTest(true)}
+                            variant={"contained"}
+                        >
                             Создать тестирование
                         </HeaderActionButton>
                     </div>
@@ -385,7 +577,7 @@ export const EducationPage = observer(() => {
                                 setShowAddCourse(false);
                             }}
                             isLoading={false}
-                            disabled={false}
+                            disabled={!educationStore.isAddCourseValid}
                             icon={<IconCheckmark />}
                         >
                             Добавить курс
@@ -540,7 +732,12 @@ export const EducationPage = observer(() => {
                 </div>
             </Drawer>
 
-            <Drawer open={showAddTest} onClose={() => setShowAddTest(false)} anchor={"right"}>
+            <Drawer
+                open={showAddTest}
+                onClose={() => setShowAddTest(false)}
+                anchor={"right"}
+                hideBackdrop
+            >
                 <div className={styles.drawer}>
                     <div className={styles.header}>
                         Создать тестирование

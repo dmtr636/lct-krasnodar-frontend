@@ -35,6 +35,9 @@ export class EducationStore {
             departments: this.selectedDepartments,
         });
         this.programs.unshift(response.data);
+        this.selectedCourses.forEach((c) => {
+            this.updateCourseProgram(c, response.data);
+        });
     }
 
     async addCourse() {
@@ -75,6 +78,18 @@ export class EducationStore {
         });
     }
 
+    async updateProgram(program: IProgram) {
+        const response = await axios.put(PROGRAMS_ENDPOINT, {
+            id: program.id,
+            name: this.nameInput,
+            departments: this.selectedDepartments,
+        });
+        this.programs = this.programs.map((p) => (p.id === program.id ? response.data : p));
+        this.selectedCourses.forEach((c) => {
+            this.updateCourseProgram(c, program);
+        });
+    }
+
     async deleteProgram(id: number) {
         await axios.delete(PROGRAMS_ENDPOINT + "/" + id);
         this.programs = this.programs.filter((p) => p.id !== id);
@@ -98,6 +113,18 @@ export class EducationStore {
             .filter((c) => c.programId === programId)
             .map((c) => c.duration)
             .reduce((a, b) => a + b, 0);
+    }
+
+    get unselectedCourses() {
+        return this.coursesWithoutProgram.filter((c) => !this.selectedCourses.includes(c));
+    }
+
+    get isAddProgramValid() {
+        return !!this.nameInput;
+    }
+
+    get isAddCourseValid() {
+        return this.nameInput && !!this.durationInput;
     }
 }
 

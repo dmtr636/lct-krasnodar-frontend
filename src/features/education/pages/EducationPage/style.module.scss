@@ -96,6 +96,7 @@
                     font-weight: 500;
                     line-height: 28px;
                     letter-spacing: 0.32px;
+                    color: var(--color-primary);
 
                     &:hover {
                         background: #eff5fb;
@@ -107,6 +108,10 @@
 
                     .deleteButton {
                         margin-left: auto;
+                    }
+
+                    svg path {
+                        fill: currentColor;
                     }
                 }
             }
@@ -121,6 +126,7 @@
     min-height: 100%;
     display: flex;
     flex-direction: column;
+    overflow: auto;
 
     .header {
         display: flex;
@@ -149,12 +155,24 @@
         padding: 24px 0;
         border-bottom: 1px solid #d8e4f3;
 
+        &.withoutBottomBorder {
+            border-bottom: none;
+        }
+
         .sectionHeader {
             font-size: 20px;
             font-weight: 600;
             line-height: 28px;
             letter-spacing: 0.4px;
             margin-bottom: 20px;
+        }
+
+        .addCourseButton {
+            width: 100%;
+            height: 48px;
+            font-size: 16px;
+            font-weight: 600;
+            letter-spacing: 0.16px;
         }
 
         .checkmarkIcon {
@@ -208,6 +226,28 @@
             &.withBottomBorder {
                 margin-bottom: -13px;
                 border-bottom: 1px solid currentColor;
+            }
+        }
+
+        .courses {
+            display: grid;
+            gap: 16px;
+
+            .course {
+                display: flex;
+                align-items: center;
+                gap: 13px;
+                padding: 12px 16px;
+                border-radius: 4px;
+                border: 1px solid #d8e4f3;
+                font-size: 16px;
+                font-weight: 500;
+                line-height: 28px;
+                letter-spacing: 0.32px;
+
+                .deleteButton {
+                    margin-left: auto;
+                }
             }
         }
     }
