@@ -95,7 +95,7 @@ export const UserPage = observer(() => {
                     </div>
                 </div>
                 <div className={classNames(styles.row, styles.row4)}>
-                    <div className={styles.header}>Ответсвенное лицо</div>
+                    <div className={styles.header}>Ответственное лицо</div>
                     <div className={styles.responsiblePerson}>
                         {userStore.allUsers.find((u) => u.id === user.responsibleUserId)?.fullName}
                     </div>
