@@ -9,6 +9,8 @@
     z-index: 5;
 }
 .content {
+    display: flex;
+    flex-direction: column;
     background: white;
     padding-left: 40px;
     padding-right: 40px;
@@ -338,4 +340,8 @@
 }
 .userLeft {
     margin-left: -12px;
+}
+.button {
+    margin-top: auto;
+    margin-bottom: 40px;
 }
