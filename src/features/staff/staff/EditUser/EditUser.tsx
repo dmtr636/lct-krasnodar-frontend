@@ -71,6 +71,7 @@ export const EditUser = ({
         fileInputRef.current?.click();
     };
     const data = {
+        id: userData.id,
         email: email,
         department: department,
         firstName: firstName,
@@ -78,17 +79,15 @@ export const EditUser = ({
         patronymic: patronymic,
         telegram: TG,
         phone: number,
-        photoFileId: userData.photoFileUrl,
+        photoFileId: fileStore.uploadedFile?.id ?? "fcd2b147-53c0-46b7-b67b-610acab352de",
         responsibleUserId: responsibleUserId,
     };
     const sendUser = async () => {
-        await fileStore.uploadFile();
+        if (file) {
+            await fileStore.uploadFile();
+        }
         axios
-            .put(
-                USERS_ENDPOINT,
-                data,
-                /* photoFileId: "052f338a-6116-4950-95e9-bb889a3dbedb" */
-            )
+            .put(USERS_ENDPOINT, { ...data })
             .then((response) => {
                 console.log(response);
                 /*     setEmail("");
