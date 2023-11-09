@@ -32,7 +32,7 @@ export const EmployeeArray = observer(({ responsibilityUser }: { responsibilityU
             role={
                 USER_DEPARTMENT_FILTER_OPTIONS.find(
                     (options) => options.department === employee.department,
-                )?.name
+                )?.name!
             }
             name={employee.fullName}
             link={`/users/${employee.id}`}

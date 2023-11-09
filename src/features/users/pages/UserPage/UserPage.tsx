@@ -800,7 +800,7 @@ export const UserPage = observer(() => {
                     ))}
             </Menu>
             <Drawer open={showAddUser} anchor="right" onClose={() => setShowAddUser(false)}>
-                <EditUser setShowAddUser={setShowAddUser} userData={user} />
+                <EditUser setShowAddUser={setShowAddUser} userData={user!} />
             </Drawer>
         </ContentWithHeaderLayout>
     );
