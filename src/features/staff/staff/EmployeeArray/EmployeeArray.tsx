@@ -3,8 +3,9 @@ import { EmployeeCard } from "../EmployeeCard/EmployeeCard";
 import { observer } from "mobx-react-lite";
 import { userStore } from "src/features/users/stores/userStore";
 import { sortedStore } from "src/features/users/stores/sortedStore";
+import { USER_DEPARTMENT_FILTER_OPTIONS } from "src/features/users/constants/userDepartments";
 
-export const EmployeeArray = observer(() => {
+export const EmployeeArray = observer(({ responsibilityUser }: { responsibilityUser: boolean }) => {
     let employeeData = userStore.users;
     const sortedBy = sortedStore.sortedBy;
     switch (sortedBy) {
@@ -28,7 +29,11 @@ export const EmployeeArray = observer(() => {
         <EmployeeCard
             key={employee.id}
             img={employee.photoFileUrl}
-            role={employee.department}
+            role={
+                USER_DEPARTMENT_FILTER_OPTIONS.find(
+                    (options) => options.department === employee.department,
+                )?.name
+            }
             name={employee.fullName}
             link={`/users/${employee.id}`}
             tg={employee.telegram}
@@ -40,6 +45,18 @@ export const EmployeeArray = observer(() => {
             number % 100 > 4 && number % 100 < 20 ? 2 : cases[number % 10 < 5 ? number % 10 : 5];
         return `${number} ${titles[index]}`;
     }
+    const responsibilityDate = employeeData.filter((user) => user.role === "MANAGER");
+    const responsibilityArray = responsibilityDate.map((employee) => (
+        <EmployeeCard
+            key={employee.id}
+            img={employee.photoFileUrl}
+            role={employee.department}
+            name={employee.fullName}
+            link={`/users/${employee.id}`}
+            tg={employee.telegram}
+        />
+    ));
+
     return (
         <div className={styles.container}>
             {EmployeeArray.length === 0 ? (
@@ -48,13 +65,21 @@ export const EmployeeArray = observer(() => {
                 <>
                     <div className={styles.text}>
                         Отображается{" "}
-                        {declOfNum(EmployeeArray.length, [
-                            "сотрудник",
-                            "сотрудника",
-                            "сотрудников",
-                        ])}
+                        {responsibilityUser
+                            ? declOfNum(responsibilityArray.length, [
+                                  "сотрудник",
+                                  "сотрудника",
+                                  "сотрудников",
+                              ])
+                            : declOfNum(EmployeeArray.length, [
+                                  "сотрудник",
+                                  "сотрудника",
+                                  "сотрудников",
+                              ])}
                     </div>
-                    <div className={styles.array}>{EmployeeArray}</div>
+                    <div className={styles.array}>
+                        {!responsibilityUser ? EmployeeArray : responsibilityArray}
+                    </div>
                 </>
             )}
         </div>

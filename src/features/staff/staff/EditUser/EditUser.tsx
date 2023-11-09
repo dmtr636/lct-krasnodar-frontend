@@ -15,23 +15,26 @@ import axios from "axios";
 import { USERS_ENDPOINT } from "src/shared/api/endpoints";
 import classNames from "classnames";
 import { USER_DEPARTMENT_FILTER_OPTIONS } from "src/features/users/constants/userDepartments";
-import { IUserDepartment } from "src/features/users/interfaces/user";
-import { UserStore, userStore } from "src/features/users/stores/userStore";
+import { IUser, IUserDepartment } from "src/features/users/interfaces/user";
+import { userStore } from "src/features/users/stores/userStore";
 import { fileStore } from "src/features/education/stores/fileStore";
+import { USER_DEPARTMENTS } from "src/features/users/constants/userFilters";
 
-export const AddUser = ({
+export const EditUser = ({
     setShowAddUser,
     setShowSuccefull,
     setShowFale,
+    userData,
 }: {
     setShowAddUser: (arg: boolean) => void;
     setShowSuccefull: (arg: boolean) => void;
     setShowFale: (arg: boolean) => void;
+    userData: IUser;
 }) => {
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [patronymic, setPatronymic] = useState("");
-    const [file, setFile] = useState<File | null>(null);
+    const [file, setFile] = useState<File | null | string>(null);
     const [number, setNumber] = useState("");
     const [TG, setTG] = useState("");
     const [email, setEmail] = useState("");
@@ -58,7 +61,6 @@ export const AddUser = ({
     const handleClearFile = () => {
         fileStore.selectedFile = null;
         setFile(null);
-
         console.log(data);
 
         if (fileInputRef.current) {
@@ -69,6 +71,7 @@ export const AddUser = ({
         fileInputRef.current?.click();
     };
     const data = {
+        id: userData.id,
         email: email,
         department: department,
         firstName: firstName,
@@ -76,18 +79,18 @@ export const AddUser = ({
         patronymic: patronymic,
         telegram: TG,
         phone: number,
-        photoFileId: fileStore.uploadedFile?.id,
+        photoFileId: fileStore.uploadedFile?.id ?? "fcd2b147-53c0-46b7-b67b-610acab352de",
         responsibleUserId: responsibleUserId,
     };
     const sendUser = async () => {
-        await fileStore.uploadFile();
-        console.log(JSON.stringify(data) + "полезная нагрузка");
-
+        if (file) {
+            await fileStore.uploadFile();
+        }
         axios
-            .post(USERS_ENDPOINT, data)
+            .put(USERS_ENDPOINT, { ...data })
             .then((response) => {
                 console.log(response);
-                setEmail("");
+                /*     setEmail("");
                 setDepartment("");
                 setResponsibleUserId(null);
                 setFirstName("");
@@ -95,15 +98,27 @@ export const AddUser = ({
                 setPatronymic("");
                 setTG("");
                 setNumber("");
-                fileStore.selectedFile = null;
-                fileStore.uploadedFile = null;
-                setShowSuccefull(true);
+                setShowSuccefull(true); */
             })
             .catch((error) => {
                 console.log("ошибка" + error);
                 setShowFale(true);
             });
     };
+    useEffect(() => {
+        console.log(userData);
+        setEmail(userData?.email);
+        setDepartmentName(USER_DEPARTMENTS[userData.department]);
+        setDepartment(userData?.department);
+        setResponsibleUserId(userData?.responsibleUserId);
+        setFirstName(userData?.firstName);
+        setLastName(userData?.lastName);
+        setPatronymic(userData?.patronymic);
+        setTG(userData?.telegram);
+        setNumber(userData?.phone);
+        /*         setFile(userData?.photoFileUrl)
+         */
+    }, []);
     const depArray = USER_DEPARTMENT_FILTER_OPTIONS.map((option, index) => (
         <div
             key={index}
@@ -123,7 +138,7 @@ export const AddUser = ({
             {option.name}
         </div>
     ));
-    console.log(data);
+    console.log(JSON.stringify(data) + "полезная нагрузка");
     const responsibleUsers = userStore.allUsers.filter((user) => user.role === "MANAGER");
     const responsibleUsersArray = responsibleUsers.map((user, index) => (
         <div
@@ -142,7 +157,7 @@ export const AddUser = ({
         <div className={styles.container} onClick={() => setShowAddUser(false)}>
             <div className={styles.content} onClick={(e) => e.stopPropagation()}>
                 <div className={styles.header}>
-                    <div className={styles.headerText}>Добавление сотрудника</div>
+                    <div className={styles.headerText}>Редактирование сотрудника</div>
                     <div onClick={() => setShowAddUser(false)} className={styles.headerIcon}>
                         {" "}
                         <img src={close} alt="" />
@@ -300,21 +315,12 @@ export const AddUser = ({
                 <div className={styles.button}>
                     <Button
                         isLoading={false}
-                        disabled={
-                            !(
-                                firstName.trim() !== "" &&
-                                lastName.trim() !== "" &&
-                                patronymic.trim() !== "" &&
-                                number.trim() !== "" &&
-                                TG.trim() !== "" &&
-                                emailIsValid
-                            )
-                        }
+                        disabled={false}
                         onClick={() => {
                             sendUser();
                         }}
                     >
-                        <img src={checkmark}></img> Добавить пользователя
+                        <img src={checkmark}></img> Сохранить изменения
                     </Button>
                 </div>
             </div>

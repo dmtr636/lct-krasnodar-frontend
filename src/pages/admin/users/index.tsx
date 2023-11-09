@@ -17,12 +17,19 @@ import { tasksStore } from "src/features/users/stores/tasksStore";
 import { userStore } from "src/features/users/stores/userStore";
 import { sortedStore } from "src/features/users/stores/sortedStore";
 import { AddUser } from "src/features/staff/staff/AddUser/AddUser";
+import { Drawer } from "@mui/material";
+import { ShowSuccefull } from "src/features/staff/staff/ShowSuccefull/ShowSuccefull";
+import { ShowFale } from "src/features/staff/staff/ShowFale/ShowFale";
 
 export const UsersPage = observer(() => {
     const [inputValue, setInputValue] = useState("");
     const [showSort, setShowSort] = useState(false);
     const [showFilter, setShowFilter] = useState(false);
     const [showAdduser, setShowAddUser] = useState(false);
+    const [responsibilityUser, setResponsibilityUser] = useState(false);
+    const [ShowSuccefullWindow, setShowSuccefull] = useState(false);
+    const [showFale, setShowFale] = useState(false);
+
     const navigate = useNavigate();
 
     const deportamentArray = departmentsStore.allDepartments.map((option) => (
@@ -68,8 +75,13 @@ export const UsersPage = observer(() => {
     useEffect(() => {
         userStore.fetchAllUsers();
         console.log(userStore.allUsers + "загрузка");
+        document.addEventListener("click", hideSort);
+        return () => document.addEventListener("click", hideSort);
     }, []);
     userStore.searchInput = inputValue;
+    const hideSort = () => {
+        setShowSort(false);
+    };
     return (
         <ContentWithHeaderLayout
             title={"Сотрудники"}
@@ -90,7 +102,10 @@ export const UsersPage = observer(() => {
                     <div className={styles.input}>
                         <SearchInput onChange={setInputValue} inputValue={inputValue} />
                     </div>
-                    <div className={classNames(styles.sortedBlock, { [styles.active]: showSort })}>
+                    <div
+                        className={classNames(styles.sortedBlock, { [styles.active]: showSort })}
+                        onClick={(e) => e.stopPropagation()}
+                    >
                         <div onClick={() => setShowSort(!showSort)} className={styles.sort}>
                             <img src={sort} alt="" />
                             Сортировка
@@ -146,7 +161,7 @@ export const UsersPage = observer(() => {
                     {cloudArrayTask}
                 </div>
 
-                <EmployeeArray />
+                <EmployeeArray responsibilityUser={responsibilityUser} />
                 {showFilter && (
                     <div
                         className={styles.filterContainer}
@@ -181,17 +196,67 @@ export const UsersPage = observer(() => {
                             <div className={styles.filterType}>
                                 <div className={styles.filterDeportament}>
                                     <div className={styles.filterText}>Отдел</div>
-                                    <div>{deportamentArray}</div>
+                                    <div>
+                                        <Checkbox
+                                            checkboxChange={() => {
+                                                departmentsStore.selectedDepartments = [];
+                                            }}
+                                            isChecked={!departmentsStore.selectedDepartments.length}
+                                        >
+                                            Выбрать все
+                                        </Checkbox>
+                                        {deportamentArray}
+                                    </div>
                                 </div>
                                 <div className={styles.filterTasks}>
                                     <div className={styles.filterText}>Статус задач</div>
-                                    <div>{optionsArray}</div>
+                                    <div>
+                                        <Checkbox
+                                            checkboxChange={() => {
+                                                tasksStore.selectedTasks = [];
+                                            }}
+                                            isChecked={!tasksStore.selectedTasks.length}
+                                        >
+                                            Выбрать все
+                                        </Checkbox>
+                                        {optionsArray}
+                                    </div>
+                                </div>
+                                <div className={styles.responsibilityUser}>
+                                    <div className={styles.filterText}>Ответственное лицо</div>
+                                    <div>
+                                        <Checkbox
+                                            checkboxChange={() => {
+                                                setResponsibilityUser(!responsibilityUser);
+                                            }}
+                                            isChecked={responsibilityUser}
+                                        >
+                                            Являюсь ответственным лицом
+                                        </Checkbox>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 )}
-                {showAdduser && <AddUser />}
+                <Drawer open={showAdduser} onClose={() => setShowAddUser(false)} anchor={"right"}>
+                    <AddUser
+                        setShowFale={setShowFale}
+                        setShowAddUser={setShowAddUser}
+                        setShowSuccefull={setShowSuccefull}
+                    />
+                </Drawer>
+                <Drawer
+                    open={ShowSuccefullWindow}
+                    onClose={() => setShowSuccefull(false)}
+                    anchor={"right"}
+                >
+                    <ShowSuccefull setShowSuccefull={setShowSuccefull} />
+                </Drawer>
+                <Drawer open={showFale} onClose={() => setShowFale(false)} anchor={"right"}>
+                    <ShowFale setShowFale={setShowFale} />
+                </Drawer>
+                {/*  {showAdduser && <AddUser setShowAddUser={setShowAddUser}/>} */}
             </div>
         </ContentWithHeaderLayout>
     );

@@ -20,6 +20,7 @@ import { IconButton } from "src/shared/ui/Button/IconButton/IconButton";
 import { LinkButton } from "src/shared/ui/Button/LinkButton/LinkButton";
 import { IconCheckmark, IconEducation } from "src/features/education/assets";
 import { Button } from "src/shared/ui/Button/Button";
+import { EditUser } from "src/features/staff/staff/EditUser/EditUser";
 
 export function declOfNum(number: any, titles: { [x: string]: any }) {
     const cases = [2, 0, 1, 1, 1, 2];
@@ -47,6 +48,10 @@ export const UserPage = observer(() => {
     const [deletedUser, setDeletedUser] = useState<IUser | null>(null);
     const [selectCourseAnchorEl, setSelectCourseAnchorEl] = useState<any>(null);
     const [addSkillAnchorEl, setAddSkillAnchorEl] = useState<any>(null);
+
+    const [showAddUser, setShowAddUser] = useState(false);
+    const [ShowSuccefullWindow, setShowSuccefull] = useState(false);
+    const [showFale, setShowFale] = useState(false);
 
     const user = userStore.allUsers.find((u) => u.id.toString() === params.id) ?? deletedUser;
 
@@ -512,7 +517,12 @@ export const UserPage = observer(() => {
     const getStartActions = () => {
         if (selectedTab === tabs[0]) {
             return [
-                <HeaderActionButton onClick={() => {}} icon={<IconEdit />}>
+                <HeaderActionButton
+                    onClick={() => {
+                        setShowAddUser(true);
+                    }}
+                    icon={<IconEdit />}
+                >
                     Редактировать
                 </HeaderActionButton>,
             ];
@@ -789,6 +799,9 @@ export const UserPage = observer(() => {
                         </MenuItem>
                     ))}
             </Menu>
+            <Drawer open={showAddUser} anchor="right" onClose={() => setShowAddUser(false)}>
+                <EditUser setShowAddUser={setShowAddUser} userData={user} />
+            </Drawer>
         </ContentWithHeaderLayout>
     );
 });
