@@ -38,6 +38,8 @@ export const AppContainer = observer(() => {
         educationStore.fetchAllUserCourses();
         auditStore.fetchAllEvents();
         mailingStore.fetchMailings();
+        userStore.fetchAllUsers();
+        mailingStore.fetchMessages();
     };
 
     return <Outlet />;

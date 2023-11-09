@@ -548,7 +548,7 @@ export const MailingPage = observer(() => {
                         <Button
                             onClick={() => {
                                 mailingStore.addMailing();
-                                setShowAddMailing(false);
+                                setProcessingTemplate(null);
                                 setShowSuccessMailing(true);
                             }}
                             isLoading={false}

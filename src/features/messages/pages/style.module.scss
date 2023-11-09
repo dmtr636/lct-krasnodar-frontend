@@ -1,0 +1,449 @@
+.content {
+    padding: 28px 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+
+    .card {
+        border-radius: 0 8px 8px 8px;
+        width: 972px;
+        background: white;
+        border: 1px solid #d8e4f3;
+
+        .header {
+            padding: 24px 40px;
+            border-bottom: 1px solid #d8e4f3;
+            font-size: 20px;
+            font-weight: 600;
+            line-height: 28px;
+            letter-spacing: 0.4px;
+        }
+
+        .programBlock {
+            padding: 24px 40px;
+
+            .programBlockHeader {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                font-size: 16px;
+                font-weight: 600;
+                line-height: 28px;
+                letter-spacing: 0.32px;
+
+                .addButton {
+                    display: flex;
+                    align-items: center;
+                    gap: 16px;
+                    font-size: 16px;
+                    font-weight: 600;
+                    line-height: 28px;
+                    letter-spacing: 0.32px;
+                    padding: 11px 0;
+                    margin: -11px 0;
+                    color: var(--color-primary);
+
+                    &.withBottomBorder {
+                        margin-bottom: -12px;
+                        border-bottom: 1px solid currentColor;
+                    }
+
+                    .icon {
+                        padding: 6px;
+                        margin: -6px;
+                        border-radius: 50%;
+                    }
+
+                    &:hover {
+                        color: var(--color-primary-hover);
+
+                        .icon {
+                            background: var(--color-hover-on-white-bg);
+                        }
+                    }
+                }
+
+                .deleteButton {
+                    margin-right: 8px;
+                }
+
+                .duration {
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                    font-size: 14px;
+                    font-weight: 700;
+                    line-height: 28px;
+                    letter-spacing: 0.28px;
+                }
+            }
+            .courses {
+                display: grid;
+                gap: 16px;
+
+                .course {
+                    display: flex;
+                    align-items: center;
+                    gap: 13px;
+                    padding: 12px 16px;
+                    border-radius: 4px;
+                    border: 1px solid #d8e4f3;
+                    font-size: 16px;
+                    font-weight: 500;
+                    line-height: 28px;
+                    letter-spacing: 0.32px;
+                    color: var(--color-primary);
+
+                    &:hover {
+                        background: #eff5fb;
+                    }
+
+                    &:has(.deleteButton:hover) {
+                        background: white;
+                    }
+
+                    .actions {
+                        margin-left: auto;
+                        display: flex;
+                        align-items: center;
+                        gap: 24px;
+                    }
+
+                    .deleteButton {
+                        margin-left: auto;
+                    }
+
+                    svg path {
+                        fill: currentColor;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.drawer {
+    background: white;
+    padding: 24px 40px;
+    width: 640px;
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 24px;
+        font-weight: 700;
+        line-height: 28px;
+        letter-spacing: 0.48px;
+        padding-bottom: 24px;
+        border-bottom: 1px solid #d8e4f3;
+        color: var(--color-primary);
+
+        .close {
+            padding: 6px;
+            margin: -6px;
+            border-radius: 50%;
+            color: var(--color-primary);
+
+            &:hover {
+                color: var(--color-primary-hover);
+                background: var(--color-hover-on-white-bg);
+            }
+        }
+    }
+
+    .addCourseButton {
+        width: 100%;
+        height: 48px;
+        font-size: 16px;
+        font-weight: 600;
+        letter-spacing: 0.16px;
+    }
+
+    .addQuestionButton {
+        margin-top: 24px;
+        margin-bottom: 28px;
+        width: 100%;
+        height: 48px;
+        font-size: 16px;
+        font-weight: 600;
+        letter-spacing: 0.16px;
+    }
+
+    .section {
+        padding: 24px 0;
+
+        &:not(:last-child) {
+            border-bottom: 1px solid #d8e4f3;
+        }
+
+        &.withoutBottomBorder {
+            border-bottom: none;
+        }
+
+        .sectionHeader {
+            font-size: 20px;
+            font-weight: 600;
+            line-height: 28px;
+            letter-spacing: 0.4px;
+            margin-bottom: 20px;
+            color: var(--color-primary);
+        }
+
+        .checkmarkIcon {
+            path {
+                fill: none;
+                stroke: currentColor;
+            }
+        }
+
+        .row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .checkboxGrid {
+            display: grid;
+            grid-template-columns: 220px auto;
+        }
+
+        .fileRow {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+
+            .extensions {
+                color: #1d1d1b;
+                font-size: 14px;
+                font-weight: 400;
+                line-height: 23px;
+                letter-spacing: 0.28px;
+            }
+
+            .selectedFile {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+
+                .fileName {
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    max-width: 400px;
+                }
+            }
+        }
+
+        .linkButton {
+            padding: 12px 0;
+            margin: -12px 0;
+
+            &.withBottomBorder {
+                margin-bottom: -13px;
+                border-bottom: 1px solid currentColor;
+            }
+        }
+
+        .courses {
+            display: grid;
+            gap: 16px;
+
+            .course {
+                display: flex;
+                align-items: center;
+                gap: 13px;
+                padding: 12px 16px;
+                border-radius: 4px;
+                border: 1px solid #d8e4f3;
+                font-size: 16px;
+                font-weight: 500;
+                line-height: 28px;
+                letter-spacing: 0.32px;
+
+                .deleteButton {
+                    margin-left: auto;
+                }
+            }
+        }
+
+        .answersHeader {
+            color: #14214d;
+            font-family: Manrope;
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 600;
+            line-height: 28px;
+            letter-spacing: 0.32px;
+            margin-top: 20px;
+        }
+
+        .answers {
+            margin-top: 16px;
+            display: grid;
+            gap: 12px;
+
+            .answerRow {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+
+                .input {
+                    width: 100%;
+                    height: 42px;
+                    padding: 16px 20px;
+                    border-radius: 8px;
+
+                    font-family: Manrope;
+                    font-size: 14px;
+                    font-style: normal;
+                    font-weight: 600;
+                    line-height: normal;
+                    letter-spacing: 0.14px;
+
+                    &.correct {
+                        border: 1px solid #0c773d;
+                        color: var(--text-success, #0c773d);
+                    }
+
+                    &.wrong {
+                        border: 1px solid #980e08;
+                        color: var(--text-error, #980e08);
+                    }
+                }
+            }
+        }
+
+        .questionRow {
+            display: grid;
+            align-items: center;
+            grid-template-columns: 1fr auto;
+            gap: 12px;
+        }
+
+        .addAnswerButton {
+            margin-top: 20px;
+            margin-left: 41px;
+        }
+    }
+
+    .actionButton {
+        margin-top: auto;
+    }
+}
+
+.selectProgramMenu {
+    margin-top: 5px !important;
+    padding: 4px 8px !important;
+    border-radius: 8px !important;
+    box-shadow: 0px 0px 14px 0px rgba(20, 33, 77, 0.07) !important;
+
+    .menuItem {
+        border-radius: 4px !important;
+        padding: 4px 12px !important;
+        color: rgba(20, 33, 77, 0.7) !important;
+        font-family: Manrope !important;
+        font-size: 16px !important;
+        font-style: normal !important;
+        font-weight: 600 !important;
+        line-height: normal !important;
+        letter-spacing: 0.16px !important;
+
+        &:hover {
+            background: #d8e4f3 !important;
+        }
+
+        &:not(:last-child) {
+            margin-bottom: 9px;
+        }
+    }
+}
+
+.textArea {
+    height: 120px !important;
+    width: 100% !important;
+    padding: 16px 20px !important;
+    border-radius: 8px !important;
+    border: 1px solid #1d1d1d !important;
+    resize: none !important;
+    color: #1d1d1b !important;
+    font-family: Manrope !important;
+    font-size: 14px !important;
+    font-style: normal !important;
+    font-weight: 600 !important;
+    line-height: normal !important;
+    letter-spacing: 0.14px !important;
+}
+
+.successMailing {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.selectedTemplate {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    padding: 12px 16px;
+    border-radius: 4px;
+    border: 1px solid #d8e4f3;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 28px;
+    letter-spacing: 0.32px;
+    color: var(--color-primary);
+
+    &:hover {
+        background: #eff5fb;
+    }
+
+    &:has(.deleteButton:hover) {
+        background: white;
+    }
+
+    .deleteButton {
+        margin-left: auto;
+    }
+
+    svg path {
+        fill: currentColor;
+    }
+}
+
+.tabs {
+    overflow: hidden;
+    display: flex;
+    border-radius: 4px 4px 0 0;
+    border-top: 1px solid #d8e4f3;
+    border-left: 1px solid #d8e4f3;
+    border-right: 1px solid #d8e4f3;
+}
+
+.tab {
+    padding: 8px 12px;
+    background: white;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.14px;
+
+    &:not(:last-child) {
+        border-right: 1px solid #d8e4f3;
+    }
+
+    &.active {
+        color: white;
+        background: var(--color-primary);
+    }
+
+    &:hover:not(.active) {
+        background: var(--color-hover-on-white-bg);
+    }
+}

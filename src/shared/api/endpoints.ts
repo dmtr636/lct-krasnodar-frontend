@@ -11,6 +11,7 @@ export const FILES_ENDPOINT = url("/api/files");
 export const TESTS_ENDPOINT = url("/api/tests");
 export const AUDIT_ENDPOINT = url("/api/audit");
 export const MAILING_ENDPOINT = url("/api/mailings");
+export const MESSAGES_ENDPOINT = url("/api/messages");
 
 export const SEND_CODE = url("/api/password/send-cod");
 export const CHECK_CODE = url("/api/password/check-code");

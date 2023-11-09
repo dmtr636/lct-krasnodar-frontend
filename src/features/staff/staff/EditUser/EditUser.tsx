@@ -72,6 +72,7 @@ export const EditUser = ({
         fileInputRef.current?.click();
     };
     const data = {
+        ...userData,
         id: userData.id,
         email: email,
         department: department,

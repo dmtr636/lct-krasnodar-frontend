@@ -8,6 +8,7 @@ import { EducationPage } from "src/features/education/pages/EducationPage/Educat
 import { EducationIcon } from "src/features/users/assets";
 import { MailingPage } from "src/features/mailing/pages/MailingPage";
 import { IconMailing } from "src/shared/assets/img";
+import { MessagesPage } from "src/features/messages/pages/MessagesPage";
 
 export type ISidebarRoute = RouteObject & {
     path: string;
@@ -56,9 +57,9 @@ export const sidebarRoutes: ISidebarRoute[] = [
 ];
 
 export const supportRoute: ISidebarRoute = {
-    path: "/support",
-    element: <SupportPage />,
-    name: "Поддержка",
+    path: "/messages",
+    element: <MessagesPage />,
+    name: "Сообщения",
     sidebarProps: {
         icon: <IconSupport />,
     },
