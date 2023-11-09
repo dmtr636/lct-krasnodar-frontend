@@ -24,6 +24,7 @@ import { declOfNum } from "src/features/users/pages/UserPage/UserPage";
 import { ICourse } from "src/features/education/interfaces/ICourse";
 import { IProgram } from "src/features/education/interfaces/IProgram";
 import classNames from "classnames";
+import { ButtonBack } from "src/shared/ui/Button/ButtonBack/ButtonBack";
 
 export const EducationPage = observer(() => {
     const navigate = useNavigate();
@@ -51,6 +52,8 @@ export const EducationPage = observer(() => {
             educationStore.selectedProgram = null;
             educationStore.durationInput = "";
             fileStore.selectedFile = null;
+            educationStore.creatingTests = [];
+            educationStore.createdTests = [];
         }
     }, [showAddCourse]);
 
@@ -62,6 +65,24 @@ export const EducationPage = observer(() => {
     }, [showAddProgram]);
 
     useEffect(() => {
+        if (showAddTest) {
+            if (educationStore.createdTests.length) {
+                educationStore.creatingTests = [...educationStore.createdTests];
+            } else {
+                educationStore.creatingTests = [
+                    {
+                        id: null,
+                        question: "",
+                        answers: ["", ""],
+                        correctAnswerIndex: 0,
+                        courseId: null,
+                    },
+                ];
+            }
+        }
+    }, [showAddTest]);
+
+    useEffect(() => {
         if (editingCourse) {
             educationStore.nameInput = editingCourse.name;
             educationStore.selectedProgram = educationStore.programs.find(
@@ -69,6 +90,13 @@ export const EducationPage = observer(() => {
             )!;
             educationStore.durationInput = editingCourse.duration.toString();
             fileStore.uploadedFile = editingCourse.file;
+            if (educationStore.getTestsForCourse(editingCourse.id).length) {
+                educationStore.createdTests = [
+                    ...educationStore.getTestsForCourse(editingCourse.id),
+                ];
+            } else {
+                educationStore.createdTests = [];
+            }
         }
     }, [editingCourse]);
 
@@ -556,7 +584,9 @@ export const EducationPage = observer(() => {
                             onClick={() => setShowAddTest(true)}
                             variant={"contained"}
                         >
-                            Создать тестирование
+                            {educationStore.createdTests.length
+                                ? "Редактировать тестирование"
+                                : "Создать тестирование"}
                         </HeaderActionButton>
                     </div>
                     <div className={styles.section}>
@@ -702,7 +732,9 @@ export const EducationPage = observer(() => {
                             onClick={() => setShowAddTest(true)}
                             variant={"contained"}
                         >
-                            Создать тестирование
+                            {educationStore.createdTests.length
+                                ? "Редактировать тестирование"
+                                : "Создать тестирование"}
                         </HeaderActionButton>
                     </div>
                     <div className={styles.section}>
@@ -740,144 +772,99 @@ export const EducationPage = observer(() => {
             >
                 <div className={styles.drawer}>
                     <div className={styles.header}>
-                        Создать тестирование
-                        <button className={styles.close} onClick={() => setShowAddTest(false)}>
-                            <IconClose />
-                        </button>
+                        {educationStore.createdTests.length
+                            ? "Редактировать тестирование"
+                            : "Создать тестирование"}
+                        <ButtonBack onClick={() => setShowAddTest(false)}>Назад</ButtonBack>
                     </div>
-                    <div className={styles.section}>
-                        <div className={styles.sectionHeader}>Основная информация</div>
-                        <Input
-                            onChange={(value) => (educationStore.nameInput = value)}
-                            inputValue={educationStore.nameInput}
-                            labelName={"Название курса"}
-                        />
-                    </div>
-                    <div className={styles.section}>
-                        <div className={styles.row}>
-                            <div>
-                                <div className={styles.sectionHeader}>Загрузить материалы</div>
-                                <div className={styles.fileRow}>
-                                    <HeaderActionButton
+                    <div className={styles.test}>
+                        {educationStore.creatingTests.map((t, index) => (
+                            <div className={styles.section}>
+                                <div className={styles.sectionHeader}>Вопрос {index + 1}</div>
+                                <div className={styles.questionRow}>
+                                    <Input
+                                        onChange={(value) => (t.question = value)}
+                                        inputValue={t.question}
+                                        labelName={"Текст вопроса"}
+                                    />
+                                    <IconButton
                                         onClick={() => {
-                                            const input = document.createElement("input");
-                                            input.type = "file";
-
-                                            input.onchange = (e: any) => {
-                                                const file = e.target.files[0];
-                                                if (file) {
-                                                    fileStore.selectedFile = file;
-                                                }
-                                            };
-
-                                            input.click();
+                                            educationStore.creatingTests.splice(index, 1);
                                         }}
                                     >
-                                        Загрузить файл
-                                    </HeaderActionButton>
-                                    <div className={styles.extensions}>
-                                        {fileStore.selectedFile ? (
-                                            <div className={styles.selectedFile}>
-                                                <div className={styles.fileName}>
-                                                    {fileStore.selectedFile.name}
-                                                </div>
-                                                <IconButton
-                                                    onClick={() => (fileStore.selectedFile = null)}
-                                                >
-                                                    <IconClose />
-                                                </IconButton>
-                                            </div>
-                                        ) : fileStore.uploadedFile ? (
-                                            <div className={styles.selectedFile}>
-                                                <div className={styles.fileName}>
-                                                    {fileStore.uploadedFile.name}
-                                                </div>
-                                                <IconButton
-                                                    onClick={() => (fileStore.uploadedFile = null)}
-                                                >
-                                                    <IconClose />
-                                                </IconButton>
-                                            </div>
-                                        ) : (
-                                            <>DOCX, PDF</>
-                                        )}
-                                    </div>
+                                        <IconClose />
+                                    </IconButton>
                                 </div>
-                            </div>
-                            <div>
-                                <div className={styles.sectionHeader}>Программа обучения</div>
-                                <div>
-                                    <LinkButton
-                                        onClick={(event) =>
-                                            setSelectProgramAnchorEl(event.currentTarget)
-                                        }
-                                        icon={
-                                            educationStore.selectedProgram ? (
-                                                <IconCheckmark className={styles.checkmarkIcon} />
-                                            ) : (
-                                                <IconAdd />
-                                            )
-                                        }
-                                    >
-                                        {educationStore.selectedProgram
-                                            ? educationStore.selectedProgram.name
-                                            : "Выбрать"}
-                                    </LinkButton>
-                                </div>
-                                <Menu
-                                    open={!!selectProgramAnchorEl}
-                                    onClose={() => setSelectProgramAnchorEl(null)}
-                                    anchorEl={selectProgramAnchorEl}
-                                    classes={{
-                                        paper: styles.selectProgramMenu,
-                                    }}
-                                >
-                                    {educationStore.programs.map((p) => (
-                                        <MenuItem
-                                            className={styles.menuItem}
-                                            onClick={() => {
-                                                educationStore.selectedProgram = p;
-                                                setSelectProgramAnchorEl(null);
-                                            }}
-                                        >
-                                            {p.name}
-                                        </MenuItem>
+                                <div className={styles.answersHeader}>Варианты ответа</div>
+                                <div className={styles.answers}>
+                                    {t.answers.map((a, index) => (
+                                        <div className={styles.answerRow}>
+                                            <Checkbox
+                                                checkboxChange={() =>
+                                                    (t.correctAnswerIndex = index)
+                                                }
+                                                isChecked={t.correctAnswerIndex === index}
+                                            />
+                                            <input
+                                                className={classNames(styles.input, {
+                                                    [styles.correct]:
+                                                        t.correctAnswerIndex === index,
+                                                    [styles.wrong]: t.correctAnswerIndex !== index,
+                                                })}
+                                                value={t.answers[index]}
+                                                onChange={(e) =>
+                                                    (t.answers[index] = e.target.value)
+                                                }
+                                            />
+                                            <IconButton
+                                                onClick={() =>
+                                                    (t.answers = t.answers.splice(index, 1))
+                                                }
+                                            >
+                                                <IconClose />
+                                            </IconButton>
+                                        </div>
                                     ))}
-                                </Menu>
+                                </div>
+                                <HeaderActionButton
+                                    onClick={() => {
+                                        t.answers.push("");
+                                    }}
+                                    className={styles.addAnswerButton}
+                                    icon={<IconAdd />}
+                                >
+                                    Добавить вариант ответа
+                                </HeaderActionButton>
                             </div>
-                        </div>
-                    </div>
-                    <div className={styles.section}>
-                        <div className={styles.sectionHeader}>Тестирование после изучения</div>
+                        ))}
                         <HeaderActionButton
-                            onClick={() => setShowAddTest(true)}
-                            variant={"contained"}
+                            onClick={() => {
+                                educationStore.creatingTests.push({
+                                    id: null,
+                                    question: "",
+                                    answers: ["", ""],
+                                    correctAnswerIndex: 0,
+                                    courseId: null,
+                                });
+                            }}
+                            className={styles.addQuestionButton}
+                            icon={<IconAdd />}
                         >
-                            Создать тестирование
+                            Добавить вопрос
                         </HeaderActionButton>
                     </div>
-                    <div className={styles.section}>
-                        <div className={styles.sectionHeader}>Срок прохождения</div>
-                        <div style={{ width: "440px" }}>
-                            <Input
-                                onChange={(value) => (educationStore.durationInput = value)}
-                                inputValue={educationStore.durationInput}
-                                labelName={"Сколько дней потребуется для прохождения?"}
-                                type={"number"}
-                            />
-                        </div>
-                    </div>
+
                     <div className={styles.actionButton}>
                         <Button
                             onClick={async () => {
-                                await educationStore.updateCourse(editingCourse!);
-                                setEditingCourse(null);
+                                educationStore.createdTests = [...educationStore.creatingTests];
+                                setShowAddTest(false);
                             }}
                             isLoading={false}
                             disabled={false}
                             icon={<IconCheckmark />}
                         >
-                            Сохранить изменения
+                            Сохранить тестирование
                         </Button>
                     </div>
                 </div>
