@@ -90,6 +90,7 @@ export const EditUser = ({
             .put(USERS_ENDPOINT, { ...data })
             .then((response) => {
                 console.log(response);
+                setShowSuccefull(false);
                 /*     setEmail("");
                 setDepartment("");
                 setResponsibleUserId(null);
@@ -102,7 +103,6 @@ export const EditUser = ({
             })
             .catch((error) => {
                 console.log("ошибка" + error);
-                setShowFale(true);
             });
     };
     useEffect(() => {
