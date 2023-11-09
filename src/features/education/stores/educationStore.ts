@@ -1,11 +1,17 @@
 import { makeAutoObservable } from "mobx";
 import { IProgram } from "src/features/education/interfaces/IProgram";
 import axios from "axios";
-import { COURSES_ENDPOINT, PROGRAMS_ENDPOINT, TESTS_ENDPOINT } from "src/shared/api/endpoints";
+import {
+    COURSES_ENDPOINT,
+    PROGRAMS_ENDPOINT,
+    TESTS_ENDPOINT,
+    USER_COURSES_ENDPOINT,
+} from "src/shared/api/endpoints";
 import { IUserDepartment } from "src/features/users/interfaces/user";
 import { ICourse } from "src/features/education/interfaces/ICourse";
 import { fileStore } from "src/features/education/stores/fileStore";
 import { ITest } from "src/features/education/interfaces/ITest";
+import { IUserCourse } from "src/features/education/interfaces/IUserCourse";
 
 export class EducationStore {
     programs: IProgram[] = [];
@@ -18,9 +24,24 @@ export class EducationStore {
     creatingTests: ITest[] = [];
     createdTests: ITest[] = [];
     tests: ITest[] = [];
+    userCourses: IUserCourse[] = [];
+    userCoursesToDelete: IUserCourse[] = [];
+    userCoursesToAdd: IUserCourse[] = [];
 
     constructor() {
         makeAutoObservable(this);
+    }
+
+    async handleSaveUserCourses() {
+        for (const u of this.userCoursesToDelete) {
+            await axios.delete(USER_COURSES_ENDPOINT + "/" + u.id);
+        }
+        for (const u of this.userCoursesToAdd) {
+            await axios.post(USER_COURSES_ENDPOINT, {
+                userId: u.userId,
+                courseId: u.courseId,
+            });
+        }
     }
 
     async fetchAllPrograms() {
@@ -36,6 +57,11 @@ export class EducationStore {
     async fetchAllTests() {
         const response = await axios.get(TESTS_ENDPOINT);
         this.tests = response.data;
+    }
+
+    async fetchAllUserCourses() {
+        const response = await axios.get(USER_COURSES_ENDPOINT);
+        this.userCourses = response.data;
     }
 
     async addTests(course: ICourse) {

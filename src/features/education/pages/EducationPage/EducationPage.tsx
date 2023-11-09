@@ -133,7 +133,8 @@ export const EducationPage = observer(() => {
                                         <IconEducation />
                                         {c.name}
                                         <IconButton
-                                            onClick={() => {
+                                            onClick={(e) => {
+                                                e.stopPropagation();
                                                 educationStore.deleteCourse(c.id);
                                             }}
                                             className={styles.deleteButton}
@@ -206,7 +207,7 @@ export const EducationPage = observer(() => {
                 </div>
             </div>
 
-            <Drawer open={showAddProgram} onClose={() => setShowAddProgram(false)} anchor={"right"}>
+            <Drawer open={showAddProgram} anchor={"right"} elevation={0}>
                 <div className={styles.drawer}>
                     <div className={styles.header}>
                         Добавить программу обучения
@@ -301,7 +302,7 @@ export const EducationPage = observer(() => {
                     )}
 
                     {!!educationStore.unselectedCourses.length && (
-                        <div className={styles.section}>
+                        <div className={classNames(styles.section, styles.withoutBottomBorder)}>
                             <div className={styles.sectionHeader}>Не входят в план обучения</div>
                             <div className={styles.courses}>
                                 {educationStore.unselectedCourses.map((c) => (
@@ -337,11 +338,7 @@ export const EducationPage = observer(() => {
                 </div>
             </Drawer>
 
-            <Drawer
-                open={!!editingProgram}
-                onClose={() => setEditingProgram(null)}
-                anchor={"right"}
-            >
+            <Drawer open={!!editingProgram} anchor={"right"} elevation={0}>
                 <div className={styles.drawer}>
                     <div className={styles.header}>
                         Редактировать программу обучения
@@ -435,7 +432,7 @@ export const EducationPage = observer(() => {
                         </div>
                     )}
                     {!!educationStore.unselectedCourses.length && (
-                        <div className={styles.section}>
+                        <div className={classNames(styles.section, styles.withoutBottomBorder)}>
                             <div className={styles.sectionHeader}>Не входят в план обучения</div>
                             <div className={styles.courses}>
                                 {educationStore.unselectedCourses.map((c) => (
@@ -474,8 +471,8 @@ export const EducationPage = observer(() => {
             <Drawer
                 hideBackdrop={showAddCourse && showAddProgram}
                 open={showAddCourse}
-                onClose={() => setShowAddCourse(false)}
                 anchor={"right"}
+                elevation={0}
             >
                 <div className={styles.drawer}>
                     <div className={styles.header}>
@@ -589,7 +586,7 @@ export const EducationPage = observer(() => {
                                 : "Создать тестирование"}
                         </HeaderActionButton>
                     </div>
-                    <div className={styles.section}>
+                    <div className={classNames(styles.section, styles.withoutBottomBorder)}>
                         <div className={styles.sectionHeader}>Срок прохождения</div>
                         <div style={{ width: "440px" }}>
                             <Input
@@ -616,7 +613,7 @@ export const EducationPage = observer(() => {
                 </div>
             </Drawer>
 
-            <Drawer open={!!editingCourse} onClose={() => setEditingCourse(null)} anchor={"right"}>
+            <Drawer open={!!editingCourse} anchor={"right"} elevation={0}>
                 <div className={styles.drawer}>
                     <div className={styles.header}>
                         Редактировать курс
@@ -737,7 +734,7 @@ export const EducationPage = observer(() => {
                                 : "Создать тестирование"}
                         </HeaderActionButton>
                     </div>
-                    <div className={styles.section}>
+                    <div className={classNames(styles.section, styles.withoutBottomBorder)}>
                         <div className={styles.sectionHeader}>Срок прохождения</div>
                         <div style={{ width: "440px" }}>
                             <Input
@@ -764,12 +761,7 @@ export const EducationPage = observer(() => {
                 </div>
             </Drawer>
 
-            <Drawer
-                open={showAddTest}
-                onClose={() => setShowAddTest(false)}
-                anchor={"right"}
-                hideBackdrop
-            >
+            <Drawer open={showAddTest} anchor={"right"} hideBackdrop elevation={0}>
                 <div className={styles.drawer}>
                     <div className={styles.header}>
                         {educationStore.createdTests.length

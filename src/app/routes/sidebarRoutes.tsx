@@ -6,6 +6,8 @@ import { SupportPage } from "src/pages/admin/support";
 import { UsersPage } from "src/pages/admin/users";
 import { EducationPage } from "src/features/education/pages/EducationPage/EducationPage";
 import { EducationIcon } from "src/features/users/assets";
+import { MailingPage } from "src/features/mailing/pages/MailingPage";
+import { IconMailing } from "src/shared/assets/img";
 
 export type ISidebarRoute = RouteObject & {
     path: string;
@@ -41,6 +43,14 @@ export const sidebarRoutes: ISidebarRoute[] = [
         name: "Обучение",
         sidebarProps: {
             icon: <EducationIcon />,
+        },
+    },
+    {
+        path: "/mailing",
+        element: <MailingPage />,
+        name: "Рассылка",
+        sidebarProps: {
+            icon: <IconMailing />,
         },
     },
 ];

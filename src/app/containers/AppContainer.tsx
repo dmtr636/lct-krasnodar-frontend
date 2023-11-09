@@ -3,6 +3,8 @@ import { useEffect } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { educationStore } from "src/features/education/stores/educationStore";
 import { userStore } from "src/features/users/stores/userStore";
+import { auditStore } from "src/features/education/stores/auditStore";
+import { mailingStore } from "src/features/mailing/stores/mailingStore";
 
 export const AppContainer = observer(() => {
     const navigate = useNavigate();
@@ -33,6 +35,9 @@ export const AppContainer = observer(() => {
         educationStore.fetchAllPrograms();
         educationStore.fetchAllCourses();
         educationStore.fetchAllTests();
+        educationStore.fetchAllUserCourses();
+        auditStore.fetchAllEvents();
+        mailingStore.fetchMailings();
     };
 
     return <Outlet />;

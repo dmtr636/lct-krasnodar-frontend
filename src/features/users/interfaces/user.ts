@@ -23,4 +23,10 @@ export interface IUser {
     createTimestamp: string;
     responsibleUserId: number | null;
     tasks: string | null;
+    skills: string[];
+    photoFile: {
+        id: string;
+        url: string;
+        name: string;
+    } | null;
 }
