@@ -21,8 +21,8 @@ export const ShowFale = ({ setShowFale }: { setShowFale: (arg: boolean) => void 
                         <Lottie animationData={closeAnimation} loop={false} />
                     </div>
                     <div className={styles.contentText}>
-                        Сотрудник успешно добавлен <br />
-                        Пароль для доступа был отправлен <br /> на указанную почту
+                        Произошла ошибка <br />
+                        Сотрудник не был добавлен <br /> Попробуйте ещё раз
                     </div>
                 </div>
                 <div className={styles.button}>
