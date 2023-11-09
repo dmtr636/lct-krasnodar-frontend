@@ -13,8 +13,9 @@ import { IconDelete, IconEdit } from "src/shared/assets/img";
 import { MOCKED_USER_COURSES } from "src/features/education/constants/mockCources";
 import { Dialog } from "src/features/users/ui/Dialog/Dialog";
 import { IUser } from "src/features/users/interfaces/user";
-import { CircularProgress } from "@mui/material";
+import { CircularProgress, Drawer } from "@mui/material";
 import generatePDF from "react-to-pdf";
+import { EditUser } from "src/features/staff/staff/EditUser/EditUser";
 
 export function declOfNum(number: any, titles: { [x: string]: any }) {
     const cases = [2, 0, 1, 1, 1, 2];
@@ -32,6 +33,10 @@ export const UserPage = observer(() => {
     const [showDelete, setShowDelete] = useState(false);
     const [showSuccess, setShowSuccess] = useState(false);
     const [deletedUser, setDeletedUser] = useState<IUser | null>(null);
+
+    const [showAddUser, setShowAddUser] = useState(false);
+    const [ShowSuccefullWindow, setShowSuccefull] = useState(false);
+    const [showFale, setShowFale] = useState(false);
 
     const user = userStore.allUsers.find((u) => u.id.toString() === params.id) ?? deletedUser;
 
@@ -263,7 +268,12 @@ export const UserPage = observer(() => {
     const getStartActions = () => {
         if (selectedTab === tabs[0]) {
             return [
-                <HeaderActionButton onClick={() => {}} icon={<IconEdit />}>
+                <HeaderActionButton
+                    onClick={() => {
+                        setShowAddUser(true);
+                    }}
+                    icon={<IconEdit />}
+                >
                     Редактировать
                 </HeaderActionButton>,
             ];
@@ -344,6 +354,9 @@ export const UserPage = observer(() => {
                 description={"Был утрачен доступ: " + deletedUser?.email}
                 cancelButtonText={"Закрыть"}
             />
+            <Drawer open={showAddUser} anchor="right" onClose={() => setShowAddUser(false)}>
+                <EditUser setShowAddUser={setShowAddUser} userData={user} />
+            </Drawer>
         </ContentWithHeaderLayout>
     );
 });

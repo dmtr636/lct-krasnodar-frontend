@@ -1,0 +1,347 @@
+.container {
+    /*  position: absolute;
+    top: -177px; */
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: flex-end;
+    background: rgba(29, 29, 27, 0.43);
+    z-index: 5;
+}
+.content {
+    display: flex;
+    flex-direction: column;
+    background: white;
+    padding-left: 40px;
+    padding-right: 40px;
+    width: 640px;
+}
+.header {
+    padding-top: 24px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid #d8e4f3;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.headerText {
+    color: #14214d;
+
+    /* Desktop/H3 */
+    font-family: Manrope;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 28px; /* 116.667% */
+    letter-spacing: 0.48px;
+}
+.headerIcon {
+    height: 36px;
+    width: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 18px;
+    cursor: pointer;
+    &:hover {
+        background: #eff5fb;
+    }
+}
+.mainInfoArray {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 20px;
+    gap: 16px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid #d8e4f3;
+}
+.input {
+    width: 272px;
+}
+.mainInfoText {
+    color: #14214d;
+    font-family: Manrope;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 28px; /* 140% */
+    letter-spacing: 0.4px;
+    margin-top: 24px;
+}
+.userPhoto {
+    padding-top: 24px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid #d8e4f3;
+}
+.userPhotoText {
+    color: #14214d;
+    font-family: Manrope;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 28px; /* 140% */
+    letter-spacing: 0.4px;
+}
+.userPhotoContent {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding-top: 20px;
+}
+.photoName {
+    color: #14214d;
+    font-family: Manrope;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 23px; /* 164.286% */
+    letter-spacing: 0.28px;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+}
+.company {
+    padding-top: 24px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid #d8e4f3;
+}
+.companyText {
+    color: #14214d;
+    font-family: Manrope;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 28px; /* 140% */
+    letter-spacing: 0.4px;
+    margin-top: 24px;
+}
+.companyContent {
+    display: flex;
+    justify-content: space-between;
+    padding-right: 70px;
+    /* gap: 100px; */
+}
+.contactText {
+    color: #14214d;
+    font-family: Manrope;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 28px; /* 140% */
+    letter-spacing: 0.4px;
+    margin-top: 24px;
+}
+.contactArray {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 20px;
+    gap: 16px;
+    padding-bottom: 24px;
+    /*     border-bottom: 1px solid #d8e4f3;
+ */
+}
+.contactArrayText {
+    color: #14214d;
+    display: flex;
+    align-items: center;
+    /* Desktop/Subtitle */
+    font-family: Manrope;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 23px; /* 164.286% */
+    letter-spacing: 0.28px;
+}
+.companyRoleHead {
+    color: #14214d;
+    font-family: Manrope;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 28px; /* 140% */
+    letter-spacing: 0.4px;
+}
+.companyRole {
+    position: relative;
+}
+.addButton {
+    margin-left: -12px;
+    display: flex;
+    align-items: center;
+    margin-top: 8px;
+    position: relative;
+    &.active::after {
+        content: ""; /* Добавляем содержимое для псевдоэлемента */
+        position: absolute;
+        left: 0; /* Выравнивание от левого края родительского блока */
+        right: 0; /* Выравнивание от правого края родительского блока */
+        top: 40px; /* Расположение подчеркивания относительно нижнего края родителя */
+        height: 1px; /* Толщина подчеркивания */
+        background-color: #14214d; /* Цвет подчеркивания */
+        left: 12px; /* Центрирование подчеркивания */
+        width: 192px;
+    }
+}
+.sort {
+    display: flex;
+    align-items: center;
+    padding: 8px 9px;
+    gap: 8px;
+    color: #14214d;
+
+    /* Desktop/Button/Button-primary */
+    font-family: Manrope;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: 0.16px;
+    cursor: pointer;
+
+    &:hover {
+        border-radius: 4px;
+
+        background: #d8e4f3;
+    }
+}
+.sortUser {
+    display: flex;
+    align-items: center;
+    padding: 8px 9px;
+    gap: 8px;
+    color: #14214d;
+
+    /* Desktop/Button/Button-primary */
+    font-family: Manrope;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: 0.16px;
+    cursor: pointer;
+    margin-top: 9px;
+    &:hover {
+        border-radius: 4px;
+
+        background: #d8e4f3;
+    }
+}
+.sortedBy {
+    position: absolute;
+    width: 203px;
+    top: 36px;
+    left: 208px;
+    border-radius: 8px;
+    background: #fff;
+    box-shadow: 0px 0px 14px 0px rgba(20, 33, 77, 0.07);
+    padding: 20px 8px;
+    color: color-mix(in oklab, #14214d, white 65%);
+    z-index: 3;
+    font-family: Manrope;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: 0.16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.sortedItem {
+    cursor: pointer;
+    padding: 4px 12px;
+    color: color-mix(in oklab, #14214d, white 65%);
+    &:hover {
+        border-radius: 4px;
+        background: #d8e4f3;
+    }
+    &.active {
+        color: #14214d;
+    }
+}
+.depName {
+    cursor: pointer;
+    width: auto;
+    gap: 8px;
+    margin-left: 4px;
+    color: #14214d;
+    display: flex;
+    font-family: Manrope;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: 0.16px;
+    padding: 8px;
+    padding-left: 4px;
+    border-radius: 4px;
+    background: #d8e4f3;
+}
+.responsibleUsersArray {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 80px;
+    left: 0px;
+    border-radius: 8px;
+    background: #fff;
+    box-shadow: 0px 0px 14px 0px rgba(20, 33, 77, 0.07);
+    padding: 20px 8px;
+    color: color-mix(in oklab, #14214d, white 65%);
+    z-index: 3;
+    font-family: Manrope;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: 0.16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.responsibleUsersArrayItem {
+    color: #14214d;
+
+    /* Desktop/Button/Button-primary */
+    font-family: Manrope;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: 0.16px;
+    cursor: pointer;
+    padding: 4px 12px;
+    color: color-mix(in oklab, #14214d, white 65%);
+    &:hover {
+        border-radius: 4px;
+        background: #d8e4f3;
+    }
+    &.active {
+        color: #14214d;
+    }
+}
+.userName {
+    cursor: pointer;
+    width: auto;
+    gap: 8px;
+    margin-top: 9px;
+    color: #14214d;
+    display: flex;
+    font-family: Manrope;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: 0.16px;
+    padding: 8px;
+    padding-left: 4px;
+    border-radius: 4px;
+    background: #d8e4f3;
+}
+.userLeft {
+    margin-left: -12px;
+}
+.button {
+    margin-top: auto;
+    margin-bottom: 40px;
+}
