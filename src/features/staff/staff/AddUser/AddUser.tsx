@@ -18,7 +18,15 @@ import { USER_DEPARTMENT_FILTER_OPTIONS } from "src/features/users/constants/use
 import { IUserDepartment } from "src/features/users/interfaces/user";
 import { userStore } from "src/features/users/stores/userStore";
 
-export const AddUser = ({ setShowAddUser }: { setShowAddUser: (arg: boolean) => void }) => {
+export const AddUser = ({
+    setShowAddUser,
+    setShowSuccefull,
+    setShowFale,
+}: {
+    setShowAddUser: (arg: boolean) => void;
+    setShowSuccefull: (arg: boolean) => void;
+    setShowFale: (arg: boolean) => void;
+}) => {
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [patronymic, setPatronymic] = useState("");
@@ -65,13 +73,24 @@ export const AddUser = ({ setShowAddUser }: { setShowAddUser: (arg: boolean) => 
         responsibleUserId: responsibleUserId,
     };
     const sendUser = () => {
+        console.log(data);
         axios
             .post(USERS_ENDPOINT, data)
             .then((response) => {
+                setEmail("");
+                setDepartment("");
+                setResponsibleUserId(null);
+                setFirstName("");
+                setLastName("");
+                setPatronymic("");
+                setTG("");
+                setNumber("");
+                setShowSuccefull(true);
                 console.log(response);
             })
             .catch((error) => {
                 console.log("ошибка" + error);
+                setShowFale(true);
             });
     };
     const depArray = USER_DEPARTMENT_FILTER_OPTIONS.map((option, index) => (
@@ -281,7 +300,7 @@ export const AddUser = ({ setShowAddUser }: { setShowAddUser: (arg: boolean) => 
                             )
                         }
                         onClick={() => {
-                            sendUser;
+                            sendUser();
                         }}
                     >
                         <img src={checkmark}></img> Добавить пользователя
