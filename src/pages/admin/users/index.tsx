@@ -24,6 +24,8 @@ export const UsersPage = observer(() => {
     const [showSort, setShowSort] = useState(false);
     const [showFilter, setShowFilter] = useState(false);
     const [showAdduser, setShowAddUser] = useState(false);
+    const [responsibilityUser, setResponsibilityUser] = useState(false);
+
     const navigate = useNavigate();
 
     const deportamentArray = departmentsStore.allDepartments.map((option) => (
@@ -155,7 +157,7 @@ export const UsersPage = observer(() => {
                     {cloudArrayTask}
                 </div>
 
-                <EmployeeArray />
+                <EmployeeArray responsibilityUser={responsibilityUser} />
                 {showFilter && (
                     <div
                         className={styles.filterContainer}
@@ -190,11 +192,44 @@ export const UsersPage = observer(() => {
                             <div className={styles.filterType}>
                                 <div className={styles.filterDeportament}>
                                     <div className={styles.filterText}>Отдел</div>
-                                    <div>{deportamentArray}</div>
+                                    <div>
+                                        <Checkbox
+                                            checkboxChange={() => {
+                                                departmentsStore.selectedDepartments = [];
+                                            }}
+                                            isChecked={!departmentsStore.selectedDepartments.length}
+                                        >
+                                            Выбрать все
+                                        </Checkbox>
+                                        {deportamentArray}
+                                    </div>
                                 </div>
                                 <div className={styles.filterTasks}>
                                     <div className={styles.filterText}>Статус задач</div>
-                                    <div>{optionsArray}</div>
+                                    <div>
+                                        <Checkbox
+                                            checkboxChange={() => {
+                                                tasksStore.selectedTasks = [];
+                                            }}
+                                            isChecked={!tasksStore.selectedTasks.length}
+                                        >
+                                            Выбрать все
+                                        </Checkbox>
+                                        {optionsArray}
+                                    </div>
+                                </div>
+                                <div className={styles.responsibilityUser}>
+                                    <div className={styles.filterText}>Ответственное лицо</div>
+                                    <div>
+                                        <Checkbox
+                                            checkboxChange={() => {
+                                                setResponsibilityUser(!responsibilityUser);
+                                            }}
+                                            isChecked={responsibilityUser}
+                                        >
+                                            Являюсь ответственным лицом
+                                        </Checkbox>
+                                    </div>
                                 </div>
                             </div>
                         </div>

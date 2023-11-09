@@ -4,7 +4,7 @@ import { observer } from "mobx-react-lite";
 import { userStore } from "src/features/users/stores/userStore";
 import { sortedStore } from "src/features/users/stores/sortedStore";
 
-export const EmployeeArray = observer(() => {
+export const EmployeeArray = observer(({ responsibilityUser }: { responsibilityUser: boolean }) => {
     let employeeData = userStore.users;
     const sortedBy = sortedStore.sortedBy;
     switch (sortedBy) {
@@ -40,6 +40,18 @@ export const EmployeeArray = observer(() => {
             number % 100 > 4 && number % 100 < 20 ? 2 : cases[number % 10 < 5 ? number % 10 : 5];
         return `${number} ${titles[index]}`;
     }
+    const responsibilityDate = employeeData.filter((user) => user.role === "MANAGER");
+    const responsibilityArray = responsibilityDate.map((employee) => (
+        <EmployeeCard
+            key={employee.id}
+            img={employee.photoFileUrl}
+            role={employee.department}
+            name={employee.fullName}
+            link={`/users/${employee.id}`}
+            tg={employee.telegram}
+        />
+    ));
+
     return (
         <div className={styles.container}>
             {EmployeeArray.length === 0 ? (
@@ -54,7 +66,9 @@ export const EmployeeArray = observer(() => {
                             "сотрудников",
                         ])}
                     </div>
-                    <div className={styles.array}>{EmployeeArray}</div>
+                    <div className={styles.array}>
+                        {!responsibilityUser ? EmployeeArray : responsibilityArray}
+                    </div>
                 </>
             )}
         </div>
