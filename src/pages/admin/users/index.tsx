@@ -69,8 +69,13 @@ export const UsersPage = observer(() => {
     useEffect(() => {
         userStore.fetchAllUsers();
         console.log(userStore.allUsers + "загрузка");
+        document.addEventListener("click", hideSort);
+        return () => document.addEventListener("click", hideSort);
     }, []);
     userStore.searchInput = inputValue;
+    const hideSort = () => {
+        setShowSort(false);
+    };
     return (
         <ContentWithHeaderLayout
             title={"Сотрудники"}
@@ -91,7 +96,10 @@ export const UsersPage = observer(() => {
                     <div className={styles.input}>
                         <SearchInput onChange={setInputValue} inputValue={inputValue} />
                     </div>
-                    <div className={classNames(styles.sortedBlock, { [styles.active]: showSort })}>
+                    <div
+                        className={classNames(styles.sortedBlock, { [styles.active]: showSort })}
+                        onClick={(e) => e.stopPropagation()}
+                    >
                         <div onClick={() => setShowSort(!showSort)} className={styles.sort}>
                             <img src={sort} alt="" />
                             Сортировка
