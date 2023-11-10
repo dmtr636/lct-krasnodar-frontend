@@ -10,6 +10,7 @@ import { ReactComponent as IconDelete } from "./Delete.svg";
 import { ReactComponent as IconMailing } from "./Mailing.svg";
 import { ReactComponent as IconSuccess } from "./Success.svg";
 import { ReactComponent as IconChat } from "./Chat.svg";
+import { ReactComponent as IconAnalytics } from "./Analytics.svg";
 
 export {
     showPass,
@@ -24,4 +25,5 @@ export {
     IconMailing,
     IconSuccess,
     IconChat,
+    IconAnalytics,
 };

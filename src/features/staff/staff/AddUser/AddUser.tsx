@@ -304,7 +304,6 @@ export const AddUser = ({
                             !(
                                 firstName.trim() !== "" &&
                                 lastName.trim() !== "" &&
-                                patronymic.trim() !== "" &&
                                 number.trim() !== "" &&
                                 TG.trim() !== "" &&
                                 emailIsValid

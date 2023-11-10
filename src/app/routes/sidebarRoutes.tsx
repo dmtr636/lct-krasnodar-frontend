@@ -7,7 +7,7 @@ import { UsersPage } from "src/pages/admin/users";
 import { EducationPage } from "src/features/education/pages/EducationPage/EducationPage";
 import { EducationIcon } from "src/features/users/assets";
 import { MailingPage } from "src/features/mailing/pages/MailingPage";
-import { IconMailing } from "src/shared/assets/img";
+import { IconAnalytics, IconMailing } from "src/shared/assets/img";
 import { MessagesPage } from "src/features/messages/pages/MessagesPage";
 import { AnalyticPage } from "src/features/analytics/pages/AnalyticPage/AnalyticPage";
 
@@ -53,6 +53,14 @@ export const sidebarRoutes: ISidebarRoute[] = [
         name: "Рассылка",
         sidebarProps: {
             icon: <IconMailing />,
+        },
+    },
+    {
+        path: "/analytics",
+        element: <AnalyticPage />,
+        name: "Аналитика",
+        sidebarProps: {
+            icon: <IconAnalytics />,
         },
     },
 ];
