@@ -19,6 +19,7 @@ import { IUser, IUserDepartment } from "src/features/users/interfaces/user";
 import { userStore } from "src/features/users/stores/userStore";
 import { fileStore } from "src/features/education/stores/fileStore";
 import { USER_DEPARTMENTS } from "src/features/users/constants/userFilters";
+import { IFile } from "src/features/education/interfaces/IFile";
 
 export const EditUser = ({
     setShowAddUser,
@@ -69,6 +70,7 @@ export const EditUser = ({
         fileInputRef.current?.click();
     };
     const data = {
+        ...userData,
         id: userData.id,
         email: email,
         department: department,
@@ -201,7 +203,7 @@ export const EditUser = ({
                         </div>
                         {file ? (
                             <div className={styles.photoName}>
-                                {`${file?.name.substring(0, 15)}...`}{" "}
+                                {`${(file as any)?.name.substring(0, 15)}...`}{" "}
                                 <div className={styles.headerIcon} onClick={handleClearFile}>
                                     {" "}
                                     <img src={close} alt="" />

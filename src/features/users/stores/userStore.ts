@@ -30,6 +30,13 @@ export class UserStore {
         this.allUsers = this.allUsers.filter((u) => u.id !== user.id);
     }
 
+    async updateUser(user: IUser) {
+        const response = await axios.put(USERS_ENDPOINT, {
+            ...user,
+            photoFileId: user.photoFile?.id,
+        });
+    }
+
     async authenticate() {
         try {
             const response = await axios.get(ME_ENDPOINT);

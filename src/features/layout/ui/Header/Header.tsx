@@ -1,6 +1,6 @@
 import styles from "./style.module.scss";
 import { IconArrow } from "src/features/layout/assets/icons";
-import { ReactNode, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { Menu, MenuItem } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { observer } from "mobx-react-lite";

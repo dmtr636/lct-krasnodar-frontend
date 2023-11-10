@@ -1,10 +1,10 @@
 import styles from "./style.module.scss";
-import { ReactNode } from "react";
+import { MouseEventHandler, ReactNode } from "react";
 import classNames from "classnames";
 
 export const IconButton = (props: {
     children: ReactNode;
-    onClick: () => void;
+    onClick: MouseEventHandler;
     className?: string;
 }) => {
     return (
