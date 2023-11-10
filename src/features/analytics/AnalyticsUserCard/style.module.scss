@@ -1,0 +1,73 @@
+.container {
+    width: 972px;
+    height: 88px;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #d8e4f3;
+    cursor: pointer;
+    user-select: none;
+    &:hover {
+        background-color: #eff5fb;
+    }
+    &:has(.tg:hover) {
+        background: white;
+    }
+}
+.img {
+    width: 52px;
+    height: 52px;
+    border-radius: 26px;
+}
+.imgBlock {
+    margin-left: 20px;
+}
+.text {
+    margin-left: 16px;
+    width: 400px;
+}
+.role {
+    color: rgba(29, 29, 27, 0.6);
+    font-family: Manrope;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: 0.12px;
+    user-select: text;
+}
+.name {
+    color: var(--, #14214d);
+    font-family: Manrope;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: 0.18px;
+    margin-top: 6px;
+    user-select: text;
+}
+.progres {
+    width: 50px;
+    margin-left: 26px;
+    color: #14214d;
+    font-family: Manrope;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 28px; /* 175% */
+    letter-spacing: 0.32px;
+}
+.date {
+    margin-left: 201px;
+    color: #14214d;
+    font-family: Manrope;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 28px; /* 175% */
+    letter-spacing: 0.32px;
+    &.error {
+        color: #980e08;
+    }
+}

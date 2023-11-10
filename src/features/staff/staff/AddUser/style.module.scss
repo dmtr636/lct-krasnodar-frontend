@@ -2,7 +2,7 @@
     /*  position: absolute;
     top: -177px; */
     width: 100%;
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
     justify-content: flex-end;
     background: rgba(29, 29, 27, 0.43);
@@ -342,6 +342,7 @@
     margin-left: -12px;
 }
 .button {
+    padding-top: 40px;
     margin-top: auto;
-    margin-bottom: 40px;
+    padding-bottom: 40px;
 }

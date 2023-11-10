@@ -22,13 +22,11 @@ import { USER_DEPARTMENTS } from "src/features/users/constants/userFilters";
 
 export const EditUser = ({
     setShowAddUser,
-    setShowSuccefull,
-    setShowFale,
+
     userData,
 }: {
     setShowAddUser: (arg: boolean) => void;
-    setShowSuccefull: (arg: boolean) => void;
-    setShowFale: (arg: boolean) => void;
+
     userData: IUser;
 }) => {
     const [firstName, setFirstName] = useState("");
@@ -79,7 +77,7 @@ export const EditUser = ({
         patronymic: patronymic,
         telegram: TG,
         phone: number,
-        photoFileId: fileStore.uploadedFile?.id ?? "fcd2b147-53c0-46b7-b67b-610acab352de",
+        photoFileId: fileStore.uploadedFile?.id ?? null,
         responsibleUserId: responsibleUserId,
     };
     const sendUser = async () => {
@@ -90,7 +88,7 @@ export const EditUser = ({
             .put(USERS_ENDPOINT, { ...data })
             .then((response) => {
                 console.log(response);
-                setShowSuccefull(false);
+                setShowAddUser(false);
                 /*     setEmail("");
                 setDepartment("");
                 setResponsibleUserId(null);
