@@ -27,6 +27,8 @@ export class EducationStore {
     userCourses: IUserCourse[] = [];
     userCoursesToDelete: IUserCourse[] = [];
     userCoursesToAdd: IUserCourse[] = [];
+    rating = 0;
+    answers: Record<string, number> = {};
 
     constructor() {
         makeAutoObservable(this);
@@ -62,6 +64,10 @@ export class EducationStore {
     async fetchAllUserCourses() {
         const response = await axios.get(USER_COURSES_ENDPOINT);
         this.userCourses = response.data;
+        if (this.userCourses[0] && !this.userCourses[0].startTimestamp) {
+            this.userCourses[0].startTimestamp = new Date().toISOString();
+            await axios.put(USER_COURSES_ENDPOINT, this.userCourses[0]);
+        }
     }
 
     async addTests(course: ICourse) {
@@ -130,6 +136,19 @@ export class EducationStore {
         });
     }
 
+    async updateUserCourse(userCourse: IUserCourse) {
+        userCourse.rating = this.rating;
+        userCourse.finishTimestamp = new Date().toISOString();
+        await axios.put(USER_COURSES_ENDPOINT, userCourse);
+        const next = this.userCourses
+            .filter((uc) => uc.userId === userCourse.userId)
+            .find((uc) => !uc.startTimestamp);
+        if (next) {
+            next.startTimestamp = new Date().toISOString();
+            await axios.put(USER_COURSES_ENDPOINT, next);
+        }
+    }
+
     async updateProgram(program: IProgram) {
         const response = await axios.put(PROGRAMS_ENDPOINT, {
             id: program.id,
@@ -169,6 +188,10 @@ export class EducationStore {
         return this.tests.filter((t) => t.courseId === courseId);
     }
 
+    getCourseByUserCourse(userCourse?: IUserCourse | null) {
+        return this.courses.find((c) => c.id === userCourse?.courseId);
+    }
+
     getCoursesTotalDurationForProgram(programId: number) {
         return this.courses
             .filter((c) => c.programId === programId)
@@ -185,7 +208,7 @@ export class EducationStore {
     }
 
     get isAddCourseValid() {
-        return this.nameInput && !!this.durationInput;
+        return this.nameInput && !!this.durationInput && fileStore.selectedFile;
     }
 }
 

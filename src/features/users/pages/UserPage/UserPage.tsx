@@ -38,6 +38,19 @@ const tabs = [
 
 const skills = ["React", "Angular", "Spring", "Django", "Jira", "Figma", "LoL", "Dota"];
 
+export function addDays(date: string | number | Date, days: number) {
+    const result = new Date(date);
+    result.setDate(result.getDate() + days);
+    return result;
+}
+
+export function datediff(startDate: string | Date, endDate: string | Date) {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const diffInMs = new Date(endDate) - new Date(startDate);
+    return Math.round(diffInMs / (1000 * 60 * 60 * 24));
+}
+
 export const UserPage = observer(() => {
     const navigate = useNavigate();
     const [selectedTab, setSelectedTab] = useState(tabs[0]);
@@ -77,7 +90,11 @@ export const UserPage = observer(() => {
         }
 
         return (
-            <div className={styles.userInfo}>
+            <div
+                className={classNames(styles.userInfo, {
+                    [styles.withoutTabs]: userStore.currentUser?.role === "EMPLOYEE",
+                })}
+            >
                 <div className={classNames(styles.row, styles.row1)}>
                     <div className={styles.left}>
                         <img src={url(user.photoFileUrl ?? "")} className={styles.avatar} />
@@ -161,19 +178,6 @@ export const UserPage = observer(() => {
         const finishedCourses = educationStore.userCourses.filter(
             (c) => c.startTimestamp && c.finishTimestamp,
         );
-
-        function addDays(date: string | number | Date, days: number) {
-            const result = new Date(date);
-            result.setDate(result.getDate() + days);
-            return result;
-        }
-
-        function datediff(startDate: string | Date, endDate: string | Date) {
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            const diffInMs = new Date(endDate) - new Date(startDate);
-            return Math.round(diffInMs / (1000 * 60 * 60 * 24));
-        }
 
         return (
             <div className={styles.tasks}>
@@ -269,7 +273,9 @@ export const UserPage = observer(() => {
     };
 
     const renderAnalytics = () => {
-        const finishedCourses = educationStore.userCourses.filter((c) => c.finishTimestamp);
+        const finishedCourses = educationStore.userCourses
+            .filter((uc) => uc.userId === user?.id)
+            .filter((c) => c.finishTimestamp);
 
         function addDays(date: string | number | Date, days: number) {
             const result = new Date(date);
@@ -301,7 +307,9 @@ export const UserPage = observer(() => {
                                     variant="determinate"
                                     value={
                                         (finishedCourses.length /
-                                            (educationStore.userCourses.length || 1)) *
+                                            (educationStore.userCourses.filter(
+                                                (uc) => uc.userId === user?.id,
+                                            ).length || 1)) *
                                         100
                                     }
                                     className={styles.circular}
@@ -309,7 +317,9 @@ export const UserPage = observer(() => {
                                 />
                                 <div className={styles.value}>
                                     {(finishedCourses.length /
-                                        (educationStore.userCourses.length || 1)) *
+                                        (educationStore.userCourses.filter(
+                                            (uc) => uc.userId === user?.id,
+                                        ).length || 1)) *
                                         100}
                                     %
                                 </div>
@@ -412,7 +422,12 @@ export const UserPage = observer(() => {
                             {finishedCourses.map((fc) => (
                                 <div className={styles.tableRow}>
                                     <div className={styles.name}>
-                                        <SuccessIcon /> Как устроена компания
+                                        <SuccessIcon />{" "}
+                                        {
+                                            educationStore.courses.find(
+                                                (c) => c.id === fc.courseId,
+                                            )!.name!
+                                        }
                                     </div>
                                     <div className={styles.date}>
                                         {new Date(fc.startTimestamp!).toLocaleDateString()}
@@ -515,6 +530,9 @@ export const UserPage = observer(() => {
     };
 
     const getStartActions = () => {
+        if (userStore.currentUser?.role === "EMPLOYEE") {
+            return [];
+        }
         if (selectedTab === tabs[0]) {
             return [
                 <HeaderActionButton
@@ -548,29 +566,35 @@ export const UserPage = observer(() => {
             title={"Сотрудники"}
             onBack={() => navigate("/users")}
             startActions={getStartActions()}
-            endActions={[
-                <HeaderActionButton
-                    onClick={() => setShowDelete(true)}
-                    icon={<IconDelete />}
-                    color={"delete"}
-                >
-                    Удалить сотрудника
-                </HeaderActionButton>,
-            ]}
+            endActions={
+                userStore.currentUser?.role === "EMPLOYEE"
+                    ? []
+                    : [
+                          <HeaderActionButton
+                              onClick={() => setShowDelete(true)}
+                              icon={<IconDelete />}
+                              color={"delete"}
+                          >
+                              Удалить сотрудника
+                          </HeaderActionButton>,
+                      ]
+            }
         >
             <div className={styles.content}>
-                <div className={styles.tabs}>
-                    {tabs.map((tab) => (
-                        <button
-                            className={classNames(styles.tab, {
-                                [styles.active]: selectedTab === tab,
-                            })}
-                            onClick={() => setSelectedTab(tab)}
-                        >
-                            {tab}
-                        </button>
-                    ))}
-                </div>
+                {userStore.currentUser?.role !== "EMPLOYEE" && (
+                    <div className={styles.tabs}>
+                        {tabs.map((tab) => (
+                            <button
+                                className={classNames(styles.tab, {
+                                    [styles.active]: selectedTab === tab,
+                                })}
+                                onClick={() => setSelectedTab(tab)}
+                            >
+                                {tab}
+                            </button>
+                        ))}
+                    </div>
+                )}
                 {selectedTab === tabs[0] && renderUserInfo()}
                 {selectedTab === tabs[1] && renderTasks()}
                 {selectedTab === tabs[2] && renderAnalytics()}
@@ -623,12 +647,13 @@ export const UserPage = observer(() => {
                         .filter((p) => educationStore.courses.some((c) => c.programId === p.id))
                         .filter(
                             (p) =>
-                                !educationStore.userCourses
+                                educationStore.userCourses
                                     .filter((uc) => uc.userId === user?.id)
                                     .map((uc) =>
                                         educationStore.courses.find((c) => c.id === uc.courseId),
                                     )
-                                    .some((c) => c?.programId === p.id),
+                                    .filter((c) => c?.programId === p.id).length !==
+                                educationStore.courses.filter((c) => c.programId === p.id).length,
                         ).length && (
                         <div className={styles.section}>
                             <div className={styles.sectionHeader}>Функции</div>
@@ -699,12 +724,13 @@ export const UserPage = observer(() => {
                     .filter((p) => educationStore.courses.some((c) => c.programId === p.id))
                     .filter(
                         (p) =>
-                            !educationStore.userCourses
+                            educationStore.userCourses
                                 .filter((uc) => uc.userId === user?.id)
                                 .map((uc) =>
                                     educationStore.courses.find((c) => c.id === uc.courseId),
                                 )
-                                .some((c) => c?.programId === p.id),
+                                .filter((c) => c?.programId === p.id).length !==
+                            educationStore.courses.filter((c) => c.programId === p.id).length,
                     )
                     .map((p) => (
                         <>

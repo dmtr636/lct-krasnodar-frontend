@@ -44,6 +44,11 @@
 
 .userInfo {
     composes: card;
+
+    &.withoutTabs {
+        border-radius: 8px;
+    }
+
     .row {
         padding: 24px 40px;
         &:not(:last-child) {
