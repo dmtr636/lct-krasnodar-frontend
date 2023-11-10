@@ -34,6 +34,19 @@
     svg path {
         fill: none;
     }
+    &.skinny {
+        height: 35px;
+        color: #fff;
+
+        /* Desktop/Button/Button-secondary */
+        font-family: Manrope;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: normal;
+        letter-spacing: 0.14px;
+        border-radius: 4px;
+    }
 }
 .animation {
     display: flex;

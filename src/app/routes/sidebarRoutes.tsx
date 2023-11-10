@@ -2,14 +2,16 @@ import { HomePage } from "src/pages/admin/home";
 import { RouteObject } from "react-router-dom";
 import { ReactNode } from "react";
 import { IconHome, IconSupport, IconUsers } from "../../features/layout/assets/icons";
-import { SupportPage } from "src/pages/admin/support";
 import { UsersPage } from "src/pages/admin/users";
-import { EducationPage } from "src/features/education/pages/EducationPage/EducationPage";
 import { EducationIcon } from "src/features/users/assets";
 import { MailingPage } from "src/features/mailing/pages/MailingPage";
-import { IconMailing } from "src/shared/assets/img";
+import { IconAnalytics, IconMailing } from "src/shared/assets/img";
 import { MessagesPage } from "src/features/messages/pages/MessagesPage";
+import { mailingStore } from "src/features/mailing/stores/mailingStore";
+import { userStore } from "src/features/users/stores/userStore";
+import { EducationPage } from "src/features/education/pages/EducationPage/EducationPage";
 import { AnalyticPage } from "src/features/analytics/pages/AnalyticPage/AnalyticPage";
+import { notificationsStore } from "src/features/notifications/stores/notificationStore";
 
 export type ISidebarRoute = RouteObject & {
     path: string;
@@ -21,7 +23,7 @@ export type ISidebarRoute = RouteObject & {
     children?: ISidebarRoute[];
 };
 
-export const sidebarRoutes: ISidebarRoute[] = [
+export const getSidebarRoutes = (): ISidebarRoute[] => [
     {
         path: "/",
         element: <HomePage />,
@@ -33,10 +35,9 @@ export const sidebarRoutes: ISidebarRoute[] = [
     {
         path: "/users",
         element: <UsersPage />,
-        name: "Сотрудники",
+        name: userStore.currentUser?.role === "EMPLOYEE" ? "Команда" : "Сотрудники",
         sidebarProps: {
             icon: <IconUsers />,
-            counterValue: 15,
         },
     },
     {
@@ -45,16 +46,32 @@ export const sidebarRoutes: ISidebarRoute[] = [
         name: "Обучение",
         sidebarProps: {
             icon: <EducationIcon />,
+            counterValue: notificationsStore.notifications
+                .filter((n) => !n.isRead)
+                .filter((n) => n.userId === userStore.currentUser?.id)
+                .filter((n) => n.type === "COURSE_ASSIGN" || n.type === "COURSE_DEADLINE").length,
         },
     },
-    {
-        path: "/mailing",
-        element: <MailingPage />,
-        name: "Рассылка",
-        sidebarProps: {
-            icon: <IconMailing />,
-        },
-    },
+    ...(userStore.currentUser?.role === "EMPLOYEE"
+        ? []
+        : [
+              {
+                  path: "/mailing",
+                  element: <MailingPage />,
+                  name: "Рассылка",
+                  sidebarProps: {
+                      icon: <IconMailing />,
+                  },
+              },
+              {
+                  path: "/analytics",
+                  element: <AnalyticPage />,
+                  name: "Аналитика",
+                  sidebarProps: {
+                      icon: <IconAnalytics />,
+                  },
+              },
+          ]),
 ];
 
 export const supportRoute: ISidebarRoute = {
@@ -63,5 +80,7 @@ export const supportRoute: ISidebarRoute = {
     name: "Сообщения",
     sidebarProps: {
         icon: <IconSupport />,
+        counterValue: mailingStore.messages.filter((m) => m.userId === userStore.currentUser?.id)
+            .length,
     },
 };

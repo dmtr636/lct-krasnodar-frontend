@@ -40,11 +40,13 @@ export const AnalyticsUserArray = observer(
                 role={
                     USER_DEPARTMENT_FILTER_OPTIONS.find(
                         (options) => options.department === employee.department,
-                    )?.name
+                    )?.name ?? ""
                 }
                 name={employee.fullName}
                 link={`/users/${employee.id}`}
                 tg={employee.telegram}
+                user={employee}
+                error={false}
             />
         ));
         function declOfNum(number: number, titles: string[]) {
@@ -64,6 +66,7 @@ export const AnalyticsUserArray = observer(
                 name={employee.fullName}
                 link={`/users/${employee.id}`}
                 error={false}
+                user={employee}
             />
         ));
         setUserNumber(responsibilityUser ? responsibilityArray.length : EmployeeArray.length);

@@ -1,13 +1,16 @@
 import styles from "./style.module.scss";
 import { IconArrow } from "src/features/layout/assets/icons";
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useState } from "react";
 import { Menu, MenuItem } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { observer } from "mobx-react-lite";
 import classNames from "classnames";
 import { ButtonBack } from "src/shared/ui/Button/ButtonBack/ButtonBack";
-import { HeaderActionButton } from "src/features/layout/ui/Header/HeaderActionButton/HeaderActionButton";
 import { userStore } from "src/features/users/stores/userStore";
+import { IconButton } from "src/shared/ui/Button/IconButton/IconButton";
+import { IconNotification, IconNotificationActive } from "src/shared/assets/img";
+import { url } from "src/shared/helpers/url";
+import { notificationsStore } from "src/features/notifications/stores/notificationStore";
 
 export interface IHeaderProps {
     title: string;
@@ -18,21 +21,22 @@ export interface IHeaderProps {
 
 export const Header = observer((props: IHeaderProps) => {
     const navigate = useNavigate();
-    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-    const open = Boolean(anchorEl);
+    const [profileMenuAnchorEl, setProfileMenuAnchorEl] = useState<any>(null);
+    const [notificationMenuAnchorEl, setNotificationMenuAnchorEl] = useState<any>(null);
+    const isProfileMenuOpen = Boolean(profileMenuAnchorEl);
 
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-        setAnchorEl(event.currentTarget);
+        setProfileMenuAnchorEl(event.currentTarget);
     };
 
-    const handleClose = () => {
-        setAnchorEl(null);
+    const handleCloseProfileMenu = () => {
+        setProfileMenuAnchorEl(null);
     };
 
     const logout = async () => {
-        handleClose();
-        await userStore.logout();
         navigate("/login");
+        handleCloseProfileMenu();
+        await userStore.logout();
     };
 
     const showSecondRow =
@@ -43,17 +47,101 @@ export const Header = observer((props: IHeaderProps) => {
             <div className={classNames(styles.row, styles.first)}>
                 <div className={styles.title}>{props.title}</div>
                 <div className={styles.actions}>
+                    <IconButton
+                        onClick={(e) => {
+                            if (
+                                notificationsStore.notifications.filter(
+                                    (n) => n.userId === userStore.currentUser?.id,
+                                ).length
+                            ) {
+                                setNotificationMenuAnchorEl(e.currentTarget);
+                            }
+                        }}
+                        className={styles.notificationIcon}
+                    >
+                        {notificationsStore.notifications
+                            .filter((n) => !n.isRead)
+                            .filter((n) => n.userId === userStore.currentUser?.id).length ? (
+                            <IconNotificationActive />
+                        ) : (
+                            <IconNotification />
+                        )}
+                    </IconButton>
                     <img
                         src={
-                            "https://images.unsplash.com/photo-1579168765467-3b235f938439?auto=format&fit=crop&q=80&w=96&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                            userStore.currentUser?.photoFile?.url
+                                ? url(userStore.currentUser?.photoFile?.url)
+                                : "https://t4.ftcdn.net/jpg/02/27/45/09/360_F_227450952_KQCMShHPOPebUXklULsKsROk5AvN6H1H.jpg"
                         }
                         className={styles.avatar}
                     />
-                    <button className={styles.arrowButton} onClick={handleClick}>
+                    <IconButton onClick={handleClick}>
                         <IconArrow />
-                    </button>
-                    <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
-                        <MenuItem onClick={logout}>Выход</MenuItem>
+                    </IconButton>
+                    <Menu
+                        anchorEl={profileMenuAnchorEl}
+                        open={isProfileMenuOpen}
+                        onClose={handleCloseProfileMenu}
+                        classes={{
+                            paper: styles.menu,
+                        }}
+                        anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+                        transformOrigin={{ horizontal: "right", vertical: "top" }}
+                    >
+                        {userStore.currentUser?.role !== "ADMIN" && (
+                            <MenuItem
+                                onClick={() => {
+                                    handleCloseProfileMenu();
+                                    navigate("/users/" + userStore.currentUser?.id);
+                                }}
+                                className={styles.menuItem}
+                            >
+                                Моя страница
+                            </MenuItem>
+                        )}
+                        <MenuItem onClick={logout} className={styles.menuItem}>
+                            Выход
+                        </MenuItem>
+                    </Menu>
+                    <Menu
+                        anchorEl={notificationMenuAnchorEl}
+                        open={!!notificationMenuAnchorEl}
+                        onClose={() => setNotificationMenuAnchorEl(null)}
+                        classes={{
+                            paper: styles.menu,
+                        }}
+                        anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+                        transformOrigin={{ horizontal: "right", vertical: "top" }}
+                    >
+                        {notificationsStore.notifications
+                            .filter((n) => !n.isRead)
+                            .filter((n) => n.userId === userStore.currentUser?.id)
+                            .map((n) => [
+                                <div className={styles.divider}></div>,
+                                <MenuItem
+                                    onClick={() => {
+                                        n.isRead = true;
+                                        notificationsStore.updateNotification(n);
+                                        setNotificationMenuAnchorEl(false);
+                                        navigate(n.url);
+                                    }}
+                                    className={styles.menuItem}
+                                >
+                                    {n.text}
+                                </MenuItem>,
+                            ])}
+                        {!notificationsStore.notifications
+                            .filter((n) => !n.isRead)
+                            .filter((n) => n.userId === userStore.currentUser?.id).length && (
+                            <MenuItem
+                                onClick={() => {
+                                    setNotificationMenuAnchorEl(false);
+                                }}
+                                className={classNames(styles.menuItem, styles.empty)}
+                            >
+                                Уведомлений нет
+                            </MenuItem>
+                        )}
                     </Menu>
                 </div>
             </div>
