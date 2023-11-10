@@ -5,6 +5,7 @@ import { educationStore } from "src/features/education/stores/educationStore";
 import { userStore } from "src/features/users/stores/userStore";
 import { auditStore } from "src/features/education/stores/auditStore";
 import { mailingStore } from "src/features/mailing/stores/mailingStore";
+import { notificationsStore } from "src/features/notifications/stores/notificationStore";
 
 export const AppContainer = observer(() => {
     const navigate = useNavigate();
@@ -17,6 +18,13 @@ export const AppContainer = observer(() => {
     useEffect(() => {
         if (userStore.currentUser) {
             fetchData();
+
+            const timer = setInterval(() => {
+                notificationsStore.fetchAllNotifications();
+                mailingStore.fetchMessages();
+                auditStore.fetchAllEvents();
+            }, 10000);
+            return () => clearInterval(timer);
         }
     }, [userStore.currentUser]);
 
@@ -40,6 +48,7 @@ export const AppContainer = observer(() => {
         mailingStore.fetchMailings();
         userStore.fetchAllUsers();
         mailingStore.fetchMessages();
+        notificationsStore.fetchAllNotifications();
     };
 
     return <Outlet />;

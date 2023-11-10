@@ -9,6 +9,7 @@ export const HeaderActionButton = (props: {
     color?: "primary" | "delete";
     variant?: "outlined" | "contained";
     className?: string;
+    disabled?: boolean;
 }) => {
     return (
         <button
@@ -21,6 +22,7 @@ export const HeaderActionButton = (props: {
                 props.className,
             )}
             onClick={props.onClick}
+            disabled={props.disabled}
         >
             {props.icon}
             {props.children}
