@@ -123,7 +123,7 @@ export const AddUser = ({
             {option.name}
         </div>
     ));
-    console.log(data);
+    console.log(data.photoFileId);
     const responsibleUsers = userStore.allUsers.filter((user) => user.role === "MANAGER");
     const responsibleUsersArray = responsibleUsers.map((user, index) => (
         <div

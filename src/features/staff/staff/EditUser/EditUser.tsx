@@ -86,7 +86,7 @@ export const EditUser = ({
         if (file) {
             await fileStore.uploadFile();
         }
-        axios
+        await axios
             .put(USERS_ENDPOINT, { ...data })
             .then((response) => {
                 console.log(response);
@@ -153,6 +153,7 @@ export const EditUser = ({
             {`${user.firstName} ${user.lastName}`}
         </div>
     ));
+    console.log(file);
     return (
         <div className={styles.container} onClick={() => setShowAddUser(false)}>
             <div className={styles.content} onClick={(e) => e.stopPropagation()}>

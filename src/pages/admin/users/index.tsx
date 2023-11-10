@@ -74,7 +74,6 @@ export const UsersPage = observer(() => {
     console.log(tasksStore.selectedTasks);
     useEffect(() => {
         userStore.fetchAllUsers();
-        console.log(userStore.allUsers + "загрузка");
         document.addEventListener("click", hideSort);
         return () => document.addEventListener("click", hideSort);
     }, []);

@@ -4,9 +4,16 @@ import { userStore } from "src/features/users/stores/userStore";
 import { sortedStore } from "src/features/users/stores/sortedStore";
 import { USER_DEPARTMENT_FILTER_OPTIONS } from "src/features/users/constants/userDepartments";
 import { AnalyticsUserCard } from "../AnalyticsUserCard/AnalyticsUserCard";
+import { useEffect } from "react";
 
 export const AnalyticsUserArray = observer(
-    ({ responsibilityUser }: { responsibilityUser: boolean }) => {
+    ({
+        responsibilityUser,
+        setUserNumber,
+    }: {
+        responsibilityUser: boolean;
+        setUserNumber: (arg: number) => void;
+    }) => {
         let employeeData = userStore.users;
         const sortedBy = sortedStore.sortedBy;
         switch (sortedBy) {
@@ -56,35 +63,33 @@ export const AnalyticsUserArray = observer(
                 role={employee.department}
                 name={employee.fullName}
                 link={`/users/${employee.id}`}
+                error={false}
             />
         ));
-
+        setUserNumber(responsibilityUser ? responsibilityArray.length : EmployeeArray.length);
+        useEffect(() => {
+            setUserNumber(responsibilityUser ? responsibilityArray.length : EmployeeArray.length);
+        }, [userStore.users]);
         return (
             <div className={styles.container}>
-                {/* {EmployeeArray.length === 0 ? (
-                <div className={styles.text}>Сотрудников с выбранными фильтрами не найдено</div>
-            ) : (
                 <>
-                    <div className={styles.text}>
-                        Отображается{" "}
-                        {responsibilityUser
-                            ? declOfNum(responsibilityArray.length, [
-                                  "сотрудник",
-                                  "сотрудника",
-                                  "сотрудников",
-                              ])
-                            : declOfNum(EmployeeArray.length, [
-                                  "сотрудник",
-                                  "сотрудника",
-                                  "сотрудников",
-                              ])}
+                    <div className={styles.header}>
+                        <div className={styles.headerUser}>Сотрудник</div>
+                        <div className={styles.headerProgres}>
+                            Полный прогресс <br />
+                            обучения
+                        </div>
+                        <div className={styles.headerDate}>
+                            Ближайший срок <br />
+                            сдачи курса
+                        </div>
                     </div>
                     <div className={styles.array}>
                         {!responsibilityUser ? EmployeeArray : responsibilityArray}
                     </div>
                 </>
-            )} */}
-                <div className={styles.header}>
+
+                {/* <div className={styles.header}>
                     <div className={styles.headerUser}>Сотрудник</div>
                     <div className={styles.headerProgres}>
                         Полный прогресс <br />
@@ -96,9 +101,9 @@ export const AnalyticsUserArray = observer(
                     </div>
                 </div>
                 <div className={styles.array}>
-                    {/* {!responsibilityUser ? EmployeeArray : responsibilityArray} */}
+                    {!responsibilityUser ? EmployeeArray : responsibilityArray}
                     {EmployeeArray}
-                </div>
+                </div> */}
             </div>
         );
     },

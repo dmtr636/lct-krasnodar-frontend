@@ -3,7 +3,6 @@ import styles from "./style.module.scss";
 /* import kotik from "./46d1b6f32d022d8c6788067c3f38cfe7.png";
  */ import { useNavigate } from "react-router-dom";
 import { domain } from "src/shared/constants/config";
-import { error } from "console";
 
 export const AnalyticsUserCard = ({
     img,

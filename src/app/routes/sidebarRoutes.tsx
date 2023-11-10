@@ -9,6 +9,7 @@ import { EducationIcon } from "src/features/users/assets";
 import { MailingPage } from "src/features/mailing/pages/MailingPage";
 import { IconMailing } from "src/shared/assets/img";
 import { MessagesPage } from "src/features/messages/pages/MessagesPage";
+import { AnalyticPage } from "src/features/analytics/pages/AnalyticPage/AnalyticPage";
 
 export type ISidebarRoute = RouteObject & {
     path: string;

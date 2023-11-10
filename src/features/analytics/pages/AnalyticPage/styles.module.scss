@@ -1,0 +1,256 @@
+.container {
+    margin-top: 28px;
+    position: relative;
+}
+.headBlock {
+    padding-left: 40px;
+    display: flex;
+    padding-bottom: 28px;
+    border-bottom: 1px solid #d8e4f3;
+}
+.sortedBlock {
+    margin-left: 32px;
+    display: flex;
+    align-items: center;
+    /*     margin-top: 8px;
+ */
+    position: relative;
+    &.active::after {
+        content: ""; /* Добавляем содержимое для псевдоэлемента */
+        position: absolute;
+        left: 0; /* Выравнивание от левого края родительского блока */
+        right: 0; /* Выравнивание от правого края родительского блока */
+        bottom: 0; /* Расположение подчеркивания относительно нижнего края родителя */
+        height: 1px; /* Толщина подчеркивания */
+        background-color: #14214d; /* Цвет подчеркивания */
+        left: 10px; /* Центрирование подчеркивания */
+        width: 129px;
+        /* Задаем ширину подчеркивания */
+        /* transform: translateX(-50%); /* Точное центрирование */
+    }
+}
+.fiterCount {
+    margin-left: 8px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+    background-color: #14214d;
+    color: #fff;
+    font-family: Manrope;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    cursor: pointer;
+}
+.sort {
+    display: flex;
+    align-items: center;
+    padding: 8px 9px;
+    gap: 8px;
+    color: #14214d;
+
+    /* Desktop/Button/Button-primary */
+    font-family: Manrope;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: 0.16px;
+    cursor: pointer;
+
+    &:hover {
+        border-radius: 4px;
+
+        background: #d8e4f3;
+    }
+}
+.sortedBy {
+    position: absolute;
+    width: 203px;
+    top: 60px;
+    border-radius: 8px;
+    background: #fff;
+    box-shadow: 0px 0px 14px 0px rgba(20, 33, 77, 0.07);
+    padding: 20px 8px;
+    color: color-mix(in oklab, #14214d, white 65%);
+
+    font-family: Manrope;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: 0.16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.sortedItem {
+    cursor: pointer;
+    padding: 4px 12px;
+    &:hover {
+        border-radius: 4px;
+        background: #d8e4f3;
+    }
+    &.active {
+        color: #14214d;
+    }
+}
+.filterContainer {
+    position: absolute;
+    top: -96px;
+    width: 100%;
+    height: calc(100vh - 80px);
+    background: rgba(29, 29, 27, 0.43);
+    border-top: 1px solid #d8e4f3;
+    z-index: 3;
+}
+.filterContent {
+    background-color: #fff;
+    padding-bottom: 40px;
+}
+.filterHeader {
+    display: flex;
+    justify-content: space-between;
+    padding-left: 40px;
+    padding-right: 28px;
+    padding-top: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #d8e4f3;
+}
+.filterClose {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 18px;
+    cursor: pointer;
+    &:hover {
+        background-color: #ededed;
+    }
+}
+.filterH1 {
+    color: #14214d;
+
+    /* Desktop/H3 */
+    font-family: Manrope;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 28px; /* 116.667% */
+    letter-spacing: 0.48px;
+    display: flex;
+    align-items: center;
+    gap: 32px;
+}
+.filterType {
+    display: flex;
+    gap: 54px;
+    margin-left: 40px;
+}
+.filterText {
+    margin-top: 27px;
+    color: #14214d;
+    font-family: Manrope;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 28px; /* 140% */
+    letter-spacing: 0.4px;
+    margin-bottom: 16px;
+}
+.cloud {
+    font-family: Manrope;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: 0.14px;
+}
+.cloudContainer {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 0;
+    padding-left: 16px;
+    padding-right: 14px;
+    border-radius: 20px;
+    color: color-mix(in oklab, #14214d, white 33%);
+    border: 1px solid color-mix(in oklab, #14214d, white 33%);
+    cursor: pointer;
+    &:hover {
+        color: #14214d;
+        border: 1px solid #14214d;
+    }
+}
+.cloudArray {
+    display: flex;
+    max-width: 972px;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-left: 40px;
+    margin-top: 24px;
+    margin-bottom: 28px;
+}
+.cloudClose {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 12px;
+    &:hover {
+        background-color: #d8e4f3;
+    }
+}
+.cloudCloseImg {
+    width: 20px;
+    height: 20px;
+}
+.changeBlock {
+    display: flex;
+    margin-left: 40px;
+    border-radius: 4px 4px 0px 0px;
+    border: 1px solid #d8e4f3;
+    border-bottom: 0px;
+    border-right: 0px;
+    background: white;
+    width: 180px;
+    color: #14214d;
+    overflow: hidden;
+
+    font-family: Manrope;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: 0.14px;
+}
+.changeBlockitem {
+    padding: 8px 12px;
+    cursor: pointer;
+
+    overflow: hidden;
+    border-right: 1px solid #d8e4f3;
+    &.active {
+        background: #14214d;
+        color: white;
+    }
+}
+.text {
+    color: #14214d;
+    font-family: Manrope;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 28px; /* 140% */
+    letter-spacing: 0.4px;
+}
+.userCount {
+    margin-left: 40px;
+    margin-bottom: 24px;
+}
