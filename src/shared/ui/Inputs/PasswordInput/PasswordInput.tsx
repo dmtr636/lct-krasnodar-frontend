@@ -55,6 +55,7 @@ export const PasswordInput = ({
                         onChange={handleInputChange}
                         onFocus={handleInputFocus}
                         onBlur={handleInputBlur}
+                        autoComplete="new-password"
                     />
                     <label
                         className={classNames(styles.inputLabel, {

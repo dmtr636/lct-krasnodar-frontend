@@ -1,9 +1,10 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./app/styles/index.scss";
-import { routes } from "src/app/routes";
+import { getRoutes } from "src/app/routes";
+import { observer } from "mobx-react-lite";
 
-const router = createBrowserRouter(routes);
+export const App = observer(() => {
+    const router = createBrowserRouter(getRoutes());
 
-export const App = () => {
     return <RouterProvider router={router} />;
-};
+});

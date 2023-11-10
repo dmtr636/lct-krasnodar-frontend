@@ -1,5 +1,5 @@
 import styles from "./style.module.scss";
-import { sidebarRoutes, supportRoute } from "src/app/routes/sidebarRoutes";
+import { getSidebarRoutes, supportRoute } from "src/app/routes/sidebarRoutes";
 import { SidebarMenuItem } from "../SidebarMenuItem/SidebarMenuItem";
 import { observer } from "mobx-react-lite";
 import { sidebarLogo } from "../../assets/icons";
@@ -47,7 +47,7 @@ export const Sidebar = observer(() => {
                     </button>
                 </div>
                 <div className={styles.menu}>
-                    {sidebarRoutes.map((route) => (
+                    {getSidebarRoutes().map((route) => (
                         <SidebarMenuItem route={route} collapsed={collapsed} key={route.path} />
                     ))}
                 </div>

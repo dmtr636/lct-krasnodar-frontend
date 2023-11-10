@@ -13,7 +13,7 @@ import { url } from "src/shared/helpers/url";
 
 const tabs = ["Непрочитанные", "Прочитанные"];
 
-function download(url: string) {
+export function download(url: string) {
     const a = document.createElement("a");
     a.href = url;
     a.download = url.split("/").pop() as string;

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { observer } from "mobx-react-lite";
 import styles from "./styles.module.scss";
 import { SearchInput } from "src/shared/ui/Inputs/SearchInput/SearchIntup";
@@ -16,6 +16,10 @@ import { userStore } from "src/features/users/stores/userStore";
 import { sortedStore } from "src/features/users/stores/sortedStore";
 import { IconAdd } from "src/shared/assets/img";
 import { AnalyticsUserArray } from "../../AnalyticsUserArray/AnalyticsUserArray";
+import { educationStore } from "src/features/education/stores/educationStore";
+import { CircularProgress } from "@mui/material";
+import generatePDF from "react-to-pdf";
+import { IconEducation } from "src/features/education/assets";
 
 export const AnalyticPage = observer(() => {
     const [inputValue, setInputValue] = useState("");
@@ -66,12 +70,14 @@ export const AnalyticPage = observer(() => {
             </div>
         </div>
     ));
+
     function declOfNum(number: number, titles: string[]) {
         const cases = [2, 0, 1, 1, 1, 2];
         const index =
             number % 100 > 4 && number % 100 < 20 ? 2 : cases[number % 10 < 5 ? number % 10 : 5];
         return `${number} ${titles[index]}`;
     }
+
     console.log(tasksStore.selectedTasks);
     useEffect(() => {
         userStore.fetchAllUsers();
@@ -82,15 +88,303 @@ export const AnalyticPage = observer(() => {
     const hideSort = () => {
         setShowSort(false);
     };
+
+    const componentRef = useRef<HTMLDivElement>(null);
+    const handleDownloadImage = async () => {
+        generatePDF(componentRef, { filename: `Аналитика.pdf` });
+    };
+
+    const renderAnalytics = () => {
+        const courses = educationStore.courses;
+
+        function addDays(date: string | number | Date, days: number) {
+            const result = new Date(date);
+            result.setDate(result.getDate() + days);
+            return result;
+        }
+
+        function datediff(startDate: string | Date, endDate: string | Date) {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            const diffInMs = new Date(endDate) - new Date(startDate);
+            return diffInMs / (1000 * 60 * 60 * 24);
+        }
+
+        return (
+            <div className={styles.analytics} ref={componentRef}>
+                <div className={styles.row}>
+                    <div className={styles.header}>Аналитика обучения в компании</div>
+                    <div className={styles.stats}>
+                        <div className={styles.item}>
+                            <div className={styles.progress}>
+                                <CircularProgress
+                                    variant="determinate"
+                                    value={100}
+                                    className={styles.circularBg}
+                                    thickness={3}
+                                />
+                                <CircularProgress
+                                    variant="determinate"
+                                    value={
+                                        (educationStore.userCourses.filter(
+                                            (uc) => uc.finishTimestamp,
+                                        ).length /
+                                            (educationStore.userCourses.length || 1)) *
+                                        100
+                                    }
+                                    className={styles.circular}
+                                    thickness={3}
+                                />
+                                <div className={styles.value}>
+                                    {(educationStore.userCourses.filter((uc) => uc.finishTimestamp)
+                                        .length /
+                                        (educationStore.userCourses.length || 1)) *
+                                        100}
+                                    %
+                                </div>
+                            </div>
+                            <div className={classNames(styles.label, styles.label1)}>
+                                Прохождение текущего плана обучения
+                            </div>
+                        </div>
+                        <div className={styles.item}>
+                            <div className={styles.progress}>
+                                <CircularProgress
+                                    variant="determinate"
+                                    value={100}
+                                    className={styles.circularBg}
+                                    thickness={3}
+                                />
+                                <CircularProgress
+                                    variant="determinate"
+                                    value={
+                                        (educationStore.userCourses
+                                            .filter((uc) => uc.testScore !== null)
+                                            .reduce((a, b) => a + b.testScore!, 0) /
+                                            (educationStore.userCourses
+                                                .filter((uc) => uc.testScore !== null)
+                                                .reduce(
+                                                    (a, b) =>
+                                                        a +
+                                                        (educationStore.tests.filter(
+                                                            (t) => t.courseId === b.courseId,
+                                                        ).length ?? 0),
+                                                    0,
+                                                ) || 1)) *
+                                        100
+                                    }
+                                    className={styles.circular}
+                                    thickness={3}
+                                />
+                                <div className={styles.value}>
+                                    {(educationStore.userCourses
+                                        .filter((uc) => uc.testScore !== null)
+                                        .reduce((a, b) => a + b.testScore!, 0) /
+                                        (educationStore.userCourses
+                                            .filter((uc) => uc.testScore !== null)
+                                            .reduce(
+                                                (a, b) =>
+                                                    a +
+                                                    (educationStore.tests.filter(
+                                                        (t) => t.courseId === b.courseId,
+                                                    ).length ?? 0),
+                                                0,
+                                            ) || 1)) *
+                                        100}
+                                    %
+                                </div>
+                            </div>
+                            <div className={classNames(styles.label, styles.label2)}>
+                                Количество правильных ответов за пройденные тесты
+                            </div>
+                        </div>
+                        <div className={styles.item}>
+                            <div className={styles.progress}>
+                                <CircularProgress
+                                    variant="determinate"
+                                    value={100}
+                                    className={styles.circularBg}
+                                    thickness={3}
+                                />
+                                <CircularProgress
+                                    variant="determinate"
+                                    value={
+                                        educationStore.userCourses.filter(
+                                            (fc) =>
+                                                datediff(fc.finishTimestamp!, fc.startTimestamp!) <=
+                                                educationStore.courses.find(
+                                                    (c) => c.id === fc.courseId,
+                                                )!.duration!,
+                                        ).length / (courses.length || 1)
+                                    }
+                                    className={styles.circular}
+                                    thickness={3}
+                                />
+                                <div className={styles.value}>
+                                    {educationStore.userCourses.filter(
+                                        (fc) =>
+                                            datediff(fc.finishTimestamp!, fc.startTimestamp!) <=
+                                            educationStore.courses.find(
+                                                (c) => c.id === fc.courseId,
+                                            )!.duration!,
+                                    ).length / (courses.length || 1)}
+                                    %
+                                </div>
+                            </div>
+                            <div className={classNames(styles.label, styles.label3)}>
+                                Курсов пройденных в срок
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className={styles.row}>
+                    <div className={styles.header}>Завершённые курсы</div>
+                    {courses.length ? (
+                        <div className={styles.table}>
+                            <div className={styles.tableRow}>
+                                <div className={styles.colHeader}>Название курса</div>
+                                <div className={styles.colHeader}>Ответы в среднем</div>
+                                <div className={styles.colHeader}>Обратная связь</div>
+                            </div>
+                            {courses.map((c) => (
+                                <div className={styles.tableRow}>
+                                    <div className={styles.name}>
+                                        <IconEducation /> {c.name}
+                                    </div>
+                                    <div className={styles.date}>
+                                        {!!educationStore.userCourses
+                                            .filter((uc) => uc.testScore !== null)
+                                            .filter((uc) => uc.courseId === c.id).length && (
+                                            <>
+                                                <span
+                                                    className={classNames({
+                                                        [styles.success]:
+                                                            educationStore.userCourses
+                                                                .filter(
+                                                                    (uc) => uc.testScore !== null,
+                                                                )
+                                                                .filter(
+                                                                    (uc) => uc.courseId === c.id,
+                                                                )
+                                                                .reduce(
+                                                                    (a, b) => a + b.testScore!,
+                                                                    0,
+                                                                ) /
+                                                                educationStore.userCourses
+                                                                    .filter(
+                                                                        (uc) =>
+                                                                            uc.testScore !== null,
+                                                                    )
+                                                                    .filter(
+                                                                        (uc) =>
+                                                                            uc.courseId === c.id,
+                                                                    ).length /
+                                                                educationStore.tests.filter(
+                                                                    (t) => t.courseId === c.id,
+                                                                ).length >
+                                                            0.6,
+                                                        [styles.error]:
+                                                            educationStore.userCourses
+                                                                .filter(
+                                                                    (uc) => uc.testScore !== null,
+                                                                )
+                                                                .filter(
+                                                                    (uc) => uc.courseId === c.id,
+                                                                )
+                                                                .reduce(
+                                                                    (a, b) => a + b.testScore!,
+                                                                    0,
+                                                                ) /
+                                                                educationStore.userCourses
+                                                                    .filter(
+                                                                        (uc) =>
+                                                                            uc.testScore !== null,
+                                                                    )
+                                                                    .filter(
+                                                                        (uc) =>
+                                                                            uc.courseId === c.id,
+                                                                    ).length /
+                                                                educationStore.tests.filter(
+                                                                    (t) => t.courseId === c.id,
+                                                                ).length <=
+                                                            0.6,
+                                                    })}
+                                                >
+                                                    {educationStore.userCourses
+                                                        .filter((uc) => uc.testScore !== null)
+                                                        .filter((uc) => uc.courseId === c.id)
+                                                        .reduce((a, b) => a + b.testScore!, 0) /
+                                                        educationStore.userCourses
+                                                            .filter((uc) => uc.testScore !== null)
+                                                            .filter((uc) => uc.courseId === c.id)
+                                                            .length}{" "}
+                                                </span>
+                                                /{" "}
+                                                {
+                                                    educationStore.tests.filter(
+                                                        (t) => t.courseId === c.id,
+                                                    ).length
+                                                }
+                                            </>
+                                        )}
+                                    </div>
+                                    <div className={styles.date}>
+                                        {!!educationStore.userCourses.filter(
+                                            (uc) => uc.testScore !== null,
+                                        ).length && (
+                                            <span
+                                                className={classNames({
+                                                    [styles.success]:
+                                                        educationStore.userCourses
+                                                            .filter((uc) => uc.testScore !== null)
+                                                            .reduce((a, b) => a + b.testScore!, 0) /
+                                                            educationStore.userCourses.filter(
+                                                                (uc) => uc.testScore !== null,
+                                                            ).length >=
+                                                        3.5,
+                                                    [styles.error]:
+                                                        educationStore.userCourses
+                                                            .filter((uc) => uc.testScore !== null)
+                                                            .reduce((a, b) => a + b.testScore!, 0) /
+                                                            educationStore.userCourses.filter(
+                                                                (uc) => uc.testScore !== null,
+                                                            ).length <
+                                                        3.5,
+                                                })}
+                                            >
+                                                {educationStore.userCourses
+                                                    .filter((uc) => uc.testScore !== null)
+                                                    .reduce((a, b) => a + b.testScore!, 0) /
+                                                    educationStore.userCourses.filter(
+                                                        (uc) => uc.testScore !== null,
+                                                    ).length}
+                                            </span>
+                                        )}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    ) : (
+                        <div>Курсы отсутствуют</div>
+                    )}
+                </div>
+            </div>
+        );
+    };
+
     return (
         <ContentWithHeaderLayout
             title={"Сотрудники"}
             onBack={() => navigate("/")}
-            startActions={[
-                <HeaderActionButton icon={<IconAdd />} onClick={() => {}}>
-                    Скачать в PDF
-                </HeaderActionButton>,
-            ]}
+            startActions={
+                showCard === 1
+                    ? [
+                          <HeaderActionButton icon={<IconAdd />} onClick={handleDownloadImage}>
+                              Скачать в PDF
+                          </HeaderActionButton>,
+                      ]
+                    : []
+            }
         >
             <div className={styles.container}>
                 {showCard === 2 && (
@@ -206,6 +500,7 @@ export const AnalyticPage = observer(() => {
                         Сотрудники
                     </div>
                 </div>
+                {showCard === 1 && renderAnalytics()}
                 {showCard === 2 && (
                     <AnalyticsUserArray
                         setUserNumber={setUserNumber}

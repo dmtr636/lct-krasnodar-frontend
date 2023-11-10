@@ -65,7 +65,6 @@ export const EmailInput = ({
                     onChange={handleInputChange}
                     onFocus={handleInputFocus}
                     onBlur={handleInputBlur}
-                    autoComplete="new-password"
                 />
                 <label
                     className={classNames(styles.inputLabel, {

@@ -240,6 +240,9 @@
         background: #14214d;
         color: white;
     }
+    &:hover:not(.active) {
+        background: var(--color-hover-on-white-bg);
+    }
 }
 .text {
     color: #14214d;
@@ -253,4 +256,144 @@
 .userCount {
     margin-left: 40px;
     margin-bottom: 24px;
+}
+
+.analytics {
+    margin-left: 40px;
+    border-radius: 0px 8px 8px 8px;
+    width: 972px;
+    background: white;
+    border: 1px solid #d8e4f3;
+    .row {
+        padding: 24px 40px;
+        &:not(:last-child) {
+            border-bottom: 1px solid #d8e4f3;
+        }
+
+        .header {
+            color: #14214d;
+            font-size: 20px;
+            font-weight: 600;
+            line-height: 28px;
+            letter-spacing: 0.4px;
+            margin-bottom: 20px;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            gap: 25px;
+            align-items: center;
+
+            .item {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 16px;
+
+                .progress {
+                    width: 106px;
+                    height: 106px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    position: relative;
+
+                    .circularBg {
+                        position: absolute !important;
+                        width: 100% !important;
+                        height: 100% !important;
+                        color: #d8e4f3 !important;
+                    }
+
+                    .circular {
+                        position: absolute !important;
+                        width: 100% !important;
+                        height: 100% !important;
+                        color: var(--color-primary) !important;
+                    }
+
+                    .value {
+                        font-size: 24px;
+                        font-weight: 700;
+                        line-height: 33px;
+                        letter-spacing: 0.48px;
+                    }
+                }
+
+                .label {
+                    font-size: 16px;
+                    font-weight: 400;
+                    line-height: 23px;
+                    letter-spacing: 0.32px;
+
+                    &.label1 {
+                        width: 127px;
+                    }
+
+                    &.label2 {
+                        width: 191px;
+                    }
+
+                    &.label3 {
+                        width: 156px;
+                    }
+                }
+            }
+        }
+
+        .table {
+            .tableRow {
+                margin-left: -39px;
+                padding-left: 39px;
+                width: 971px;
+                height: 44px;
+                display: grid;
+                grid-template-columns: 560px 1fr 1fr;
+
+                &:nth-child(even) {
+                    background: #f2f6fb;
+                }
+
+                .colHeader {
+                    font-size: 16px;
+                    font-weight: 600;
+                    line-height: 28px;
+                    letter-spacing: 0.32px;
+                }
+
+                .name {
+                    display: flex;
+                    align-items: center;
+                    gap: 13px;
+                    font-size: 16px;
+                    font-weight: 500;
+                    line-height: 28px;
+                    letter-spacing: 0.32px;
+
+                    svg path {
+                        fill: var(--color-primary);
+                        fill-opacity: 1;
+                    }
+                }
+
+                .date {
+                    display: flex;
+                    align-items: center;
+                    font-size: 16px;
+                    font-weight: 600;
+                    line-height: 28px;
+                    letter-spacing: 0.32px;
+
+                    .success {
+                        color: #0c773d;
+                    }
+
+                    .error {
+                        color: #980e08;
+                    }
+                }
+            }
+        }
+    }
 }
