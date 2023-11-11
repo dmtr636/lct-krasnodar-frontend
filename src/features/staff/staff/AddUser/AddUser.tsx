@@ -90,6 +90,7 @@ export const AddUser = ({
                 setPatronymic("");
                 setTG("");
                 setNumber("");
+                userStore.allUsers.push(response.data);
                 fileStore.selectedFile = null;
                 fileStore.uploadedFile = null;
                 setShowSuccefull(true);

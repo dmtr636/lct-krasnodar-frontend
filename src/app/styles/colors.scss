@@ -4,15 +4,15 @@
     --brand-color-ch-primary-pale: #d0f09a;
     --brand-color-ch-primary-press: #a8f02b;
 
-    --black-primary-active: #1d1d1d;
-    --black-primary-hover: #474747;
-    --black-primary-pale: color-mix(in oklab, #1d1d1d, white 65%);
-    --black-primary-press: #1f1f1f;
+    --black-primary-active: #14214d;
+    --black-primary-hover: color-mix(in oklab, #14214d, white 33%);
+    --black-primary-pale: color-mix(in oklab, #14214d, white 65%);
+    --black-primary-press: color-mix(in oklab, #14214d, white 33%);
 
-    --black-secondary-active: #4d4d4d;
-    --black-secondary-hover: #757575;
-    --black-secondary-pale: color-mix(in oklab, #1d1d1d, white 65%);
-    --black-secondary-press: #333333;
+    --black-secondary-active: #14214d;
+    --black-secondary-hover: color-mix(in oklab, #14214d, white 33%);
+    --black-secondary-pale: color-mix(in oklab, #14214d, white 65%);
+    --black-secondary-press: color-mix(in oklab, #14214d, black 33%);
 
     --red-primary-active: #980e08;
     --red-primary-hover: #ff7878;

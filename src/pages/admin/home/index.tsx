@@ -13,6 +13,7 @@ import { CircularProgress } from "@mui/material";
 import { Button } from "src/shared/ui/Button/Button";
 import { useNavigate } from "react-router-dom";
 import { IconChat, IconDelete, IconMailing } from "src/shared/assets/img";
+import { USER_DEPARTMENTS } from "src/features/users/constants/userFilters";
 
 export const HomePage = observer(() => {
     useEffect(() => {
@@ -25,7 +26,7 @@ export const HomePage = observer(() => {
     const employeeUsersArray = employeeUsers.map((user, index) => (
         <EmployeeCard
             key={index}
-            role={user?.department}
+            role={USER_DEPARTMENTS[user?.department]}
             name={user?.fullName}
             tg={user?.telegram}
             link={`/users/${user?.id}`}
@@ -40,7 +41,7 @@ export const HomePage = observer(() => {
                         <div className={styles.leftContainer}>
                             <HomeContainer header={"Можно обратиться за помощью"}>
                                 <EmployeeCard
-                                    role={responsibleUser?.department}
+                                    role={USER_DEPARTMENTS[responsibleUser?.department]}
                                     name={responsibleUser?.fullName}
                                     tg={responsibleUser?.telegram}
                                     link={`/users/${responsibleUser?.id}`}
@@ -208,7 +209,7 @@ export const HomePage = observer(() => {
                                 <HomeContainer header="Аналитика">
                                     <div className={styles.analyticsSubname}>Общая в компании</div>
 
-                                    <div className={styles.progressContainerSecond}>
+                                    <div className={styles.progressContainerSecondAnalytics}>
                                         <div className={styles.progress}>
                                             <CircularProgress
                                                 variant="determinate"

@@ -18,12 +18,12 @@
     position: absolute;
     inset: 0;
     pointer-events: none;
-    border: 1px solid color-mix(in oklab, #1d1d1d, white 65%);
+    border: 1px solid color-mix(in oklab, #14214d, white 65%);
     border-radius: 8px;
     transition: border-color 0.3s ease;
 
     &.active {
-        border: 1px solid color-mix(in oklab, #1d1d1d, #000000 48%);
+        border: 1px solid color-mix(in oklab, #14214d, #000000 48%);
     }
 
     &.error {
