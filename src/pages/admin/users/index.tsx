@@ -86,14 +86,16 @@ export const UsersPage = observer(() => {
             title={"Сотрудники"}
             onBack={() => navigate("/")}
             startActions={[
-                <HeaderActionButton
-                    icon={<IconAdd />}
-                    onClick={() => {
-                        setShowAddUser(true);
-                    }}
-                >
-                    Добавить сотрудника
-                </HeaderActionButton>,
+                !(user?.role === "EMPLOYEE") && (
+                    <HeaderActionButton
+                        icon={<IconAdd />}
+                        onClick={() => {
+                            setShowAddUser(true);
+                        }}
+                    >
+                        Добавить сотрудника
+                    </HeaderActionButton>
+                ),
             ]}
         >
             <div className={styles.container}>
