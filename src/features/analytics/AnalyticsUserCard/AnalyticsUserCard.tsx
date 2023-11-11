@@ -8,6 +8,7 @@ import { observer } from "mobx-react-lite";
 import { educationStore } from "src/features/education/stores/educationStore";
 import { IUser } from "src/features/users/interfaces/user";
 import { addDays } from "src/features/users/pages/UserPage/UserPage";
+import { USER_DEPARTMENTS } from "src/features/users/constants/userFilters";
 
 export const AnalyticsUserCard = observer(
     ({

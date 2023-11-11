@@ -71,7 +71,6 @@ export const UsersPage = observer(() => {
             </div>
         </div>
     ));
-    console.log(tasksStore.selectedTasks);
     useEffect(() => {
         userStore.fetchAllUsers();
         document.addEventListener("click", hideSort);
@@ -81,6 +80,7 @@ export const UsersPage = observer(() => {
     const hideSort = () => {
         setShowSort(false);
     };
+    const user = userStore.currentUser;
     return (
         <ContentWithHeaderLayout
             title={"Сотрудники"}
@@ -116,7 +116,6 @@ export const UsersPage = observer(() => {
                                     onClick={() => {
                                         sortedStore.setSortedBy("name");
                                         sortedStore.sortedEmployees;
-                                        console.log(JSON.stringify(sortedStore.sortedBy));
                                         setShowSort(!showSort);
                                     }}
                                     className={classNames(styles.sortedItem, {
@@ -155,10 +154,12 @@ export const UsersPage = observer(() => {
                         )}
                     </div>
                 </div>
-                <div className={styles.cloudArray}>
-                    {cloudArrayDep}
-                    {cloudArrayTask}
-                </div>
+                {cloudArrayTask.length + cloudArrayDep.length > 0 && (
+                    <div className={styles.cloudArray}>
+                        {cloudArrayDep}
+                        {cloudArrayTask}
+                    </div>
+                )}
 
                 <EmployeeArray responsibilityUser={responsibilityUser} />
                 {showFilter && (
@@ -174,7 +175,6 @@ export const UsersPage = observer(() => {
                                         className=""
                                         onClick={() => {
                                             tasksStore.clearSelection();
-                                            console.log("нажал");
                                             departmentsStore.clearSelection();
                                         }}
                                     >
@@ -221,19 +221,21 @@ export const UsersPage = observer(() => {
                                         {optionsArray}
                                     </div>
                                 </div>
-                                <div className={styles.responsibilityUser}>
-                                    <div className={styles.filterText}>Ответственное лицо</div>
-                                    <div>
-                                        <Checkbox
-                                            checkboxChange={() => {
-                                                setResponsibilityUser(!responsibilityUser);
-                                            }}
-                                            isChecked={responsibilityUser}
-                                        >
-                                            Являюсь ответственным лицом
-                                        </Checkbox>
+                                {!(user?.role === "EMPLOYEE") && (
+                                    <div className={styles.responsibilityUser}>
+                                        <div className={styles.filterText}>Ответственное лицо</div>
+                                        <div>
+                                            <Checkbox
+                                                checkboxChange={() => {
+                                                    setResponsibilityUser(!responsibilityUser);
+                                                }}
+                                                isChecked={responsibilityUser}
+                                            >
+                                                Являюсь ответственным лицом
+                                            </Checkbox>
+                                        </div>
                                     </div>
-                                </div>
+                                )}
                             </div>
                         </div>
                     </div>

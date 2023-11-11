@@ -13,12 +13,7 @@ export const CodeCheckError = ({
     return (
         <>
             {errorCount == 0 || undefined ? (
-                <button
-                    className={styles.callSupp}
-                    onClick={() => console.log("обратитесь к дисигнеру")}
-                >
-                    Обратиться в службу поддержки
-                </button>
+                <button className={styles.callSupp}>Обратиться в службу поддержки</button>
             ) : (
                 <Alert setIsError={setIsError}>
                     <div className={styles.text}>

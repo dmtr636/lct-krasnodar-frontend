@@ -22,12 +22,10 @@ export class TasksStore {
             this.selectedTasks = this.selectedTasks.filter(
                 (selectedTask) => selectedTask.task !== taskOption.task,
             );
-            console.log(this.selectedTasks);
         } else {
             const taskToAdd = this.allTasks.find((task) => task.task === taskOption.task);
             if (taskToAdd) {
                 this.selectedTasks.push(taskToAdd);
-                console.log(this.selectedTasks);
             }
         }
     }

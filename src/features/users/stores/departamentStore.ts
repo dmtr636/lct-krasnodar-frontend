@@ -26,14 +26,12 @@ export class DepartmentsStore {
                 (selectedDepartment) =>
                     selectedDepartment.department !== departmentOption.department,
             );
-            console.log(this.selectedDepartments + "32123");
         } else {
             const departmentToAdd = this.allDepartments.find(
                 (department) => department.department === departmentOption.department,
             );
             if (departmentToAdd) {
                 this.selectedDepartments.push(departmentToAdd);
-                console.log(this.selectedDepartments + "123");
             }
         }
     }

@@ -77,8 +77,6 @@ export const AnalyticPage = observer(() => {
             number % 100 > 4 && number % 100 < 20 ? 2 : cases[number % 10 < 5 ? number % 10 : 5];
         return `${number} ${titles[index]}`;
     }
-
-    console.log(tasksStore.selectedTasks);
     useEffect(() => {
         userStore.fetchAllUsers();
         document.addEventListener("click", hideSort);
@@ -88,6 +86,7 @@ export const AnalyticPage = observer(() => {
     const hideSort = () => {
         setShowSort(false);
     };
+    const user = userStore.currentUser;
 
     const componentRef = useRef<HTMLDivElement>(null);
     const handleDownloadImage = async () => {
@@ -410,7 +409,6 @@ export const AnalyticPage = observer(() => {
                                             onClick={() => {
                                                 sortedStore.setSortedBy("name");
                                                 sortedStore.sortedEmployees;
-                                                console.log(JSON.stringify(sortedStore.sortedBy));
                                                 setShowSort(!showSort);
                                             }}
                                             className={classNames(styles.sortedItem, {
@@ -452,10 +450,12 @@ export const AnalyticPage = observer(() => {
                                 )}
                             </div>
                         </div>
-                        <div className={styles.cloudArray}>
-                            {cloudArrayDep}
-                            {cloudArrayTask}
-                        </div>
+                        {cloudArrayTask.length + cloudArrayDep.length > 0 && (
+                            <div className={styles.cloudArray}>
+                                {cloudArrayDep}
+                                {cloudArrayTask}
+                            </div>
+                        )}
                         <div className={styles.userCount}>
                             {userNumber === 0 ? (
                                 <div className={styles.text}>
@@ -520,7 +520,6 @@ export const AnalyticPage = observer(() => {
                                         className=""
                                         onClick={() => {
                                             tasksStore.clearSelection();
-                                            console.log("нажал");
                                             departmentsStore.clearSelection();
                                         }}
                                     >
@@ -567,19 +566,21 @@ export const AnalyticPage = observer(() => {
                                         {optionsArray}
                                     </div>
                                 </div>
-                                <div className={styles.responsibilityUser}>
-                                    <div className={styles.filterText}>Ответственное лицо</div>
-                                    <div>
-                                        <Checkbox
-                                            checkboxChange={() => {
-                                                setResponsibilityUser(!responsibilityUser);
-                                            }}
-                                            isChecked={responsibilityUser}
-                                        >
-                                            Являюсь ответственным лицом
-                                        </Checkbox>
+                                {!(user?.role === "EMPLOYEE") && (
+                                    <div className={styles.responsibilityUser}>
+                                        <div className={styles.filterText}>Ответственное лицо</div>
+                                        <div>
+                                            <Checkbox
+                                                checkboxChange={() => {
+                                                    setResponsibilityUser(!responsibilityUser);
+                                                }}
+                                                isChecked={responsibilityUser}
+                                            >
+                                                Являюсь ответственным лицом
+                                            </Checkbox>
+                                        </div>
                                     </div>
-                                </div>
+                                )}
                             </div>
                         </div>
                     </div>

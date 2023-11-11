@@ -29,7 +29,6 @@ export const RecoveryPassword = ({
         axios
             .post(SEND_CODE, data)
             .then((response) => {
-                console.log(response);
                 setIsError(false);
                 setIsLoading(false);
                 setStep(2);
@@ -37,14 +36,11 @@ export const RecoveryPassword = ({
             .catch((error) => {
                 setIsLoading(false);
                 setIsError(true);
-                console.log("ошибка" + error);
             });
     };
-    console.log(inputEmailValue);
     React.useEffect(() => {
         if (inputEmailValue) setEmailIsValidated(true);
     }, []);
-    console.log(SEND_CODE);
     return (
         <ContentContainer text="Восстановление пароля">
             <div className={styles.headerSubText}>Укажите адрес вашей электронной почты</div>

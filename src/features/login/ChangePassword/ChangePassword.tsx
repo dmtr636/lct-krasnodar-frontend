@@ -74,8 +74,8 @@ export const ChangePassword = ({
     };
     const sendNewPass = () => {
         setIsLoading(true);
-        console.log("отправка данных " + data);
-        axios
+        /*         console.log("отправка данных " + data);
+         */ axios
             .post(CHANGE_PASSWORD, data)
             .then((response) => {
                 console.log(response);
@@ -84,7 +84,8 @@ export const ChangePassword = ({
             })
             .catch((error) => {
                 setIsLoading(false);
-                console.log("ошибка" + error);
+                /*                 console.log("ошибка" + error);
+                 */
             });
     };
     const navigate = useNavigate();
