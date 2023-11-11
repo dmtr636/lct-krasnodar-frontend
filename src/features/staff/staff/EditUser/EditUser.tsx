@@ -77,7 +77,7 @@ export const EditUser = ({
         patronymic: patronymic,
         telegram: TG,
         phone: number,
-        photoFileId: fileStore.uploadedFile?.id ?? null,
+        photoFileId: fileStore.uploadedFile?.id ?? userData.photoFile?.id ?? null,
         responsibleUserId: responsibleUserId,
     };
     const sendUser = async () => {
