@@ -78,7 +78,6 @@ export const ChangePassword = ({
          */ axios
             .post(CHANGE_PASSWORD, data)
             .then((response) => {
-                console.log(response);
                 setIsLoading(false);
                 setStep(4);
             })

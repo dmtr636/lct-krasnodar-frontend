@@ -89,6 +89,12 @@ export const UserPage = observer(() => {
             return <h1>Загрузка ...</h1>;
         }
 
+        const canEditSkills = () => {
+            return !(
+                userStore.currentUser?.role === "EMPLOYEE" && user.id !== userStore.currentUser.id
+            );
+        };
+
         return (
             <div
                 className={classNames(styles.userInfo, {
@@ -136,48 +142,58 @@ export const UserPage = observer(() => {
                         {user.skills?.map((skill) => (
                             <div className={styles.skill}>
                                 {skill}
-
-                                <IconButton
-                                    onClick={() => {
-                                        user.skills = user?.skills.filter((s) => s !== skill);
-                                        userStore.updateUser(user);
-                                    }}
-                                >
-                                    <IconClose />
-                                </IconButton>
+                                {canEditSkills() && (
+                                    <IconButton
+                                        onClick={() => {
+                                            user.skills = user?.skills.filter((s) => s !== skill);
+                                            userStore.updateUser(user);
+                                        }}
+                                    >
+                                        <IconClose />
+                                    </IconButton>
+                                )}
                             </div>
                         ))}
-                        {!!skills.filter((skill) => !user?.skills?.includes(skill)).length && (
-                            <div className={styles.addSkillButton}>
-                                <IconButton onClick={(e) => setAddSkillAnchorEl(e.currentTarget)}>
-                                    <IconAdd />
-                                </IconButton>
-                            </div>
-                        )}
+                        {!!skills.filter((skill) => !user?.skills?.includes(skill)).length &&
+                            canEditSkills() && (
+                                <div className={styles.addSkillButton}>
+                                    <IconButton
+                                        onClick={(e) => setAddSkillAnchorEl(e.currentTarget)}
+                                    >
+                                        <IconAdd />
+                                    </IconButton>
+                                </div>
+                            )}
+                        {!canEditSkills() && !user.skills.length && <div>Навыки не добавлены</div>}
                     </div>
                 </div>
-                <div className={classNames(styles.row, styles.row4)}>
-                    <div className={styles.header}>Ответственное лицо</div>
-                    <div className={styles.responsiblePerson}>
-                        {userStore.allUsers.find((u) => u.id === user.responsibleUserId)?.fullName}
+                {user.responsibleUserId && (
+                    <div className={classNames(styles.row, styles.row4)}>
+                        <div className={styles.header}>Ответственное лицо</div>
+                        <div className={styles.responsiblePerson}>
+                            {
+                                userStore.allUsers.find((u) => u.id === user.responsibleUserId)
+                                    ?.fullName
+                            }
+                        </div>
                     </div>
-                </div>
+                )}
             </div>
         );
     };
 
     const renderTasks = () => {
-        const currentCourse = educationStore.userCourses.filter(
-            (c) => c.startTimestamp && !c.finishTimestamp,
-        )[0];
+        const currentCourse = educationStore.userCourses
+            .filter((uc) => uc.userId === user?.id)
+            .filter((c) => c.startTimestamp && !c.finishTimestamp)[0];
 
-        const plannedCourses = educationStore.userCourses.filter(
-            (c) => !c.startTimestamp && !c.finishTimestamp,
-        );
+        const plannedCourses = educationStore.userCourses
+            .filter((uc) => uc.userId === user?.id)
+            .filter((c) => !c.startTimestamp && !c.finishTimestamp);
 
-        const finishedCourses = educationStore.userCourses.filter(
-            (c) => c.startTimestamp && c.finishTimestamp,
-        );
+        const finishedCourses = educationStore.userCourses
+            .filter((uc) => uc.userId === user?.id)
+            .filter((c) => c.startTimestamp && c.finishTimestamp);
 
         return (
             <div className={styles.tasks}>
@@ -254,16 +270,21 @@ export const UserPage = observer(() => {
                     <div className={styles.header}>Завершённые курсы</div>
                     {finishedCourses.map((c) => (
                         <div className={classNames(styles.item, styles.finished)}>
-                            <EducationIcon />
+                            <SuccessIcon />
                             <div>
-                                <div>
-                                    {
-                                        educationStore.courses.find((_c) => _c.id === c.courseId)!
-                                            .name
-                                    }
-                                </div>
-                                <span className={styles.score}>({c.testScore} / 10)</span>
+                                {educationStore.courses.find((_c) => _c.id === c.courseId)!.name}
                             </div>
+                            {c.testScore !== null && (
+                                <span className={styles.score}>
+                                    ({c.testScore} /{" "}
+                                    {
+                                        educationStore.tests.filter(
+                                            (t) => t.courseId === c.courseId,
+                                        ).length
+                                    }
+                                    )
+                                </span>
+                            )}
                         </div>
                     ))}
                     {!finishedCourses.length && <div>Завершённые курсы отсутствуют</div>}
@@ -305,22 +326,24 @@ export const UserPage = observer(() => {
                                 />
                                 <CircularProgress
                                     variant="determinate"
-                                    value={
+                                    value={Math.round(
                                         (finishedCourses.length /
                                             (educationStore.userCourses.filter(
                                                 (uc) => uc.userId === user?.id,
                                             ).length || 1)) *
-                                        100
-                                    }
+                                            100,
+                                    )}
                                     className={styles.circular}
                                     thickness={3}
                                 />
                                 <div className={styles.value}>
-                                    {(finishedCourses.length /
-                                        (educationStore.userCourses.filter(
-                                            (uc) => uc.userId === user?.id,
-                                        ).length || 1)) *
-                                        100}
+                                    {Math.round(
+                                        (finishedCourses.length /
+                                            (educationStore.userCourses.filter(
+                                                (uc) => uc.userId === user?.id,
+                                            ).length || 1)) *
+                                            100,
+                                    )}
                                     %
                                 </div>
                             </div>
@@ -338,31 +361,36 @@ export const UserPage = observer(() => {
                                 />
                                 <CircularProgress
                                     variant="determinate"
-                                    value={
+                                    value={Math.round(
                                         finishedCourses.reduce(
                                             (a, b) => a + (b.testScore ?? 0),
                                             0,
                                         ) /
-                                        (finishedCourses
-                                            .map((c) =>
-                                                educationStore.tests.filter(
-                                                    (t) => t.courseId === c?.courseId,
-                                                ),
-                                            )
-                                            .reduce((a, b) => a + b.length, 0) || 1)
-                                    }
+                                            (finishedCourses
+                                                .map((c) =>
+                                                    educationStore.tests.filter(
+                                                        (t) => t.courseId === c?.courseId,
+                                                    ),
+                                                )
+                                                .reduce((a, b) => a + b.length, 0) || 1),
+                                    )}
                                     className={styles.circular}
                                     thickness={3}
                                 />
                                 <div className={styles.value}>
-                                    {finishedCourses.reduce((a, b) => a + (b.testScore ?? 0), 0) /
-                                        (finishedCourses
-                                            .map((c) =>
-                                                educationStore.tests.filter(
-                                                    (t) => t.courseId === c?.courseId,
-                                                ),
-                                            )
-                                            .reduce((a, b) => a + b.length, 0) || 1)}
+                                    {Math.round(
+                                        finishedCourses.reduce(
+                                            (a, b) => a + (b.testScore ?? 0),
+                                            0,
+                                        ) /
+                                            (finishedCourses
+                                                .map((c) =>
+                                                    educationStore.tests.filter(
+                                                        (t) => t.courseId === c?.courseId,
+                                                    ),
+                                                )
+                                                .reduce((a, b) => a + b.length, 0) || 1),
+                                    )}
                                     %
                                 </div>
                             </div>
@@ -380,26 +408,44 @@ export const UserPage = observer(() => {
                                 />
                                 <CircularProgress
                                     variant="determinate"
-                                    value={
-                                        finishedCourses.filter(
-                                            (fc) =>
-                                                datediff(fc.finishTimestamp!, fc.startTimestamp!) <=
-                                                educationStore.courses.find(
-                                                    (c) => c.id === fc.courseId,
-                                                )!.duration!,
-                                        ).length / (finishedCourses.length || 1)
-                                    }
+                                    value={Math.round(
+                                        (finishedCourses
+                                            .filter((fc) => fc.finishTimestamp)
+                                            .filter(
+                                                (fc) =>
+                                                    datediff(
+                                                        fc.finishTimestamp!,
+                                                        fc.startTimestamp!,
+                                                    ) <=
+                                                    educationStore.courses.find(
+                                                        (c) => c.id === fc.courseId,
+                                                    )!.duration!,
+                                            ).length /
+                                            (finishedCourses.filter((fc) => fc.finishTimestamp)
+                                                .length || 1)) *
+                                            100,
+                                    )}
                                     className={styles.circular}
                                     thickness={3}
                                 />
                                 <div className={styles.value}>
-                                    {finishedCourses.filter(
-                                        (fc) =>
-                                            datediff(fc.finishTimestamp!, fc.startTimestamp!) <=
-                                            educationStore.courses.find(
-                                                (c) => c.id === fc.courseId,
-                                            )!.duration!,
-                                    ).length / (finishedCourses.length || 1)}
+                                    {Math.round(
+                                        (finishedCourses
+                                            .filter((fc) => fc.finishTimestamp)
+                                            .filter(
+                                                (fc) =>
+                                                    datediff(
+                                                        fc.finishTimestamp!,
+                                                        fc.startTimestamp!,
+                                                    ) <=
+                                                    educationStore.courses.find(
+                                                        (c) => c.id === fc.courseId,
+                                                    )!.duration!,
+                                            ).length /
+                                            (finishedCourses.filter((fc) => fc.finishTimestamp)
+                                                .length || 1)) *
+                                            100,
+                                    )}
                                     %
                                 </div>
                             </div>
@@ -430,7 +476,10 @@ export const UserPage = observer(() => {
                                         }
                                     </div>
                                     <div className={styles.date}>
-                                        {new Date(fc.startTimestamp!).toLocaleDateString()}
+                                        {new Date(fc.startTimestamp!).toLocaleDateString(
+                                            undefined,
+                                            { day: "2-digit", month: "2-digit", year: "2-digit" },
+                                        )}
                                     </div>
                                     <div className={styles.date}>
                                         <span
@@ -453,33 +502,42 @@ export const UserPage = observer(() => {
                                                     )!.duration!,
                                             })}
                                         >
-                                            {new Date(fc.startTimestamp!).toLocaleDateString()}
+                                            {new Date(fc.startTimestamp!).toLocaleDateString(
+                                                undefined,
+                                                {
+                                                    day: "2-digit",
+                                                    month: "2-digit",
+                                                    year: "2-digit",
+                                                },
+                                            )}
                                         </span>
                                     </div>
-                                    <div className={styles.date}>
-                                        <span
-                                            className={classNames({
-                                                [styles.success]:
-                                                    fc.testScore! /
-                                                        (educationStore.tests.filter(
-                                                            (t) => t.courseId === fc?.courseId,
-                                                        ).length || 1) >
-                                                    0.6,
-                                                [styles.error]:
-                                                    fc.testScore! /
-                                                        (educationStore.tests.filter(
-                                                            (t) => t.courseId === fc?.courseId,
-                                                        ).length || 1) <=
-                                                    0.6,
-                                            })}
-                                        >
-                                            {fc.testScore}
-                                        </span>
-                                        &nbsp;/{" "}
-                                        {educationStore.tests.filter(
-                                            (t) => t.courseId === fc?.courseId,
-                                        ).length || 1}
-                                    </div>
+                                    {fc.testScore !== null && (
+                                        <div className={styles.date}>
+                                            <span
+                                                className={classNames({
+                                                    [styles.success]:
+                                                        fc.testScore! /
+                                                            (educationStore.tests.filter(
+                                                                (t) => t.courseId === fc?.courseId,
+                                                            ).length || 1) >
+                                                        0.6,
+                                                    [styles.error]:
+                                                        fc.testScore! /
+                                                            (educationStore.tests.filter(
+                                                                (t) => t.courseId === fc?.courseId,
+                                                            ).length || 1) <=
+                                                        0.6,
+                                                })}
+                                            >
+                                                {fc.testScore}
+                                            </span>
+                                            &nbsp;/{" "}
+                                            {educationStore.tests.filter(
+                                                (t) => t.courseId === fc?.courseId,
+                                            ).length || 1}
+                                        </div>
+                                    )}
                                 </div>
                             ))}
                         </div>
@@ -513,6 +571,7 @@ export const UserPage = observer(() => {
                                         <div className={styles.name}>
                                             {e.eventType === "LOGIN" && "Вход в систему"}
                                             {e.eventType === "LOGOUT" && "Выход из системы"}
+                                            {e.eventType === "COURSE_FINISHED" && e.text}
                                         </div>
                                         <div className={styles.date}>
                                             {new Date(e.timestamp).toLocaleDateString()}
@@ -671,27 +730,33 @@ export const UserPage = observer(() => {
                     <div className={classNames(styles.section, styles.withoutBottomBorder)}>
                         <div className={styles.sectionHeader}>План обучения</div>
                         <div className={styles.courses}>
-                            {educationStore.userCourses.map((c) => (
-                                <div className={styles.course}>
-                                    <IconEducation />
-                                    {
-                                        educationStore.courses.find((_c) => _c.id === c.courseId)
-                                            ?.name
-                                    }
-                                    <IconButton
-                                        onClick={() => {
-                                            educationStore.userCourses =
-                                                educationStore.userCourses.filter(
-                                                    (_c) => _c.id !== c.id,
-                                                );
-                                            educationStore.userCoursesToDelete.push(c);
-                                        }}
-                                        className={styles.deleteButton}
-                                    >
-                                        <IconDelete />
-                                    </IconButton>
-                                </div>
-                            ))}
+                            {educationStore.userCourses
+                                .filter((uc) => uc.userId == user?.id)
+                                .map((c) => (
+                                    <div className={styles.course}>
+                                        <IconEducation />
+                                        {
+                                            educationStore.courses.find(
+                                                (_c) => _c.id === c.courseId,
+                                            )?.name
+                                        }
+                                        <IconButton
+                                            onClick={() => {
+                                                educationStore.userCourses =
+                                                    educationStore.userCourses.filter(
+                                                        (_c) =>
+                                                            _c.userId !== user?.id ||
+                                                            (_c.userId === user?.id &&
+                                                                _c.id !== c.id),
+                                                    );
+                                                educationStore.userCoursesToDelete.push(c);
+                                            }}
+                                            className={styles.deleteButton}
+                                        >
+                                            <IconDelete />
+                                        </IconButton>
+                                    </div>
+                                ))}
                         </div>
                     </div>
 

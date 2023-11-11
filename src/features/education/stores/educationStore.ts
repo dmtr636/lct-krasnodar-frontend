@@ -64,10 +64,6 @@ export class EducationStore {
     async fetchAllUserCourses() {
         const response = await axios.get(USER_COURSES_ENDPOINT);
         this.userCourses = response.data;
-        if (this.userCourses[0] && !this.userCourses[0].startTimestamp) {
-            this.userCourses[0].startTimestamp = new Date().toISOString();
-            await axios.put(USER_COURSES_ENDPOINT, this.userCourses[0]);
-        }
     }
 
     async addTests(course: ICourse) {
@@ -125,8 +121,8 @@ export class EducationStore {
         this.courses = this.courses.map((c) => (c.id === course.id ? response.data : c));
     }
 
-    async updateCourseProgram(course: ICourse, program: IProgram) {
-        course.programId = program.id;
+    async updateCourseProgram(course: ICourse, program: IProgram | null) {
+        course.programId = program?.id || null;
         await axios.put(COURSES_ENDPOINT, {
             id: course.id,
             name: course.name,
@@ -159,6 +155,12 @@ export class EducationStore {
         this.selectedCourses.forEach((c) => {
             this.updateCourseProgram(c, program);
         });
+        this.courses
+            .filter((c) => c.programId === program.id)
+            .filter((c) => !this.selectedCourses.some((sc) => sc.id === c.id))
+            .forEach((c) => {
+                this.updateCourseProgram(c, null);
+            });
     }
 
     async deleteProgram(id: number) {

@@ -11,6 +11,7 @@ import { IconButton } from "src/shared/ui/Button/IconButton/IconButton";
 import { IconNotification, IconNotificationActive } from "src/shared/assets/img";
 import { url } from "src/shared/helpers/url";
 import { notificationsStore } from "src/features/notifications/stores/notificationStore";
+import adminAvatar from "src/shared/assets/img/Admin.png";
 
 export interface IHeaderProps {
     title: string;
@@ -49,13 +50,7 @@ export const Header = observer((props: IHeaderProps) => {
                 <div className={styles.actions}>
                     <IconButton
                         onClick={(e) => {
-                            if (
-                                notificationsStore.notifications.filter(
-                                    (n) => n.userId === userStore.currentUser?.id,
-                                ).length
-                            ) {
-                                setNotificationMenuAnchorEl(e.currentTarget);
-                            }
+                            setNotificationMenuAnchorEl(e.currentTarget);
                         }}
                         className={styles.notificationIcon}
                     >
@@ -71,7 +66,7 @@ export const Header = observer((props: IHeaderProps) => {
                         src={
                             userStore.currentUser?.photoFile?.url
                                 ? url(userStore.currentUser?.photoFile?.url)
-                                : "https://t4.ftcdn.net/jpg/02/27/45/09/360_F_227450952_KQCMShHPOPebUXklULsKsROk5AvN6H1H.jpg"
+                                : adminAvatar
                         }
                         className={styles.avatar}
                     />
@@ -113,6 +108,18 @@ export const Header = observer((props: IHeaderProps) => {
                         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
                         transformOrigin={{ horizontal: "right", vertical: "top" }}
                     >
+                        {!notificationsStore.notifications
+                            .filter((n) => !n.isRead)
+                            .filter((n) => n.userId === userStore.currentUser?.id).length && (
+                            <MenuItem
+                                onClick={() => {
+                                    setNotificationMenuAnchorEl(false);
+                                }}
+                                className={classNames(styles.menuItem, styles.empty)}
+                            >
+                                Уведомлений нет
+                            </MenuItem>
+                        )}
                         {notificationsStore.notifications
                             .filter((n) => !n.isRead)
                             .filter((n) => n.userId === userStore.currentUser?.id)
@@ -130,18 +137,6 @@ export const Header = observer((props: IHeaderProps) => {
                                     {n.text}
                                 </MenuItem>,
                             ])}
-                        {!notificationsStore.notifications
-                            .filter((n) => !n.isRead)
-                            .filter((n) => n.userId === userStore.currentUser?.id).length && (
-                            <MenuItem
-                                onClick={() => {
-                                    setNotificationMenuAnchorEl(false);
-                                }}
-                                className={classNames(styles.menuItem, styles.empty)}
-                            >
-                                Уведомлений нет
-                            </MenuItem>
-                        )}
                     </Menu>
                 </div>
             </div>

@@ -25,6 +25,8 @@ import { ICourse } from "src/features/education/interfaces/ICourse";
 import { IProgram } from "src/features/education/interfaces/IProgram";
 import classNames from "classnames";
 import { ButtonBack } from "src/shared/ui/Button/ButtonBack/ButtonBack";
+import { download } from "src/features/messages/pages/MessagesPage";
+import { url } from "src/shared/helpers/url";
 
 export const EducationManagerPage = observer(() => {
     const navigate = useNavigate();
@@ -668,7 +670,14 @@ export const EducationManagerPage = observer(() => {
                                             </div>
                                         ) : fileStore.uploadedFile ? (
                                             <div className={styles.selectedFile}>
-                                                <div className={styles.fileName}>
+                                                <div
+                                                    className={styles.uploadedFileName}
+                                                    onClick={() => {
+                                                        download(
+                                                            url(fileStore.uploadedFile?.url ?? ""),
+                                                        );
+                                                    }}
+                                                >
                                                     {fileStore.uploadedFile.name}
                                                 </div>
                                                 <IconButton
@@ -697,6 +706,9 @@ export const EducationManagerPage = observer(() => {
                                                 <IconAdd />
                                             )
                                         }
+                                        className={classNames(styles.linkButton, {
+                                            [styles.withBottomBorder]: !!selectProgramAnchorEl,
+                                        })}
                                     >
                                         {educationStore.selectedProgram
                                             ? educationStore.selectedProgram.name

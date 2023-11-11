@@ -1,5 +1,5 @@
 import styles from "./style.module.scss";
-import { getSidebarRoutes, supportRoute } from "src/app/routes/sidebarRoutes";
+import { getSidebarRoutes, getSupportRoute } from "src/app/routes/sidebarRoutes";
 import { SidebarMenuItem } from "../SidebarMenuItem/SidebarMenuItem";
 import { observer } from "mobx-react-lite";
 import { sidebarLogo } from "../../assets/icons";
@@ -52,7 +52,7 @@ export const Sidebar = observer(() => {
                     ))}
                 </div>
                 <div className={styles.footer}>
-                    <SidebarMenuItem route={supportRoute} collapsed={collapsed} />
+                    <SidebarMenuItem route={getSupportRoute()} collapsed={collapsed} />
                 </div>
             </div>
         </div>

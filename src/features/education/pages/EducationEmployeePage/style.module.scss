@@ -234,7 +234,7 @@
             gap: 16px;
 
             .extensions {
-                color: #1d1d1b;
+                color: var(--color-primary);
                 font-size: 14px;
                 font-weight: 400;
                 line-height: 23px;
@@ -385,6 +385,7 @@
     font-size: 14px;
     font-weight: 600;
     letter-spacing: 0.14px;
+    color: var(--color-primary);
 
     &:not(:last-child) {
         border-right: 1px solid #d8e4f3;

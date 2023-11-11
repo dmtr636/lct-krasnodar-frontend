@@ -6,6 +6,13 @@
     font-weight: 600;
     line-height: 28px;
     letter-spacing: 0.32px;
+    color: var(--color-primary);
+
+    .text {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
 
     .icon {
         padding: 6px;

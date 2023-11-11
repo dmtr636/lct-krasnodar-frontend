@@ -36,7 +36,6 @@ export const CodeCheck = ({
         axios
             .post(CHECK_CODE, data)
             .then((response) => {
-                console.log(response);
                 setIsError(false);
                 setIsLoading(false);
                 setStep(3);
@@ -53,12 +52,9 @@ export const CodeCheck = ({
         axios
             .post(SEND_CODE, emailData)
             .then((response) => {
-                console.log(response);
                 setShowTimer(true);
             })
-            .catch((error) => {
-                console.log(error);
-            });
+            .catch((error) => {});
     };
     const handleOutputString = (string: string) => {
         setInputCodeValue(string);

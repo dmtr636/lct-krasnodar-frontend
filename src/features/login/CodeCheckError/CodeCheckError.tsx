@@ -9,7 +9,6 @@ export const CodeCheckError = ({
     errorCount: number;
     setIsError: (arg: boolean) => void;
 }) => {
-    console.log(errorCount);
     return (
         <>
             {errorCount == 0 || undefined ? (

@@ -12,7 +12,7 @@ export const LinkButton = (props: {
     return (
         <button className={classNames(styles.button, props.className)} onClick={props.onClick}>
             {props.icon && <div className={styles.icon}>{props.icon}</div>}
-            {props.children}
+            <div className={styles.text}>{props.children}</div>
         </button>
     );
 };

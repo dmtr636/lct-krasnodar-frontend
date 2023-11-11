@@ -31,30 +31,24 @@ export const EducationEmployeePage = observer(() => {
     const [viewPdf, setViewPdf] = useState("");
 
     useEffect(() => {
-        educationStore.answers = {};
+        if (openedCourse) {
+            educationStore.answers = {};
+            setShowRating(openedCourse?.testScore !== null);
+            setPreviewRating(0);
+            educationStore.rating = 0;
+        }
     }, [openedCourse]);
 
     const renderCurrentCourses = () => {
         const currentCourses = educationStore.userCourses
             .filter((uc) => uc.userId === userStore.currentUser?.id)
             .filter((uc) => !uc.finishTimestamp);
-        const programsWithCourses = educationStore.programs
-            .filter((p) =>
-                currentCourses.some(
-                    (c) =>
-                        educationStore.courses.find((_c) => _c.id === c.courseId)?.programId ===
-                        p.id,
-                ),
-            )
-            .sort((p) =>
-                currentCourses.some(
-                    (c) =>
-                        educationStore.getCourseByUserCourse(c)?.programId === p.id &&
-                        c.startTimestamp,
-                )
-                    ? 0
-                    : 1,
-            );
+        const programsWithCourses = educationStore.programs.filter((p) =>
+            currentCourses.some(
+                (c) =>
+                    educationStore.courses.find((_c) => _c.id === c.courseId)?.programId === p.id,
+            ),
+        );
 
         return (
             <div className={styles.card}>
@@ -166,7 +160,6 @@ export const EducationEmployeePage = observer(() => {
             </div>
         );
     };
-    console.log(viewPdf);
 
     return (
         <ContentWithHeaderLayout title={"Обучение"} onBack={() => navigate("/")}>
@@ -198,7 +191,16 @@ export const EducationEmployeePage = observer(() => {
                         </button>
                     </div>
                     {educationStore.getCourseByUserCourse(openedCourse)?.file?.url && (
-                        <div className={styles.section}>
+                        <div
+                            className={classNames(styles.section, {
+                                [styles.withoutBottomBorder]: !(
+                                    showRating ||
+                                    educationStore.tests.filter(
+                                        (t) => t.courseId === openedCourse?.courseId,
+                                    ).length
+                                ),
+                            })}
+                        >
                             <div className={styles.row}>
                                 <div>
                                     <div className={styles.sectionHeader}>Обучающие материалы</div>

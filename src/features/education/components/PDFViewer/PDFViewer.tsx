@@ -61,7 +61,7 @@ export const PDFViewer = observer((props: IPDFViewerProps) => {
                         .fill(0)
                         .map((_, index) => (
                             <Page
-                                scale={1.25}
+                                scale={1.75}
                                 pageNumber={index + 1}
                                 key={index + 1}
                                 className={styles.page}

@@ -1,5 +1,5 @@
 import { RouteObject } from "react-router-dom";
-import { getSidebarRoutes, supportRoute } from "./sidebarRoutes";
+import { getSidebarRoutes, getSupportRoute } from "./sidebarRoutes";
 
 import { AppContainer } from "src/app/containers/AppContainer";
 import { LoginPage } from "src/pages/login/LoginPage/LoginPage";
@@ -16,7 +16,7 @@ export const getRoutes = (): RouteObject[] => [
                 element: <ContentWithSidebarLayout />,
                 children: [
                     ...getSidebarRoutes(),
-                    supportRoute,
+                    getSupportRoute(),
                     {
                         path: "/users/:id",
                         element: <UserPage />,

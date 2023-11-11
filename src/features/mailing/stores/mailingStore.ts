@@ -63,7 +63,7 @@ export class MailingStore {
         const response = await axios.post(MAILING_ENDPOINT, mailing);
         this.mailings.push(response.data);
 
-        let users = userStore.allUsers;
+        let users = [...userStore.allUsers, { id: 1 }];
         if (this.selectedDepartments.length) {
             users = userStore.allUsers.filter((u) =>
                 this.selectedDepartments.includes(u.department),

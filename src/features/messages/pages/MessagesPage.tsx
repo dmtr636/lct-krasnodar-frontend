@@ -48,7 +48,7 @@ export const MessagesPage = observer(() => {
                         <div className={styles.courses}>
                             {mailingStore.messages
                                 .filter((u) => (selectedTab === tabs[0] ? !u.isRead : u.isRead))
-                                .filter((u) => u.id === userStore.currentUser?.id)
+                                .filter((u) => u.userId === userStore.currentUser?.id)
                                 .map((message) => (
                                     <button
                                         className={styles.course}
@@ -68,7 +68,7 @@ export const MessagesPage = observer(() => {
                                     </button>
                                 ))}
                             {!mailingStore.messages
-                                .filter((u) => u.id === userStore.currentUser?.id)
+                                .filter((u) => u.userId === userStore.currentUser?.id)
                                 .filter((u) => (selectedTab === tabs[0] ? !u.isRead : u.isRead))
                                 .length && <div>Сообщения отсутствуют</div>}
                         </div>

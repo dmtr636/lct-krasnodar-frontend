@@ -12,6 +12,7 @@ import { userStore } from "src/features/users/stores/userStore";
 import { EducationPage } from "src/features/education/pages/EducationPage/EducationPage";
 import { AnalyticPage } from "src/features/analytics/pages/AnalyticPage/AnalyticPage";
 import { notificationsStore } from "src/features/notifications/stores/notificationStore";
+import { educationStore } from "src/features/education/stores/educationStore";
 
 export type ISidebarRoute = RouteObject & {
     path: string;
@@ -46,10 +47,9 @@ export const getSidebarRoutes = (): ISidebarRoute[] => [
         name: "Обучение",
         sidebarProps: {
             icon: <EducationIcon />,
-            counterValue: notificationsStore.notifications
-                .filter((n) => !n.isRead)
-                .filter((n) => n.userId === userStore.currentUser?.id)
-                .filter((n) => n.type === "COURSE_ASSIGN" || n.type === "COURSE_DEADLINE").length,
+            counterValue: educationStore.userCourses
+                .filter((uc) => uc.userId === userStore.currentUser?.id)
+                .filter((uc) => !uc.finishTimestamp).length,
         },
     },
     ...(userStore.currentUser?.role === "EMPLOYEE"
@@ -74,13 +74,14 @@ export const getSidebarRoutes = (): ISidebarRoute[] => [
           ]),
 ];
 
-export const supportRoute: ISidebarRoute = {
+export const getSupportRoute = (): ISidebarRoute => ({
     path: "/messages",
     element: <MessagesPage />,
     name: "Сообщения",
     sidebarProps: {
         icon: <IconSupport />,
-        counterValue: mailingStore.messages.filter((m) => m.userId === userStore.currentUser?.id)
-            .length,
+        counterValue: mailingStore.messages
+            .filter((m) => m.userId === userStore.currentUser?.id)
+            .filter((m) => !m.isRead).length,
     },
-};
+});
