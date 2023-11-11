@@ -62,7 +62,6 @@ export const HomePage = observer(() => {
             fileStore.uploadedFile = processingTemplate.file;
         }
     }, [processingTemplate]);
-
     return (
         <ContentWithHeaderLayout title={"Главная"}>
             <div className={styles.container}>
@@ -73,7 +72,7 @@ export const HomePage = observer(() => {
                             <HomeContainer header={"Можно обратиться за помощью"}>
                                 <EmployeeCard
                                     img={responsibleUser?.photoFile?.url}
-                                    role={responsibleUser?.department ?? ""}
+                                    role={USER_DEPARTMENTS[responsibleUser?.department ?? "ADMIN"]}
                                     name={responsibleUser?.fullName ?? ""}
                                     tg={responsibleUser?.telegram ?? ""}
                                     link={`/users/${responsibleUser?.id}`}
@@ -206,7 +205,7 @@ export const HomePage = observer(() => {
                                 <HomeContainer header="Аналитика">
                                     <div className={styles.analyticsSubname}>Общая в компании</div>
 
-                                    <div className={styles.progressContainerSecond2}>
+                                    <div className={styles.progressContainerSecondAnalytics}>
                                         <div className={styles.progress}>
                                             <CircularProgress
                                                 variant="determinate"

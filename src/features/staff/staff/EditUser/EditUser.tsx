@@ -99,6 +99,7 @@ export const EditUser = ({
                 setShowSuccefull(true); */
             })
             .catch((error) => {});
+        userStore.fetchAllUsers();
     };
     useEffect(() => {
         setEmail(userData?.email);
