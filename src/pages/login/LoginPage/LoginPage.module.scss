@@ -8,11 +8,7 @@
 .left {
     background-color: #14214d;
     width: 50vw;
-    height: 100vh; /* 
-    background-image: url("./bg.png");
-    background-repeat: no-repeat;
-    background-size:contain;
-    background-position: center; */
+    height: 100vh;
 }
 .right {
     width: 50vw;
@@ -27,4 +23,37 @@
 .logo {
     margin-top: 24px;
     margin-left: 40px;
+}
+.bg {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.bgLeft {
+    display: flex;
+    align-items: center;
+    width: 43%;
+    height: calc(100vh - 40px);
+    position: relative;
+}
+.bgLeftImg {
+    position: absolute;
+    display: block;
+    height: 69px;
+    width: 41vw;
+    margin-top: 500px;
+}
+
+.bgRight {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    width: 57%;
+    height: calc(100vh - 40px);
+}
+.bgRightImg {
+    display: block;
+    width: 365px;
+    height: 405px;
+    margin-top: 55px;
 }
