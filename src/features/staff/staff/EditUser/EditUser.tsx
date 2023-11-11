@@ -87,7 +87,6 @@ export const EditUser = ({
         await axios
             .put(USERS_ENDPOINT, { ...data })
             .then((response) => {
-                userStore.updateUser(response.data);
                 setShowAddUser(false);
                 /*     setEmail("");
                 setDepartment("");
@@ -100,6 +99,7 @@ export const EditUser = ({
                 setShowSuccefull(true); */
             })
             .catch((error) => {});
+        userStore.fetchAllUsers();
     };
     useEffect(() => {
         setEmail(userData?.email);
