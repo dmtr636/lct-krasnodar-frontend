@@ -67,14 +67,14 @@ export const PasswordInput = ({
                         onClick={handleTogglePassword}
                         className={classNames(styles.passShowBlock, {})}
                     >
-                        <button className={styles.passShow}>
+                        <div className={styles.passShow}>
                             <Lottie
                                 lottieRef={lottieRef}
                                 autoplay={false}
                                 animationData={showPass}
                                 loop={false}
                             />
-                        </button>
+                        </div>
                     </div>
                 </div>
             </div>

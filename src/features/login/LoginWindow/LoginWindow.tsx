@@ -66,47 +66,51 @@ export const LoginWindow = observer(() => {
     const navigate = useNavigate();
     return (
         <ContentContainer text="Личный кабинет">
-            <div className={styles.inputBlock}>
-                <EmailInput
-                    error={isError}
-                    onChange={setEmailInputValue}
-                    inputValue={emailInputValue}
-                    setEmailIsValidated={setEmailIsValidated}
-                />
-                <PasswordInput
-                    onChange={setPasswordInputValue}
-                    error={isError}
-                    inputValue={passwordInputValue}
-                />
-            </div>
-            <div className={styles.rememberMe}>
-                <Checkbox checkboxChange={checkboxChange} isChecked={isChecked}>
-                    Запомнить меня
-                </Checkbox>
-            </div>
-
-            <div className={styles.footerBlock}>
-                {isError ? (
-                    <LoginError
-                        errorCount={errorCount}
-                        setIsError={setIsError}
-                        blockTimeCount={blockTimeCount}
+            <form action="" onSubmit={(e) => e.preventDefault()}>
+                <div className={styles.inputBlock}>
+                    <EmailInput
+                        error={isError}
+                        onChange={setEmailInputValue}
+                        inputValue={emailInputValue}
+                        setEmailIsValidated={setEmailIsValidated}
                     />
-                ) : (
-                    <></>
-                )}
-                <div className={styles.buttonBlock}>
-                    <div className={styles.button}>
-                        <Button
-                            onClick={() => sendLogpass()}
-                            disabled={!emailIsValid || !passwordInputValue || blockButtonTimeout}
-                            isLoading={isLoading}
-                        >
-                            Войти
-                        </Button>
+                    <PasswordInput
+                        onChange={setPasswordInputValue}
+                        error={isError}
+                        inputValue={passwordInputValue}
+                    />
+                </div>
+                <div className={styles.rememberMe}>
+                    <Checkbox checkboxChange={checkboxChange} isChecked={isChecked}>
+                        Запомнить меня
+                    </Checkbox>
+                </div>
+
+                <div className={styles.footerBlock}>
+                    {isError ? (
+                        <LoginError
+                            errorCount={errorCount}
+                            setIsError={setIsError}
+                            blockTimeCount={blockTimeCount}
+                        />
+                    ) : (
+                        <></>
+                    )}
+                    <div className={styles.buttonBlock}>
+                        <div className={styles.button}>
+                            <Button
+                                onClick={() => sendLogpass()}
+                                disabled={
+                                    !emailIsValid || !passwordInputValue || blockButtonTimeout
+                                }
+                                isLoading={isLoading}
+                            >
+                                Войти
+                            </Button>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </form>
         </ContentContainer>
     );
 });
