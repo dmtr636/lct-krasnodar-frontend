@@ -362,7 +362,7 @@ export const UserPage = observer(() => {
                                 <CircularProgress
                                     variant="determinate"
                                     value={Math.round(
-                                        finishedCourses.reduce(
+                                        (finishedCourses.reduce(
                                             (a, b) => a + (b.testScore ?? 0),
                                             0,
                                         ) /
@@ -372,7 +372,8 @@ export const UserPage = observer(() => {
                                                         (t) => t.courseId === c?.courseId,
                                                     ),
                                                 )
-                                                .reduce((a, b) => a + b.length, 0) || 1),
+                                                .reduce((a, b) => a + b.length, 0) || 1)) *
+                                            100,
                                     )}
                                     className={styles.circular}
                                     thickness={3}
@@ -390,7 +391,7 @@ export const UserPage = observer(() => {
                                                     ),
                                                 )
                                                 .reduce((a, b) => a + b.length, 0) || 1),
-                                    )}
+                                    ) * 100}
                                     %
                                 </div>
                             </div>
