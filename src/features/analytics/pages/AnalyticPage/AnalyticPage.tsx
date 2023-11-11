@@ -9,7 +9,7 @@ import close from "src/shared/assets/img/Close.svg";
 import { Checkbox } from "src/shared/ui/Checkbox/Checkbox";
 import { ContentWithHeaderLayout } from "src/features/layout/ui/ContentWithHeaderLayout/ContentWithHeaderLayout";
 import { HeaderActionButton } from "src/features/layout/ui/Header/HeaderActionButton/HeaderActionButton";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { departmentsStore } from "src/features/users/stores/departamentStore";
 import { tasksStore } from "src/features/users/stores/tasksStore";
 import { userStore } from "src/features/users/stores/userStore";
@@ -77,6 +77,7 @@ export const AnalyticPage = observer(() => {
             number % 100 > 4 && number % 100 < 20 ? 2 : cases[number % 10 < 5 ? number % 10 : 5];
         return `${number} ${titles[index]}`;
     }
+
     useEffect(() => {
         userStore.fetchAllUsers();
         document.addEventListener("click", hideSort);
@@ -124,21 +125,24 @@ export const AnalyticPage = observer(() => {
                                 />
                                 <CircularProgress
                                     variant="determinate"
-                                    value={
+                                    value={Math.round(
                                         (educationStore.userCourses.filter(
                                             (uc) => uc.finishTimestamp,
                                         ).length /
                                             (educationStore.userCourses.length || 1)) *
-                                        100
-                                    }
+                                            100,
+                                    )}
                                     className={styles.circular}
                                     thickness={3}
                                 />
                                 <div className={styles.value}>
-                                    {(educationStore.userCourses.filter((uc) => uc.finishTimestamp)
-                                        .length /
-                                        (educationStore.userCourses.length || 1)) *
-                                        100}
+                                    {Math.round(
+                                        (educationStore.userCourses.filter(
+                                            (uc) => uc.finishTimestamp,
+                                        ).length /
+                                            (educationStore.userCourses.length || 1)) *
+                                            100,
+                                    )}
                                     %
                                 </div>
                             </div>
@@ -156,7 +160,7 @@ export const AnalyticPage = observer(() => {
                                 />
                                 <CircularProgress
                                     variant="determinate"
-                                    value={
+                                    value={Math.round(
                                         (educationStore.userCourses
                                             .filter((uc) => uc.testScore !== null)
                                             .reduce((a, b) => a + b.testScore!, 0) /
@@ -170,26 +174,28 @@ export const AnalyticPage = observer(() => {
                                                         ).length ?? 0),
                                                     0,
                                                 ) || 1)) *
-                                        100
-                                    }
+                                            100,
+                                    )}
                                     className={styles.circular}
                                     thickness={3}
                                 />
                                 <div className={styles.value}>
-                                    {(educationStore.userCourses
-                                        .filter((uc) => uc.testScore !== null)
-                                        .reduce((a, b) => a + b.testScore!, 0) /
+                                    {Math.round(
                                         (educationStore.userCourses
                                             .filter((uc) => uc.testScore !== null)
-                                            .reduce(
-                                                (a, b) =>
-                                                    a +
-                                                    (educationStore.tests.filter(
-                                                        (t) => t.courseId === b.courseId,
-                                                    ).length ?? 0),
-                                                0,
-                                            ) || 1)) *
-                                        100}
+                                            .reduce((a, b) => a + b.testScore!, 0) /
+                                            (educationStore.userCourses
+                                                .filter((uc) => uc.testScore !== null)
+                                                .reduce(
+                                                    (a, b) =>
+                                                        a +
+                                                        (educationStore.tests.filter(
+                                                            (t) => t.courseId === b.courseId,
+                                                        ).length ?? 0),
+                                                    0,
+                                                ) || 1)) *
+                                            100,
+                                    )}
                                     %
                                 </div>
                             </div>
@@ -207,26 +213,46 @@ export const AnalyticPage = observer(() => {
                                 />
                                 <CircularProgress
                                     variant="determinate"
-                                    value={
-                                        educationStore.userCourses.filter(
-                                            (fc) =>
-                                                datediff(fc.finishTimestamp!, fc.startTimestamp!) <=
-                                                educationStore.courses.find(
-                                                    (c) => c.id === fc.courseId,
-                                                )!.duration!,
-                                        ).length / (courses.length || 1)
-                                    }
+                                    value={Math.round(
+                                        (educationStore.userCourses
+                                            .filter((uc) => uc.finishTimestamp)
+                                            .filter(
+                                                (fc) =>
+                                                    datediff(
+                                                        fc.finishTimestamp!,
+                                                        fc.startTimestamp!,
+                                                    ) <=
+                                                    educationStore.courses.find(
+                                                        (c) => c.id === fc.courseId,
+                                                    )!.duration!,
+                                            ).length /
+                                            (educationStore.userCourses.filter(
+                                                (uc) => uc.finishTimestamp,
+                                            ).length || 1)) *
+                                            100,
+                                    )}
                                     className={styles.circular}
                                     thickness={3}
                                 />
                                 <div className={styles.value}>
-                                    {educationStore.userCourses.filter(
-                                        (fc) =>
-                                            datediff(fc.finishTimestamp!, fc.startTimestamp!) <=
-                                            educationStore.courses.find(
-                                                (c) => c.id === fc.courseId,
-                                            )!.duration!,
-                                    ).length / (courses.length || 1)}
+                                    {Math.round(
+                                        (educationStore.userCourses
+                                            .filter((uc) => uc.finishTimestamp)
+                                            .filter(
+                                                (fc) =>
+                                                    datediff(
+                                                        fc.finishTimestamp!,
+                                                        fc.startTimestamp!,
+                                                    ) <=
+                                                    educationStore.courses.find(
+                                                        (c) => c.id === fc.courseId,
+                                                    )!.duration!,
+                                            ).length /
+                                            (educationStore.userCourses.filter(
+                                                (uc) => uc.finishTimestamp,
+                                            ).length || 1)) *
+                                            100,
+                                    )}
                                     %
                                 </div>
                             </div>
@@ -237,7 +263,10 @@ export const AnalyticPage = observer(() => {
                     </div>
                 </div>
                 <div className={styles.row}>
-                    <div className={styles.header}>Завершённые курсы</div>
+                    <div className={styles.header}>
+                        Средняя количество правильных ответов по курсам
+                        <br />и обратная связь по качеству материала
+                    </div>
                     {courses.length ? (
                         <div className={styles.table}>
                             <div className={styles.tableRow}>
@@ -316,9 +345,10 @@ export const AnalyticPage = observer(() => {
                                                         educationStore.userCourses
                                                             .filter((uc) => uc.testScore !== null)
                                                             .filter((uc) => uc.courseId === c.id)
-                                                            .length}{" "}
+                                                            .length}
+                                                    &nbsp;
                                                 </span>
-                                                /{" "}
+                                                /&nbsp;
                                                 {
                                                     educationStore.tests.filter(
                                                         (t) => t.courseId === c.id,
@@ -328,35 +358,44 @@ export const AnalyticPage = observer(() => {
                                         )}
                                     </div>
                                     <div className={styles.date}>
-                                        {!!educationStore.userCourses.filter(
-                                            (uc) => uc.testScore !== null,
-                                        ).length && (
+                                        {!!educationStore.userCourses
+                                            .filter((uc) => uc.rating !== null)
+                                            .filter((uc) => uc.courseId === c.id).length && (
                                             <span
                                                 className={classNames({
                                                     [styles.success]:
                                                         educationStore.userCourses
-                                                            .filter((uc) => uc.testScore !== null)
-                                                            .reduce((a, b) => a + b.testScore!, 0) /
-                                                            educationStore.userCourses.filter(
-                                                                (uc) => uc.testScore !== null,
-                                                            ).length >=
+                                                            .filter((uc) => uc.courseId === c.id)
+                                                            .filter((uc) => uc.rating !== null)
+                                                            .reduce((a, b) => a + b.rating!, 0) /
+                                                            educationStore.userCourses
+                                                                .filter(
+                                                                    (uc) => uc.courseId === c.id,
+                                                                )
+                                                                .filter((uc) => uc.rating !== null)
+                                                                .length >=
                                                         3.5,
                                                     [styles.error]:
                                                         educationStore.userCourses
-                                                            .filter((uc) => uc.testScore !== null)
-                                                            .reduce((a, b) => a + b.testScore!, 0) /
-                                                            educationStore.userCourses.filter(
-                                                                (uc) => uc.testScore !== null,
-                                                            ).length <
+                                                            .filter((uc) => uc.courseId === c.id)
+                                                            .filter((uc) => uc.rating !== null)
+                                                            .reduce((a, b) => a + b.rating!, 0) /
+                                                            educationStore.userCourses
+                                                                .filter(
+                                                                    (uc) => uc.courseId === c.id,
+                                                                )
+                                                                .filter((uc) => uc.rating !== null)
+                                                                .length <
                                                         3.5,
                                                 })}
                                             >
                                                 {educationStore.userCourses
-                                                    .filter((uc) => uc.testScore !== null)
-                                                    .reduce((a, b) => a + b.testScore!, 0) /
-                                                    educationStore.userCourses.filter(
-                                                        (uc) => uc.testScore !== null,
-                                                    ).length}
+                                                    .filter((uc) => uc.courseId === c.id)
+                                                    .filter((uc) => uc.rating !== null)
+                                                    .reduce((a, b) => a + b.rating!, 0) /
+                                                    educationStore.userCourses
+                                                        .filter((uc) => uc.courseId === c.id)
+                                                        .filter((uc) => uc.rating !== null).length}
                                             </span>
                                         )}
                                     </div>
@@ -371,9 +410,21 @@ export const AnalyticPage = observer(() => {
         );
     };
 
+    const location = useLocation();
+
+    useEffect(() => {
+        navigate("/analytics?tab=" + showCard);
+    }, [showCard]);
+
+    useEffect(() => {
+        if (location.search.includes("tab=2")) {
+            setShowCard(2);
+        }
+    }, []);
+
     return (
         <ContentWithHeaderLayout
-            title={"Сотрудники"}
+            title={"Аналитика"}
             onBack={() => navigate("/")}
             startActions={
                 showCard === 1

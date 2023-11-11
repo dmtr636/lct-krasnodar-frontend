@@ -294,7 +294,10 @@ export const EducationEmployeePage = observer(() => {
                             </div>
                         </div>
                     )}
-                    {(showRating || openedCourse?.testScore !== null) &&
+                    {((showRating &&
+                        !educationStore.tests.filter((t) => t.courseId === openedCourse?.courseId)
+                            .length) ||
+                        openedCourse?.testScore !== null) &&
                         !openedCourse?.finishTimestamp && (
                             <div className={classNames(styles.section, styles.withoutBottomBorder)}>
                                 <div className={styles.sectionHeader}>

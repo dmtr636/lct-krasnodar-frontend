@@ -8,7 +8,6 @@ import { observer } from "mobx-react-lite";
 import { educationStore } from "src/features/education/stores/educationStore";
 import { IUser } from "src/features/users/interfaces/user";
 import { addDays } from "src/features/users/pages/UserPage/UserPage";
-import { USER_DEPARTMENTS } from "src/features/users/constants/userFilters";
 
 export const AnalyticsUserCard = observer(
     ({
@@ -49,12 +48,14 @@ export const AnalyticsUserCard = observer(
                     <div className={styles.name}>{name}</div>
                 </div>
                 <div className={styles.progres}>
-                    {(educationStore.userCourses
-                        .filter((uc) => uc.userId === user.id)
-                        .filter((c) => c.finishTimestamp).length /
-                        (educationStore.userCourses.filter((uc) => uc.userId === user.id).length ||
-                            1)) *
-                        100}
+                    {Math.round(
+                        (educationStore.userCourses
+                            .filter((uc) => uc.userId === user.id)
+                            .filter((c) => c.finishTimestamp).length /
+                            (educationStore.userCourses.filter((uc) => uc.userId === user.id)
+                                .length || 1)) *
+                            100,
+                    )}
                     %
                 </div>
                 <div className={classNames(styles.date, { [styles.error]: error })}>

@@ -823,11 +823,7 @@ export const EducationManagerPage = observer(() => {
                                                     (t.answers[index] = e.target.value)
                                                 }
                                             />
-                                            <IconButton
-                                                onClick={() =>
-                                                    (t.answers = t.answers.splice(index, 1))
-                                                }
-                                            >
+                                            <IconButton onClick={() => t.answers.splice(index, 1)}>
                                                 <IconClose />
                                             </IconButton>
                                         </div>

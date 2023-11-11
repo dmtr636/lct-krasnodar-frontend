@@ -1,7 +1,7 @@
 import styles from "./style.module.scss";
 import { observer } from "mobx-react-lite";
 import { ContentWithHeaderLayout } from "src/features/layout/ui/ContentWithHeaderLayout/ContentWithHeaderLayout";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import classNames from "classnames";
 import { userStore } from "src/features/users/stores/userStore";
@@ -620,10 +620,17 @@ export const UserPage = observer(() => {
         }
     };
 
+    const location = useLocation();
+    useEffect(() => {
+        if (location.search.includes("analytics")) {
+            setSelectedTab(tabs[2]);
+        }
+    }, []);
+
     return (
         <ContentWithHeaderLayout
             title={"Сотрудники"}
-            onBack={() => navigate("/users")}
+            onBack={() => navigate(-1)}
             startActions={getStartActions()}
             endActions={
                 userStore.currentUser?.role === "EMPLOYEE"

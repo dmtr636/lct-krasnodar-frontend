@@ -6,6 +6,7 @@ import { USER_DEPARTMENT_FILTER_OPTIONS } from "src/features/users/constants/use
 import { AnalyticsUserCard } from "../AnalyticsUserCard/AnalyticsUserCard";
 import { useEffect } from "react";
 import { USER_DEPARTMENTS } from "src/features/users/constants/userFilters";
+import { useLocation } from "react-router-dom";
 
 export const AnalyticsUserArray = observer(
     ({
@@ -40,7 +41,7 @@ export const AnalyticsUserArray = observer(
                 img={employee.photoFileUrl}
                 role={USER_DEPARTMENTS[employee.department]}
                 name={employee.fullName}
-                link={`/users/${employee.id}`}
+                link={`/users/${employee.id}?tab=analytics`}
                 tg={employee.telegram}
                 user={employee}
                 error={false}

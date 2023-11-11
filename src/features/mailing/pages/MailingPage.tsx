@@ -8,33 +8,20 @@ import {
     IconChat,
     IconClose,
     IconDelete,
-    IconEdit,
     IconMailing,
     IconSuccess,
 } from "src/shared/assets/img";
-import { educationStore } from "src/features/education/stores/educationStore";
 import { useEffect, useState } from "react";
-import { Drawer, Menu, MenuItem, TextareaAutosize } from "@mui/material";
+import { Drawer, TextareaAutosize } from "@mui/material";
 import { Input } from "src/shared/ui/Inputs/Input/Input";
 import { Button } from "src/shared/ui/Button/Button";
-import {
-    IconCalendar,
-    IconCheckmark,
-    IconEducation,
-    IconMinus,
-} from "src/features/education/assets";
+import { IconCheckmark } from "src/features/education/assets";
 import { Checkbox } from "src/shared/ui/Checkbox/Checkbox";
 import { USER_DEPARTMENT_FILTER_OPTIONS } from "src/features/users/constants/userDepartments";
 import { IconButton } from "src/shared/ui/Button/IconButton/IconButton";
-import { LinkButton } from "src/shared/ui/Button/LinkButton/LinkButton";
 import { fileStore } from "src/features/education/stores/fileStore";
-import { declOfNum } from "src/features/users/pages/UserPage/UserPage";
-import { ICourse } from "src/features/education/interfaces/ICourse";
-import { IProgram } from "src/features/education/interfaces/IProgram";
 import classNames from "classnames";
-import { ButtonBack } from "src/shared/ui/Button/ButtonBack/ButtonBack";
 import { Dialog } from "src/features/users/ui/Dialog/Dialog";
-import { userStore } from "src/features/users/stores/userStore";
 import { SuccessIcon } from "src/features/users/assets";
 import { IMailing, mailingStore } from "src/features/mailing/stores/mailingStore";
 
@@ -65,6 +52,7 @@ export const MailingPage = observer(() => {
             mailingStore.nameInput = "";
             mailingStore.textInput = "";
             fileStore.selectedFile = null;
+            fileStore.uploadedFile = null;
         }
     }, [showAddTemplate]);
 
@@ -73,6 +61,7 @@ export const MailingPage = observer(() => {
             mailingStore.nameInput = "";
             mailingStore.textInput = "";
             fileStore.selectedFile = null;
+            fileStore.uploadedFile = null;
             mailingStore.selectedDepartments = [];
         }
     }, [showAddMailing]);
@@ -137,6 +126,11 @@ export const MailingPage = observer(() => {
                                         </button>
                                     ))}
                             </div>
+                        </div>
+                    )}
+                    {!mailingStore.mailings.filter((m) => m.isTemplate).length && (
+                        <div className={styles.programBlock}>
+                            <div>Шаблоны отсутствуют</div>
                         </div>
                     )}
                 </div>

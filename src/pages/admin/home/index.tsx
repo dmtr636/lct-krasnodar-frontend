@@ -19,6 +19,7 @@ import { USER_DEPARTMENT_FILTER_OPTIONS } from "src/features/users/constants/use
 import { Input } from "src/shared/ui/Inputs/Input/Input";
 import { HeaderActionButton } from "src/features/layout/ui/Header/HeaderActionButton/HeaderActionButton";
 import { fileStore } from "src/features/education/stores/fileStore";
+import { USER_DEPARTMENTS } from "src/features/users/constants/userFilters";
 
 export const HomePage = observer(() => {
     const [processingTemplate, setProcessingTemplate] = useState<IMailing | null>(null);
@@ -32,15 +33,36 @@ export const HomePage = observer(() => {
     const user = userStore.currentUser;
     const responsibleUser = userStore.allUsers.find((e) => e.id === user?.responsibleUserId);
     const employeeUsers = userStore.allUsers.filter((e) => e.responsibleUserId === user?.id);
-    const employeeUsersArray = employeeUsers.map((user, index) => (
-        <EmployeeCard
-            key={index}
-            role={user?.department}
-            name={user?.fullName}
-            tg={user?.telegram}
-            link={`/users/${user?.id}`}
-        />
-    ));
+    const employeeUsersArray = employeeUsers
+        .slice(0, 2)
+        .map((user, index) => (
+            <EmployeeCard
+                key={index}
+                role={USER_DEPARTMENTS[user?.department]}
+                name={user?.fullName}
+                tg={user?.telegram}
+                link={`/users/${user?.id}`}
+            />
+        ));
+
+    useEffect(() => {
+        if (showAddMailing) {
+            mailingStore.nameInput = "";
+            mailingStore.textInput = "";
+            fileStore.selectedFile = null;
+            fileStore.uploadedFile = null;
+            mailingStore.selectedDepartments = [];
+        }
+    }, [showAddMailing]);
+
+    useEffect(() => {
+        if (processingTemplate) {
+            mailingStore.nameInput = processingTemplate.name;
+            mailingStore.textInput = processingTemplate.text;
+            fileStore.uploadedFile = processingTemplate.file;
+        }
+    }, [processingTemplate]);
+
     return (
         <ContentWithHeaderLayout title={"Главная"}>
             <div className={styles.container}>
