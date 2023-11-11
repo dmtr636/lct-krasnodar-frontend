@@ -603,20 +603,22 @@ export const AnalyticPage = observer(() => {
                                         {deportamentArray}
                                     </div>
                                 </div>
-                                <div className={styles.filterTasks}>
-                                    <div className={styles.filterText}>Статус задач</div>
-                                    <div>
-                                        <Checkbox
-                                            checkboxChange={() => {
-                                                tasksStore.selectedTasks = [];
-                                            }}
-                                            isChecked={!tasksStore.selectedTasks.length}
-                                        >
-                                            Выбрать все
-                                        </Checkbox>
-                                        {optionsArray}
+                                {!(user?.role === "EMPLOYEE") && (
+                                    <div className={styles.filterTasks}>
+                                        <div className={styles.filterText}>Статус задач</div>
+                                        <div>
+                                            <Checkbox
+                                                checkboxChange={() => {
+                                                    tasksStore.selectedTasks = [];
+                                                }}
+                                                isChecked={!tasksStore.selectedTasks.length}
+                                            >
+                                                Выбрать все
+                                            </Checkbox>
+                                            {optionsArray}
+                                        </div>
                                     </div>
-                                </div>
+                                )}
                                 {!(user?.role === "EMPLOYEE") && (
                                     <div className={styles.responsibilityUser}>
                                         <div className={styles.filterText}>Ответственное лицо</div>
