@@ -13,6 +13,7 @@ import { CircularProgress } from "@mui/material";
 import { Button } from "src/shared/ui/Button/Button";
 import { useNavigate } from "react-router-dom";
 import { IconChat, IconDelete, IconMailing } from "src/shared/assets/img";
+import { educationStore } from "src/features/education/stores/educationStore";
 
 export const HomePage = observer(() => {
     useEffect(() => {
@@ -35,15 +36,15 @@ export const HomePage = observer(() => {
     return (
         <ContentWithHeaderLayout title={"Главная"}>
             <div className={styles.container}>
-                <div className={styles.header}>Привет, {user?.firstName}!</div>
+                <div className={styles.header}>Привет, {user?.firstName || "Администратор"}!</div>
                 {user?.role === "EMPLOYEE" ? (
                     <div className={styles.content}>
                         <div className={styles.leftContainer}>
                             <HomeContainer header={"Можно обратиться за помощью"}>
                                 <EmployeeCard
-                                    role={responsibleUser?.department}
-                                    name={responsibleUser?.fullName}
-                                    tg={responsibleUser?.telegram}
+                                    role={responsibleUser?.department ?? ""}
+                                    name={responsibleUser?.fullName ?? ""}
+                                    tg={responsibleUser?.telegram ?? ""}
                                     link={`/users/${responsibleUser?.id}`}
                                 />
                             </HomeContainer>
@@ -113,19 +114,21 @@ export const HomePage = observer(() => {
                 ) : (
                     <div className={styles.content}>
                         <div className={styles.leftContainer}>
-                            <HomeContainer header={"Мои сотрудники"}>
-                                {employeeUsersArray}
-                                <div className={styles.button}>
-                                    <Button
-                                        onClick={() => navigate("/analytics")}
-                                        isLoading={false}
-                                        disabled={false}
-                                        skinny={true}
-                                    >
-                                        Мои сотрудники
-                                    </Button>
-                                </div>
-                            </HomeContainer>
+                            {userStore.currentUser?.role === "MANAGER" && (
+                                <HomeContainer header={"Мои сотрудники"}>
+                                    {employeeUsersArray}
+                                    <div className={styles.button}>
+                                        <Button
+                                            onClick={() => navigate("/analytics")}
+                                            isLoading={false}
+                                            disabled={false}
+                                            skinny={true}
+                                        >
+                                            Мои сотрудники
+                                        </Button>
+                                    </div>
+                                </HomeContainer>
+                            )}
                             <HomeContainer header={"Рассылка"}>
                                 <div className={styles.analyticsSubname}>Шаблоны</div>
                                 <div className={styles.mailingArray}>
@@ -148,16 +151,6 @@ export const HomePage = observer(() => {
                                             >
                                                 <IconMailing />
                                             </IconButton>
-                                            <IconButton
-                                                onClick={(e) => {
-                                                    /* 
-                                                        e.stopPropagation();
-                                                        setDeletingMailing(mailing); */
-                                                }}
-                                                className={styles.deleteButton}
-                                            >
-                                                {/* <IconDelete /> */}
-                                            </IconButton>
                                         </div>
                                     </button>
                                     <button
@@ -178,16 +171,6 @@ export const HomePage = observer(() => {
                                                 className={styles.deleteButton}
                                             >
                                                 <IconMailing />
-                                            </IconButton>
-                                            <IconButton
-                                                onClick={(e) => {
-                                                    /* 
-                                                        e.stopPropagation();
-                                                        setDeletingMailing(mailing); */
-                                                }}
-                                                className={styles.deleteButton}
-                                            >
-                                                {/* <IconDelete /> */}
                                             </IconButton>
                                         </div>
                                     </button>
@@ -219,11 +202,24 @@ export const HomePage = observer(() => {
                                             />
                                             <CircularProgress
                                                 variant="determinate"
-                                                value={100}
+                                                value={
+                                                    (educationStore.userCourses.filter(
+                                                        (uc) => uc.finishTimestamp,
+                                                    ).length /
+                                                        (educationStore.userCourses.length || 1)) *
+                                                    100
+                                                }
                                                 className={styles.circular}
                                                 thickness={3}
                                             />
-                                            <div className={styles.value}>100%</div>
+                                            <div className={styles.value}>
+                                                {(educationStore.userCourses.filter(
+                                                    (uc) => uc.finishTimestamp,
+                                                ).length /
+                                                    (educationStore.userCourses.length || 1)) *
+                                                    100}
+                                                %
+                                            </div>
                                         </div>
                                         <div className={styles.progressText}>
                                             Прохождение <br />
@@ -233,7 +229,7 @@ export const HomePage = observer(() => {
                                     </div>
                                     <div className={styles.buttonAnalytic}>
                                         <Button
-                                            onClick={() => navigate("/users")}
+                                            onClick={() => navigate("/analytics")}
                                             isLoading={false}
                                             disabled={false}
                                             skinny={true}

@@ -4,9 +4,13 @@
     background-color: #fff;
     display: flex;
     align-items: center;
-    border-bottom: 1px solid #d8e4f3;
     cursor: pointer;
     user-select: none;
+
+    &:not(:last-child) {
+        border-bottom: 1px solid #d8e4f3;
+    }
+
     &:hover {
         background-color: #eff5fb;
     }
