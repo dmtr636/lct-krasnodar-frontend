@@ -5,6 +5,7 @@ import { LOGOUT_ENDPOINT, ME_ENDPOINT, USERS_ENDPOINT } from "src/shared/api/end
 import { departmentsStore } from "./departamentStore";
 import { tasksStore } from "./tasksStore";
 import { IUserDepartmentFilterOption } from "../constants/userDepartments";
+import { educationStore } from "src/features/education/stores/educationStore";
 
 export class UserStore {
     allUsers: IUser[] = [];
@@ -75,9 +76,60 @@ export class UserStore {
             );
         }
 
-        if (tasksStore.selectedTasks.length) {
-            users = users.filter((user) =>
-                tasksStore.selectedTasks.some((task) => user.tasks?.includes(task.task)),
+        if (
+            tasksStore.selectedTasks.length === 1 &&
+            tasksStore.selectedTasks.some((st) => st.task === "DEADLINE_FAILED")
+        ) {
+            users = [];
+        }
+
+        if (
+            tasksStore.selectedTasks.length === 1 &&
+            tasksStore.selectedTasks.some((st) => st.task === "NO_TASK")
+        ) {
+            users = users.filter(
+                (u) =>
+                    !educationStore.userCourses
+                        .filter((uc) => uc.userId === u.id)
+                        .filter((uc) => !uc.finishTimestamp).length,
+            );
+        }
+
+        if (
+            tasksStore.selectedTasks.length === 2 &&
+            tasksStore.selectedTasks.some((st) => st.task === "NO_TASK") &&
+            tasksStore.selectedTasks.some((st) => st.task === "DEADLINE_FAILED")
+        ) {
+            users = users.filter(
+                (u) =>
+                    !educationStore.userCourses
+                        .filter((uc) => uc.userId === u.id)
+                        .filter((uc) => !uc.finishTimestamp).length,
+            );
+        }
+
+        if (
+            tasksStore.selectedTasks.length === 2 &&
+            tasksStore.selectedTasks.some((st) => st.task === "NOT_COMPLETE_TASK") &&
+            tasksStore.selectedTasks.some((st) => st.task === "DEADLINE_FAILED")
+        ) {
+            users = users.filter(
+                (u) =>
+                    !!educationStore.userCourses
+                        .filter((uc) => uc.userId === u.id)
+                        .filter((uc) => !uc.finishTimestamp).length,
+            );
+        }
+
+        if (
+            tasksStore.selectedTasks.length === 1 &&
+            tasksStore.selectedTasks.some((st) => st.task === "NOT_COMPLETE_TASK")
+        ) {
+            users = users.filter(
+                (u) =>
+                    !!educationStore.userCourses
+                        .filter((uc) => uc.userId === u.id)
+                        .filter((uc) => !uc.finishTimestamp).length,
             );
         }
 
