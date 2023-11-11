@@ -33,7 +33,6 @@ export const CodeCheck = ({
 
     const sendCode = () => {
         setIsLoading(true);
-        console.log("отправка данных " + data);
         axios
             .post(CHECK_CODE, data)
             .then((response) => {
@@ -46,7 +45,6 @@ export const CodeCheck = ({
                 setIsLoading(false);
                 setIsError(true);
                 setErrorCount(error.response.data.error.data.enter_attempts_left);
-                console.log("ошибка" + error);
             });
     };
     const sendEmail = () => {
@@ -67,8 +65,7 @@ export const CodeCheck = ({
     };
     const emailData = { email: email };
     const data = { email: email, code: inputCodeValue };
-    console.log(data);
-    console.log(disabledButton);
+
     return (
         <ContentContainer text="Восстановление пароля">
             <div className={styles.text}>Мы отправили код на указанную почту</div>

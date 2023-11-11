@@ -31,7 +31,6 @@ export const HomePage = observer(() => {
             link={`/users/${user?.id}`}
         />
     ));
-    console.log(employeeUsersArray);
     return (
         <ContentWithHeaderLayout title={"Главная"}>
             <div className={styles.container}>

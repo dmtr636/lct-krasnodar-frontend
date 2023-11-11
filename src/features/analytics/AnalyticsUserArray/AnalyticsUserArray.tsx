@@ -5,6 +5,7 @@ import { sortedStore } from "src/features/users/stores/sortedStore";
 import { USER_DEPARTMENT_FILTER_OPTIONS } from "src/features/users/constants/userDepartments";
 import { AnalyticsUserCard } from "../AnalyticsUserCard/AnalyticsUserCard";
 import { useEffect } from "react";
+import { USER_DEPARTMENTS } from "src/features/users/constants/userFilters";
 
 export const AnalyticsUserArray = observer(
     ({
@@ -37,11 +38,7 @@ export const AnalyticsUserArray = observer(
             <AnalyticsUserCard
                 key={employee.id}
                 img={employee.photoFileUrl}
-                role={
-                    USER_DEPARTMENT_FILTER_OPTIONS.find(
-                        (options) => options.department === employee.department,
-                    )?.name
-                }
+                role={USER_DEPARTMENTS[employee.department]}
                 name={employee.fullName}
                 link={`/users/${employee.id}`}
                 tg={employee.telegram}
@@ -55,7 +52,9 @@ export const AnalyticsUserArray = observer(
                     : cases[number % 10 < 5 ? number % 10 : 5];
             return `${number} ${titles[index]}`;
         }
-        const responsibilityDate = employeeData.filter((user) => user.role === "MANAGER");
+        const user = userStore.currentUser;
+
+        const responsibilityDate = employeeData.filter((e) => e.responsibleUserId === user?.id);
         const responsibilityArray = responsibilityDate.map((employee) => (
             <AnalyticsUserCard
                 key={employee.id}

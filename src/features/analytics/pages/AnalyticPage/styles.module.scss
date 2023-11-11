@@ -105,7 +105,8 @@
     width: 100%;
     height: calc(100vh - 80px);
     background: rgba(29, 29, 27, 0.43);
-    border-top: 1px solid #d8e4f3;
+    /*     border-top: 1px solid #d8e4f3;
+ */
     z-index: 3;
 }
 .filterContent {
@@ -130,7 +131,7 @@
     border-radius: 18px;
     cursor: pointer;
     &:hover {
-        background-color: #ededed;
+        background-color: #eff5fb;
     }
 }
 .filterH1 {
@@ -145,7 +146,7 @@
     letter-spacing: 0.48px;
     display: flex;
     align-items: center;
-    gap: 32px;
+    gap: 20px;
 }
 .filterType {
     display: flex;
@@ -194,7 +195,7 @@
     gap: 16px;
     margin-left: 40px;
     margin-top: 24px;
-    margin-bottom: 28px;
+    /*  margin-bottom: 28px; */
 }
 .cloudClose {
     display: flex;
@@ -249,6 +250,7 @@
     font-weight: 600;
     line-height: 28px; /* 140% */
     letter-spacing: 0.4px;
+    margin-top: 28px;
 }
 .userCount {
     margin-left: 40px;

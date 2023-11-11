@@ -54,13 +54,11 @@ export const EditUser = ({
         if (files) {
             fileStore.selectedFile = files[0];
             setFile(files[0]);
-            console.log(data);
         }
     };
     const handleClearFile = () => {
         fileStore.selectedFile = null;
         setFile(null);
-        console.log(data);
 
         if (fileInputRef.current) {
             fileInputRef.current.value = "";
@@ -89,7 +87,6 @@ export const EditUser = ({
         await axios
             .put(USERS_ENDPOINT, { ...data })
             .then((response) => {
-                console.log(response);
                 setShowAddUser(false);
                 /*     setEmail("");
                 setDepartment("");
@@ -101,12 +98,9 @@ export const EditUser = ({
                 setNumber("");
                 setShowSuccefull(true); */
             })
-            .catch((error) => {
-                console.log("ошибка" + error);
-            });
+            .catch((error) => {});
     };
     useEffect(() => {
-        console.log(userData);
         setEmail(userData?.email);
         setDepartmentName(USER_DEPARTMENTS[userData.department]);
         setDepartment(userData?.department);
@@ -128,7 +122,6 @@ export const EditUser = ({
                 setResponsibleUserId(null);
                 setResponsibleUserName("");
 
-                console.log(option.name);
                 setShowSort(!showSort);
             }}
             className={classNames(styles.sortedItem, {
@@ -138,7 +131,6 @@ export const EditUser = ({
             {option.name}
         </div>
     ));
-    console.log(JSON.stringify(data) + "полезная нагрузка");
     const responsibleUsers = userStore.allUsers.filter((user) => user.role === "MANAGER");
     const responsibleUsersArray = responsibleUsers.map((user, index) => (
         <div
@@ -153,7 +145,6 @@ export const EditUser = ({
             {`${user.firstName} ${user.lastName}`}
         </div>
     ));
-    console.log(file);
     return (
         <div className={styles.container} onClick={() => setShowAddUser(false)}>
             <div className={styles.content} onClick={(e) => e.stopPropagation()}>

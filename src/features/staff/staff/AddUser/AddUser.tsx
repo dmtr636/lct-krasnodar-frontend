@@ -52,14 +52,11 @@ export const AddUser = ({
         if (files) {
             fileStore.selectedFile = files[0];
             setFile(files[0]);
-            console.log(data);
         }
     };
     const handleClearFile = () => {
         fileStore.selectedFile = null;
         setFile(null);
-
-        console.log(data);
 
         if (fileInputRef.current) {
             fileInputRef.current.value = "";
@@ -81,12 +78,10 @@ export const AddUser = ({
     };
     const sendUser = async () => {
         await fileStore.uploadFile();
-        console.log(JSON.stringify(data) + "полезная нагрузка");
 
         axios
             .post(USERS_ENDPOINT, data)
             .then((response) => {
-                console.log(response);
                 setEmail("");
                 setDepartment("");
                 setResponsibleUserId(null);
@@ -100,7 +95,6 @@ export const AddUser = ({
                 setShowSuccefull(true);
             })
             .catch((error) => {
-                console.log("ошибка" + error);
                 setShowFale(true);
             });
     };
@@ -113,7 +107,6 @@ export const AddUser = ({
                 setResponsibleUserId(null);
                 setResponsibleUserName("");
 
-                console.log(option.name);
                 setShowSort(!showSort);
             }}
             className={classNames(styles.sortedItem, {
@@ -123,7 +116,6 @@ export const AddUser = ({
             {option.name}
         </div>
     ));
-    console.log(data.photoFileId);
     const responsibleUsers = userStore.allUsers.filter((user) => user.role === "MANAGER");
     const responsibleUsersArray = responsibleUsers.map((user, index) => (
         <div

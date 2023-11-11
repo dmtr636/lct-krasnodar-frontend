@@ -35,7 +35,6 @@ export const LoginWindow = observer(() => {
         rememberMe: isChecked,
     };
     const blockButton = (blockTimeCount: number) => {
-        console.log("хай");
         setBlockButtonTimeout(true);
         setTimeout(() => {
             setBlockButtonTimeout(false);
@@ -58,14 +57,12 @@ export const LoginWindow = observer(() => {
                 setIsLoading(false);
                 setIsError(true);
                 setErrorCount(error.response.data.error.data.remainingAttempts);
-                console.log(error.response.data.error.data.remainingAttempts);
                 if (error.response.data.error.data?.retryDelaySeconds) {
                     setBlockTimeCount(error.response.data.error.data?.retryDelaySeconds);
                     blockButton(error.response.data.error.data?.retryDelaySeconds);
                 }
             });
     };
-    console.log(errorCount);
     const navigate = useNavigate();
     return (
         <ContentContainer text="Личный кабинет">

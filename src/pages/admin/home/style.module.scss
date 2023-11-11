@@ -67,6 +67,7 @@
 }
 .rightContainer {
     width: 379px;
+    /* border-bottom: ; */
 }
 .progress {
     width: 106px;
@@ -122,9 +123,10 @@
     display: flex;
     align-items: center;
     padding-top: 20px;
-    margin-left: 20px;
-    margin-right: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
     padding-bottom: 20px;
+    border-bottom: 1px solid #d8e4f3;
     gap: 16px;
 }
 .button {
